@@ -13,6 +13,9 @@
 </head>
 <body>
 	<br />
+	
+	<div id="toto"></div>
+	<br />
 	<table class="t07-table">
 		<tr>
 			<th>Id</th>
@@ -25,6 +28,21 @@
 	<br />
 </body>
 <script>
+
+	/** this way we can set pure javascript, or enhance the HTML */
+	var stdTable = function(idDiv){
+		
+		var tableElem = document.createElement('table');
+		tableElem.className = 't07-table';
+		var trElem = document.createElement('tr');
+		var thElem = document.createElement('th');
+		$(thElem).html('col1');
+		trElem.appendChild(thElem);
+		tableElem.appendChild(trElem);
+		var divElem = document.getElementById(idDiv);
+		divElem.appendChild(tableElem);
+		$(tableElem).jStdTable();
+	};
 	
 	var Utils = {
 	
@@ -52,7 +70,7 @@
 		}
 	};
 
-	$.fn.stdTable = function() {
+	$.fn.jStdTable = function() {
 		var html = '<form>'
 				+ '<div class="well od3m" style="width:90%;">'
 				+ 	'<div>'
@@ -70,14 +88,14 @@
 		var elem = $(html);
 		elem.insertBefore(this);
 		var thisTable = this;
-		Utils.sendRequest('http://www.toto.com/api/twitter-user/list', {}, function(response){
+		/*Utils.sendRequest('http://www.toto.com/api/twitter-user/list', {}, function(response){
 			thisTable.append('<tr></tr>');
-		});
+		});*/
 		
 		return this;
 	}
+	
+	var myTable = new stdTable('toto');
  
-	$('table.t07-table').stdTable();
-
 </script>
 </html>
