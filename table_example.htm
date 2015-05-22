@@ -1,0 +1,83 @@
+<html>
+<head>
+	<title>Testing</title>
+	<style>
+		.t07-table{
+			width:80%;
+		}
+		.t07-table td, .t07-table th{
+			border:1px solid #cccccc;
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+	<br />
+	<table class="t07-table">
+		<tr>
+			<th>Id</th>
+			<th>Label</th>
+		</tr>
+		<tr>
+			<td align="center" colspan="2">No result.</td>
+		</tr>
+	</table>
+	<br />
+</body>
+<script>
+	
+	var Utils = {
+	
+		sendRequest: function(url, params, callbackFunction, httpMethod){
+
+			if(null == httpMethod){
+				httpMethod = 'GET';
+			}
+			var ajaxAttributes = {
+				type: httpMethod,
+				url: url,
+				data: params,
+				beforeSend: function(){
+				}
+			};
+			$.ajax(ajaxAttributes).
+			done(function(data){
+				callbackFunction(data);
+			}).
+			fail(function(){
+				alert('fail');
+			}).
+			always(function(){
+			});
+		}
+	};
+
+	$.fn.stdTable = function() {
+		var html = '<form>'
+				+ '<div class="well od3m" style="width:90%;">'
+				+ 	'<div>'
+				+ 		'<div class="pull-left">Nb par page<select><option></option></select></div>'
+				+ 		'<div class="pull-right">'
+				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-double-left"></i></a>'
+				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-left"></i></a>'
+				+			'Page <input type="text" class="nbpage" value="1"> / <span class="nbpage">1</span>'
+				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-right"></i></a>'
+				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-double-right"></i></a>'
+				+		'</div>'
+				+	'</div>'
+				+'</div>'
+			+'</form>';
+		var elem = $(html);
+		elem.insertBefore(this);
+		var thisTable = this;
+		Utils.sendRequest('http://www.toto.com/api/twitter-user/list', {}, function(response){
+			thisTable.append('<tr></tr>');
+		});
+		
+		return this;
+	}
+ 
+	$('table.t07-table').stdTable();
+
+</script>
+</html>
