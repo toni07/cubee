@@ -8,6 +8,16 @@
 		.t07-table td, .t07-table th{
 			border:1px solid #cccccc;
 		}
+		.t07-center {
+			text-align: center;
+		}
+		.t07-center>div { /* N.B. child combinators don't work in IE7 or less */
+			display: inline-block;
+		}
+		.t07-table-above{
+			background-color:#dddddd;
+			padding:10px 0;
+		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
@@ -87,20 +97,26 @@
 
 	$.fn.jStdTable = function() {
 		var html = '<form>'
-				+ '<div class="well od3m" style="width:90%;">'
-				+ 	'<div>'
-				+ 		'<div class="pull-left">Nb par page<select><option></option></select></div>'
-				+ 		'<div class="pull-right">'
-				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-double-left"></i></a>'
-				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-left"></i></a>'
+				+ '<div class="t07-table-above" style="width:90%;">'
+				+ 	'<div class="t07-center">'
+				//+ 		'<div class="pull-left">Nb par page<select><option></option></select></div>'
+				+ 		'<div>'
+				+			'<a href="#" class="rew-total"> << </a>'
+				+			'<a href="#" class="rew"> < </a>'
 				+			'Page <input type="text" class="nbpage" value="1"> / <span class="nbpage">1</span>'
-				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-right"></i></a>'
-				+			'<a class="btn btn-default btn-sm" role="button"><i class="fa fa-angle-double-right"></i></a>'
+				+			'<a href="#" class="fwd"> > </a>'
+				+			'<a href="#" class="fwd-total"> >> </a>'
 				+		'</div>'
 				+	'</div>'
 				+'</div>'
 			+'</form>';
 		var elem = $(html);
+		elem.find('a').click(function(event){
+			event.preventDefault();
+			if($(this).hasClass('fwd')){
+				alert('fwd');
+			}
+		});
 		elem.insertBefore(this);
 		var thisTable = this;
 		Utils.sendRequest('test.json', {}, function(response){
