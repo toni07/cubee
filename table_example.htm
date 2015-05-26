@@ -81,15 +81,14 @@
 		var tableElem = document.createElement('table');
 		tableElem.className = 't07-table';
 		var trElem = document.createElement('tr');
+		var htmlColumnList = new Array();
 		for(var i=0; i<options.columnList.length; i++){
 			var thElem = document.createElement('th');
 			var $thElem = $(thElem);
 			$thElem.html(options.columnList[i]);
-			var $a = $('<a href="#">&squf; &utrif; &dtrif;</a>');
-			$a.on('click', function(event){
-				event.preventDefault();
-				var hrefElem = $(this);
-			});
+			var $a = $('<a href="#" class="orderby">&squf; &utrif; &dtrif;</a>');
+			$a.orderby = 0;
+			htmlColumnList.push($a);
 			$thElem.append($a);
 			trElem.appendChild(thElem);
 		}
@@ -105,13 +104,13 @@
 		//----------------------------------//
 		var divElem = document.getElementById(idDiv);
 		divElem.appendChild(tableElem);
-		$(tableElem).jStdTable('http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie');
+		$(tableElem).jStdTable('http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie', htmlColumnList);
 	};
 	
 	/**
 	 * @param urlGet The url used to retreive json data
 	*/
-	$.fn.jStdTable = function(urlGet) {
+	$.fn.jStdTable = function(urlGet, htmlColumnList) {
 			
 		var thisTable = this;
 		thisTable.currentPage = 1;
@@ -150,6 +149,15 @@
 			});
 		});
 		elem.insertBefore(this);
+		for(var i=0; i<htmlColumnList.length; i++){
+			var $a = htmlColumnList[i];
+			$a.on('click', function(event){
+				event.preventDefault();
+				var hrefElem = $(this);
+				console.log(hrefElem);
+			});
+		}		
+		
 		var paramsIni = {
 			'page-num': thisTable.currentPage
 		};
