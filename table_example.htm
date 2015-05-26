@@ -30,7 +30,7 @@
 <body>
 	<br />
 	
-	<div id="toto"></div>
+	<div id="toto" class="cubee"></div>
 	<br />
 	<table class="t07-table">
 		<tr>
@@ -83,7 +83,14 @@
 		var trElem = document.createElement('tr');
 		for(var i=0; i<options.columnList.length; i++){
 			var thElem = document.createElement('th');
-			$(thElem).html(options.columnList[i]);
+			var $thElem = $(thElem);
+			$thElem.html(options.columnList[i]);
+			var $a = $('<a href="#">&squf; &utrif; &dtrif;</a>');
+			$a.on('click', function(event){
+				event.preventDefault();
+				var hrefElem = $(this);
+			});
+			$thElem.append($a);
 			trElem.appendChild(thElem);
 		}
 		tableElem.appendChild(trElem);
@@ -98,12 +105,14 @@
 		//----------------------------------//
 		var divElem = document.getElementById(idDiv);
 		divElem.appendChild(tableElem);
-		$(tableElem).jStdTable();
+		$(tableElem).jStdTable('http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie');
 	};
 	
-
-	$.fn.jStdTable = function() {
-		
+	/**
+	 * @param urlGet The url used to retreive json data
+	*/
+	$.fn.jStdTable = function(urlGet) {
+			
 		var thisTable = this;
 		thisTable.currentPage = 1;
 		var html = '<form>'
@@ -136,7 +145,7 @@
 			var params = {
 				'page-num': thisTable.currentPage
 			};
-			Utils.sendRequest('http://toto.fr/test.json', params, function(response){
+			Utils.sendRequest(urlGet, params, function(response){
 				thisTable.append('<tr></tr>');
 			});
 		});
@@ -144,8 +153,13 @@
 		var paramsIni = {
 			'page-num': thisTable.currentPage
 		};
-		Utils.sendRequest('http://toto.fr/test.json', paramsIni, function(response){
-			thisTable.append('<tr></tr>');
+		Utils.sendRequest(urlGet, paramsIni, function(response){
+			var trElem = document.createElement('tr');
+			for(var i=0; i<options.columnList.length; i++){
+				var tdElem = document.createElement('td');
+				trElem.appendChild(tdElem);
+			}
+			thisTable.append(trElem);
 		});
 		
 		return this;
