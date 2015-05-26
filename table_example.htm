@@ -18,6 +18,12 @@
 			background-color:#dddddd;
 			padding:10px 0;
 		}
+		.cubee a{
+			text-decoration:none;
+		}
+		.cubee a:hover{
+			text-decoration:underline;
+		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
@@ -38,6 +44,32 @@
 	<br />
 </body>
 <script>
+
+	var Utils = {
+	
+		sendRequest: function(url, params, callbackFunction, httpMethod){
+
+			if(null == httpMethod){
+				httpMethod = 'GET';
+			}
+			var ajaxAttributes = {
+				type: httpMethod,
+				url: url,
+				data: params,
+				beforeSend: function(){
+				}
+			};
+			$.ajax(ajaxAttributes).
+			done(function(data){
+				callbackFunction(data);
+			}).
+			fail(function(){
+				alert('fail');
+			}).
+			always(function(){
+			});
+		}
+	};
 
 	/** this way we can set pure javascript, or enhance the HTML */
 	var columnList = ['col1', 'col2', 'col3'];
@@ -69,35 +101,13 @@
 		$(tableElem).jStdTable();
 	};
 	
-	var Utils = {
-	
-		sendRequest: function(url, params, callbackFunction, httpMethod){
-
-			if(null == httpMethod){
-				httpMethod = 'GET';
-			}
-			var ajaxAttributes = {
-				type: httpMethod,
-				url: url,
-				data: params,
-				beforeSend: function(){
-				}
-			};
-			$.ajax(ajaxAttributes).
-			done(function(data){
-				callbackFunction(data);
-			}).
-			fail(function(){
-				alert('fail');
-			}).
-			always(function(){
-			});
-		}
-	};
 
 	$.fn.jStdTable = function() {
+		
+		var thisTable = this;
+		thisTable.currentPage = 1;
 		var html = '<form>'
-				+ '<div class="t07-table-above" style="width:90%;">'
+				+ '<div class="cubee t07-table-above" style="width:90%;">'
 				+ 	'<div class="t07-center">'
 				//+ 		'<div class="pull-left">Nb par page<select><option></option></select></div>'
 				+ 		'<div>'
@@ -113,13 +123,28 @@
 		var elem = $(html);
 		elem.find('a').click(function(event){
 			event.preventDefault();
-			if($(this).hasClass('fwd')){
-				alert('fwd');
+			var hrefElem = $(this);
+			if(hrefElem.hasClass('rew-total')){
+				thisTable.currentPage = 1;
 			}
+			else if(hrefElem.hasClass('rew')){
+				thisTable.currentPage = Math.max(thisTable.currentPage - 1, 1);
+			}
+			else if(hrefElem.hasClass('fwd')){
+				thisTable.currentPage = thisTable.currentPage + 1;
+			}
+			var params = {
+				'page-num': thisTable.currentPage
+			};
+			Utils.sendRequest('http://toto.fr/test.json', params, function(response){
+				thisTable.append('<tr></tr>');
+			});
 		});
 		elem.insertBefore(this);
-		var thisTable = this;
-		Utils.sendRequest('test.json', {}, function(response){
+		var paramsIni = {
+			'page-num': thisTable.currentPage
+		};
+		Utils.sendRequest('http://toto.fr/test.json', paramsIni, function(response){
 			thisTable.append('<tr></tr>');
 		});
 		
