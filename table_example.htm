@@ -68,6 +68,19 @@
 			}).
 			always(function(){
 			});
+		},
+		
+		/**
+		 * @param orderbyList: key/value list: key=fieldId,val=fieldOrder
+		*/
+		buildOrderBy(orderbyList){
+		
+			var result = new Array();
+			//for(var i=0; i<orderbyList; i++){
+			for(var i in orderbyList){
+				result.push(i + '_' + orderbyList[i]);
+			}
+			return result.join('##');
 		}
 	};
 
@@ -86,8 +99,9 @@
 			var thElem = document.createElement('th');
 			var $thElem = $(thElem);
 			$thElem.html(options.columnList[i]);
-			var $a = $('<a href="#" class="orderby">&squf; &utrif; &dtrif;</a>');
+			var $a = $('<a href="#">&squf;</a>');
 			$a.orderby = 0;
+			$a.fieldId = i;
 			htmlColumnList.push($a);
 			$thElem.append($a);
 			trElem.appendChild(thElem);
@@ -111,9 +125,10 @@
 	 * @param urlGet The url used to retreive json data
 	*/
 	$.fn.jStdTable = function(urlGet, htmlColumnList) {
-			
+				
 		var thisTable = this;
 		thisTable.currentPage = 1;
+		thisTable.orderByList = new Array();
 		var html = '<form>'
 				+ '<div class="cubee t07-table-above" style="width:90%;">'
 				+ 	'<div class="t07-center">'
@@ -150,12 +165,32 @@
 		});
 		elem.insertBefore(this);
 		for(var i=0; i<htmlColumnList.length; i++){
-			var $a = htmlColumnList[i];
-			$a.on('click', function(event){
-				event.preventDefault();
-				var hrefElem = $(this);
-				console.log(hrefElem);
-			});
+			var href = htmlColumnList[i];
+			(function(hrefElem){
+				hrefElem.on('click', function(event){
+					event.preventDefault();
+					if(0 == hrefElem.orderby){
+						hrefElem.orderby = 1;
+						hrefElem.html('&utrif;');
+					}
+					else if(1 == hrefElem.orderby){
+						hrefElem.orderby = -1;
+						hrefElem.html('&dtrif;');
+					}
+					else if(-1 == hrefElem.orderby){
+						hrefElem.orderby = 0;
+						hrefElem.html('&squf;');
+					}
+					thisTable.orderByList[hrefElem.fieldId] = hrefElem.orderby;
+					var params = {
+						'page-num': thisTable.currentPage,
+						'order-by': Utils.buildOrderBy(thisTable.orderByList)
+					};
+					Utils.sendRequest(urlGet, params, function(response){
+						thisTable.append('<tr></tr>');
+					});
+				})
+			})(href);
 		}		
 		
 		var paramsIni = {
