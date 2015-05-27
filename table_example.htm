@@ -24,6 +24,9 @@
 		.cubee a:hover{
 			text-decoration:underline;
 		}
+		.cubee th a:hover{
+			text-decoration:none;
+		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
@@ -96,6 +99,9 @@
 		var trElem = document.createElement('tr');
 		var htmlColumnList = new Array();
 		for(var i=0; i<options.columnList.length; i++){
+			var colElem = document.createElement('col');
+			$(colElem).attr('style', 'width:30%');
+			tableElem.appendChild(colElem);
 			var thElem = document.createElement('th');
 			var $thElem = $(thElem);
 			$thElem.html(options.columnList[i]);
@@ -108,13 +114,15 @@
 		}
 		tableElem.appendChild(trElem);
 		//---------td 'no row'----------------//
+		var tdBodyElem = document.createElement('tbody');
 		trElem = document.createElement('tr');
 		var tdNoRowElem = document.createElement('td');
 		var $tdNoRowElem = $(tdNoRowElem);
 		$tdNoRowElem.attr('colspan', options.columnList.length).attr('align', 'center');
 		$tdNoRowElem.html('no result');
 		trElem.appendChild(tdNoRowElem);
-		tableElem.appendChild(trElem);
+		tdBodyElem.appendChild(trElem);
+		tableElem.appendChild(tdBodyElem);
 		//----------------------------------//
 		var divElem = document.getElementById(idDiv);
 		divElem.appendChild(tableElem);
@@ -126,6 +134,7 @@
 	*/
 	$.fn.jStdTable = function(urlGet, htmlColumnList) {
 				
+		var jsonResultKey = 'records';
 		var thisTable = this;
 		thisTable.currentPage = 1;
 		thisTable.orderByList = new Array();
@@ -197,12 +206,19 @@
 			'page-num': thisTable.currentPage
 		};
 		Utils.sendRequest(urlGet, paramsIni, function(response){
-			var trElem = document.createElement('tr');
-			for(var i=0; i<options.columnList.length; i++){
-				var tdElem = document.createElement('td');
-				trElem.appendChild(tdElem);
+			var jsonResult = response[jsonResultKey];
+			var tBodyElem = thisTable.find('tbody').eq(0);
+			tBodyElem.html('');
+			for(var i=0; i<jsonResult.length; i++){
+				var trElem = document.createElement('tr');
+				for(var j=0; j<options.columnList.length; j++){
+					var tdElem = document.createElement('td');
+					$(tdElem).html('test');
+					trElem.appendChild(tdElem);
+				}
+				tBodyElem.append(trElem);
 			}
-			thisTable.append(trElem);
+			//console.log('##jsonResult', jsonResult.length);
 		});
 		
 		return this;
