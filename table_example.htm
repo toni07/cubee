@@ -103,14 +103,15 @@
 		//----------------------------------//
 		var divElem = document.getElementById(idDiv);
 		divElem.appendChild(tableElem);
-		$(tableElem).jStdTable('http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie', htmlColumnList);
+		this.stdTableFilter = new StdTableFilter(options);
+		$(tableElem).jStdTable('http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie', htmlColumnList, this.stdTableFilter);
 		
 		this.createFilter = function(p1){
 			console.log('TODO: create filters with param: ' + p1);
 		}
 	};
 	
-	var stdTableFilter = function(){
+	var StdTableFilter = function(options){
 	
 		var me = this;
 		/////	span filter		/////
@@ -141,6 +142,14 @@
 		});
 		this.spanAddFilter = spanAddFilter;
 		
+		/////	<select> for filter field	/////
+		var selectField = $('<select disabled="disabled"><option>** choix **</option></select>');
+		for(var i=0; i<options.columnList.length; i++){
+			var column = options.columnList[i];
+			selectField.append($('<option value="'+i+'">'+ column +'</option>'));
+		}
+		this.selectField = selectField;
+		
 		/////	bouton post filter	/////
 		var boutonSendFilter = $('<input type="submit" />');
 		boutonSendFilter.hide();
@@ -150,7 +159,7 @@
 	/**
 	 * @param urlGet The url used to retreive json data
 	*/
-	$.fn.jStdTable = function(urlGet, htmlColumnList) {
+	$.fn.jStdTable = function(urlGet, htmlColumnList, stdTableFilter) {
 				
 		var jsonResultKey = 'records';
 		var thisTable = this;
@@ -162,7 +171,7 @@
 				+ 	'<div class="cubee-table-filter">'
 				+	'	<div class="cubee-table-filter-title">Filtres </div>'
 				+	'	<div class="cubee-model">'
-				+	'		<select disabled="disabled"><option>** choix **<option></select> <select disabled="disabled"><option><option></select> <input disabled="disabled" type="text" placeholder=" valeur" />'
+				+	'		<select disabled="disabled"><option>** choix **</option><option>=</option><option><=</option><option>>=</option><option>!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" />'
 				+	'	</div>'
 				+ 	'</div>'
 				+ 	'<div class="t07-center">'
@@ -178,9 +187,14 @@
 				+'</div>'
 			+'</form>';
 		var elem = $(html);
-		var stdTableFilter1 = new stdTableFilter();	
-		elem.find('.cubee-table-filter-title').append(stdTableFilter1.spanAddFilter);
-		elem.find('.cubee-table-filter').append(stdTableFilter1.boutonSendFilter);
+		elem.on('submit', function(e){
+			e.preventDefault();
+			alert('todo: submit');
+			return false;
+		});
+		elem.find('.cubee-model').prepend(stdTableFilter.selectField);
+		elem.find('.cubee-table-filter-title').append(stdTableFilter.spanAddFilter);
+		stdTableFilter.boutonSendFilter.insertAfter(elem.find('.cubee-table-filter'));
 		elem.find('a').click(function(event){
 			event.preventDefault();
 			var hrefElem = $(this);
