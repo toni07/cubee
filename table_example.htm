@@ -2,12 +2,6 @@
 <head>
 	<title>Testing</title>
 	<style>
-		.t07-table{
-			width:80%;
-		}
-		.t07-table td, .t07-table th{
-			border:1px solid #cccccc;
-		}
 		.t07-center {
 			text-align: center;
 		}
@@ -27,13 +21,33 @@
 		.cubee th a:hover{
 			text-decoration:none;
 		}
+		.cubee table{
+			width:100%;
+		}
+		.cubee table td, .cubee table th{
+			border:1px solid #cccccc;
+		}
+		.cubee-table-filter-title span{
+			cursor:pointer;
+			font-size:120%;
+		}
+		.cubee-model{
+			display:none;
+		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="js/Http.js"></script>
 </head>
 <body>
 	<br />
 	
+	<!--
+	<iframe src="http://localhost:8080/admin-deploy" style="width:90%;height:600px;"></iframe>
+	-->
+	
 	<div id="toto" class="cubee"></div>
+	<br />
+	<hr /><hr />
 	<br />
 	<table class="t07-table">
 		<tr>
@@ -48,45 +62,6 @@
 </body>
 <script>
 
-	var Utils = {
-	
-		sendRequest: function(url, params, callbackFunction, httpMethod){
-
-			if(null == httpMethod){
-				httpMethod = 'GET';
-			}
-			var ajaxAttributes = {
-				type: httpMethod,
-				url: url,
-				data: params,
-				beforeSend: function(){
-				}
-			};
-			$.ajax(ajaxAttributes).
-			done(function(data){
-				callbackFunction(data);
-			}).
-			fail(function(){
-				alert('fail');
-			}).
-			always(function(){
-			});
-		},
-		
-		/**
-		 * @param orderbyList: key/value list: key=fieldId,val=fieldOrder
-		*/
-		buildOrderBy(orderbyList){
-		
-			var result = new Array();
-			//for(var i=0; i<orderbyList; i++){
-			for(var i in orderbyList){
-				result.push(i + '_' + orderbyList[i]);
-			}
-			return result.join('##');
-		}
-	};
-
 	/** this way we can set pure javascript, or enhance the HTML */
 	var columnList = ['col1', 'col2', 'col3'];
 	var options = {
@@ -95,7 +70,7 @@
 	var stdTable = function(idDiv, options){
 		
 		var tableElem = document.createElement('table');
-		tableElem.className = 't07-table';
+		tableElem.className = 'cubee';
 		var trElem = document.createElement('tr');
 		var htmlColumnList = new Array();
 		for(var i=0; i<options.columnList.length; i++){
@@ -138,8 +113,19 @@
 		var thisTable = this;
 		thisTable.currentPage = 1;
 		thisTable.orderByList = new Array();
+		var spanAddFilter = $('<span>+</span>');
+		spanAddFilter.on('click', function(){
+			var thisElem = $(this);
+			var parent = thisElem.parents('div.cubee-table-filter');
+			var divModel = parent.children('div.cubee-model');
+			Http.copyModel(divModel, parent);
+		});
 		var html = '<form>'
 				+ '<div class="cubee t07-table-above" style="width:90%;">'
+				+ 	'<div class="cubee-table-filter">'
+				+	'	<div class="cubee-model">toto</div>'
+				+	'	<div class="cubee-table-filter-title">Filtres </div>'
+				+ 	'</div>'
 				+ 	'<div class="t07-center">'
 				//+ 		'<div class="pull-left">Nb par page<select><option></option></select></div>'
 				+ 		'<div>'
@@ -153,6 +139,7 @@
 				+'</div>'
 			+'</form>';
 		var elem = $(html);
+		elem.find('.cubee-table-filter-title').append(spanAddFilter);
 		elem.find('a').click(function(event){
 			event.preventDefault();
 			var hrefElem = $(this);
@@ -168,7 +155,7 @@
 			var params = {
 				'page-num': thisTable.currentPage
 			};
-			Utils.sendRequest(urlGet, params, function(response){
+			Http.sendRequest(urlGet, params, function(response){
 				thisTable.append('<tr></tr>');
 			});
 		});
@@ -193,9 +180,9 @@
 					thisTable.orderByList[hrefElem.fieldId] = hrefElem.orderby;
 					var params = {
 						'page-num': thisTable.currentPage,
-						'order-by': Utils.buildOrderBy(thisTable.orderByList)
+						'order-by': Http.buildOrderBy(thisTable.orderByList)
 					};
-					Utils.sendRequest(urlGet, params, function(response){
+					Http.sendRequest(urlGet, params, function(response){
 						thisTable.append('<tr></tr>');
 					});
 				})
@@ -205,7 +192,7 @@
 		var paramsIni = {
 			'page-num': thisTable.currentPage
 		};
-		Utils.sendRequest(urlGet, paramsIni, function(response){
+		Http.sendRequest(urlGet, paramsIni, function(response){
 			var jsonResult = response[jsonResultKey];
 			var tBodyElem = thisTable.find('tbody').eq(0);
 			tBodyElem.html('');
@@ -226,5 +213,6 @@
 	
 	var myTable = new stdTable('toto', options);
  
-</script>
+</script>	
+	
 </html>
