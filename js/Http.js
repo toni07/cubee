@@ -36,11 +36,12 @@ var Http = {
 		return result.join('##');
 	},
 	
-	copyModel: function(elemToCopy, elemTarget){
+	copyModel: function(elemToCopy, elemTarget, callbackFunction){
 		
 		var copiedElem = elemToCopy.clone();
 		copiedElem.removeClass('cubee-model');
 		copiedElem.find('input, select').prop('disabled', false);
 		elemTarget.append(copiedElem);
+		callbackFunction(copiedElem);
 	},
 };
