@@ -28,11 +28,13 @@
 			border:1px solid #cccccc;
 		}
 		.cubee-table-filter-title span{
-			cursor:pointer;
 			font-size:120%;
 		}
 		.cubee-model{
 			display:none;
+		}
+		.cubee-action{
+			cursor:pointer;
 		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -61,7 +63,7 @@
 	<br />
 </body>
 <script>
-
+	"use strict";
 	/** this way we can set pure javascript, or enhance the HTML */
 	var columnList = ['col1', 'col2', 'col3'];
 	var options = {
@@ -102,6 +104,47 @@
 		var divElem = document.getElementById(idDiv);
 		divElem.appendChild(tableElem);
 		$(tableElem).jStdTable('http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie', htmlColumnList);
+		
+		this.createFilter = function(p1){
+			console.log('TODO: create filters with param: ' + p1);
+		}
+	};
+	
+	var stdTableFilter = function(){
+	
+		var me = this;
+		/////	span filter		/////
+		var spanAddFilter = $('<span class="cubee-action">+</span>');
+		spanAddFilter.on('click', function(){
+			var thisElem = $(this);
+			console.log('##thisElem', me.spanAddFilter.nbFilterElem);
+			if(null == me.spanAddFilter.nbFilterElem){
+				me.spanAddFilter.nbFilterElem = 0;
+			}
+			if(0 == me.spanAddFilter.nbFilterElem){
+				me.boutonSendFilter.show();
+			}
+			me.spanAddFilter.nbFilterElem = me.spanAddFilter.nbFilterElem + 1;
+			var parent = thisElem.parents('div.cubee-table-filter');
+			var divModel = parent.children('div.cubee-model');
+			Http.copyModel(divModel, parent, function(newDiv){
+				var spanDeleteLine = $('<span class="cubee-action"> X </span>');
+				spanDeleteLine.on('click', function(){
+					newDiv.remove();
+					me.spanAddFilter.nbFilterElem = me.spanAddFilter.nbFilterElem - 1;
+					if(0 == me.spanAddFilter.nbFilterElem){
+						me.boutonSendFilter.hide();
+					}
+				});
+				newDiv.append(spanDeleteLine);
+			});
+		});
+		this.spanAddFilter = spanAddFilter;
+		
+		/////	bouton post filter	/////
+		var boutonSendFilter = $('<input type="submit" />');
+		boutonSendFilter.hide();
+		this.boutonSendFilter = boutonSendFilter;
 	};
 	
 	/**
@@ -113,18 +156,14 @@
 		var thisTable = this;
 		thisTable.currentPage = 1;
 		thisTable.orderByList = new Array();
-		var spanAddFilter = $('<span>+</span>');
-		spanAddFilter.on('click', function(){
-			var thisElem = $(this);
-			var parent = thisElem.parents('div.cubee-table-filter');
-			var divModel = parent.children('div.cubee-model');
-			Http.copyModel(divModel, parent);
-		});
+		
 		var html = '<form>'
 				+ '<div class="cubee t07-table-above" style="width:90%;">'
 				+ 	'<div class="cubee-table-filter">'
-				+	'	<div class="cubee-model">toto</div>'
 				+	'	<div class="cubee-table-filter-title">Filtres </div>'
+				+	'	<div class="cubee-model">'
+				+	'		<select disabled="disabled"><option>** choix **<option></select> <select disabled="disabled"><option><option></select> <input disabled="disabled" type="text" placeholder=" valeur" />'
+				+	'	</div>'
 				+ 	'</div>'
 				+ 	'<div class="t07-center">'
 				//+ 		'<div class="pull-left">Nb par page<select><option></option></select></div>'
@@ -139,7 +178,9 @@
 				+'</div>'
 			+'</form>';
 		var elem = $(html);
-		elem.find('.cubee-table-filter-title').append(spanAddFilter);
+		var stdTableFilter1 = new stdTableFilter();	
+		elem.find('.cubee-table-filter-title').append(stdTableFilter1.spanAddFilter);
+		elem.find('.cubee-table-filter').append(stdTableFilter1.boutonSendFilter);
 		elem.find('a').click(function(event){
 			event.preventDefault();
 			var hrefElem = $(this);
@@ -212,6 +253,7 @@
 	}
 	
 	var myTable = new stdTable('toto', options);
+	myTable.createFilter(3);
  
 </script>	
 	
