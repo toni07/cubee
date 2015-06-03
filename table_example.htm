@@ -27,6 +27,11 @@
 		.cubee table td, .cubee table th{
 			border:1px solid #cccccc;
 		}
+		.cubee-table-filter, .cubee-table-filter{
+			background-color:#eeeeee;
+			margin-bottom:10px;
+			padding:2px 1%;
+		}
 		.cubee-table-filter-title span{
 			font-size:120%;
 		}
@@ -41,6 +46,7 @@
 	<script src="js/Http.js"></script>
 	<script src="js/StdTable.js"></script>
 	<script src="js/StdTableFilter.js"></script>
+	<script src="js/StdTablePaging.js"></script>
 </head>
 <body>
 	<br />
@@ -105,9 +111,9 @@
 	};
 			
 	var myTable = new StdTable('toto', options);
-	myTable.createHtmlTable();
+	/*myTable.createHtmlTable();
 	myTable.createFilter(3);
-	myTable.populateRow();
+	myTable.populateRow();*/
  
 </script>	
 	
