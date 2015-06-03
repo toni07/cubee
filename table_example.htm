@@ -39,6 +39,8 @@
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="js/Http.js"></script>
+	<script src="js/StdTable.js"></script>
+	<script src="js/StdTableFilter.js"></script>
 </head>
 <body>
 	<br />
@@ -65,209 +67,47 @@
 <script>
 	"use strict";
 	/** this way we can set pure javascript, or enhance the HTML */
-	var columnList = ['col1', 'col2', 'col3'];
+	var columnList = [
+		{
+			fieldId: 2,
+			label: 'col1',
+			width: '10%'
+		},
+		{
+			fieldId: 5,
+			label: 'col2',
+			width: '20%'
+		},
+		{
+			fieldId: 1,
+			label: 'col3',
+			width: '70%'
+		},
+		{
+			fieldId: 3,
+			label: 'col4',
+			width: '70%',
+			visible: false
+		},
+		{
+			fieldId: 4,
+			label: 'col5',
+			width: '40%',
+			visible: false
+		}
+	];
+	
 	var options = {
-		columnList: columnList
-	};
-	var stdTable = function(idDiv, options){
-		
-		var tableElem = document.createElement('table');
-		tableElem.className = 'cubee';
-		var trElem = document.createElement('tr');
-		var htmlColumnList = new Array();
-		for(var i=0; i<options.columnList.length; i++){
-			var colElem = document.createElement('col');
-			$(colElem).attr('style', 'width:30%');
-			tableElem.appendChild(colElem);
-			var thElem = document.createElement('th');
-			var $thElem = $(thElem);
-			$thElem.html(options.columnList[i]);
-			var $a = $('<a href="#">&squf;</a>');
-			$a.orderby = 0;
-			$a.fieldId = i;
-			htmlColumnList.push($a);
-			$thElem.append($a);
-			trElem.appendChild(thElem);
-		}
-		tableElem.appendChild(trElem);
-		//---------td 'no row'----------------//
-		var tdBodyElem = document.createElement('tbody');
-		trElem = document.createElement('tr');
-		var tdNoRowElem = document.createElement('td');
-		var $tdNoRowElem = $(tdNoRowElem);
-		$tdNoRowElem.attr('colspan', options.columnList.length).attr('align', 'center');
-		$tdNoRowElem.html('no result');
-		trElem.appendChild(tdNoRowElem);
-		tdBodyElem.appendChild(trElem);
-		tableElem.appendChild(tdBodyElem);
-		//----------------------------------//
-		var divElem = document.getElementById(idDiv);
-		divElem.appendChild(tableElem);
-		this.stdTableFilter = new StdTableFilter(options);
-		$(tableElem).jStdTable('http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie', htmlColumnList, this.stdTableFilter);
-		
-		this.createFilter = function(p1){
-			console.log('TODO: create filters with param: ' + p1);
+		columnList: columnList,
+		onClickRow: function(jsonData){
+			console.log('##row click', jsonData);
 		}
 	};
-	
-	var StdTableFilter = function(options){
-	
-		var me = this;
-		/////	span filter		/////
-		var spanAddFilter = $('<span class="cubee-action">+</span>');
-		spanAddFilter.on('click', function(){
-			var thisElem = $(this);
-			console.log('##thisElem', me.spanAddFilter.nbFilterElem);
-			if(null == me.spanAddFilter.nbFilterElem){
-				me.spanAddFilter.nbFilterElem = 0;
-			}
-			if(0 == me.spanAddFilter.nbFilterElem){
-				me.boutonSendFilter.show();
-			}
-			me.spanAddFilter.nbFilterElem = me.spanAddFilter.nbFilterElem + 1;
-			var parent = thisElem.parents('div.cubee-table-filter');
-			var divModel = parent.children('div.cubee-model');
-			Http.copyModel(divModel, parent, function(newDiv){
-				var spanDeleteLine = $('<span class="cubee-action"> X </span>');
-				spanDeleteLine.on('click', function(){
-					newDiv.remove();
-					me.spanAddFilter.nbFilterElem = me.spanAddFilter.nbFilterElem - 1;
-					if(0 == me.spanAddFilter.nbFilterElem){
-						me.boutonSendFilter.hide();
-					}
-				});
-				newDiv.append(spanDeleteLine);
-			});
-		});
-		this.spanAddFilter = spanAddFilter;
-		
-		/////	<select> for filter field	/////
-		var selectField = $('<select disabled="disabled"><option>** choix **</option></select>');
-		for(var i=0; i<options.columnList.length; i++){
-			var column = options.columnList[i];
-			selectField.append($('<option value="'+i+'">'+ column +'</option>'));
-		}
-		this.selectField = selectField;
-		
-		/////	bouton post filter	/////
-		var boutonSendFilter = $('<input type="submit" />');
-		boutonSendFilter.hide();
-		this.boutonSendFilter = boutonSendFilter;
-	};
-	
-	/**
-	 * @param urlGet The url used to retreive json data
-	*/
-	$.fn.jStdTable = function(urlGet, htmlColumnList, stdTableFilter) {
-				
-		var jsonResultKey = 'records';
-		var thisTable = this;
-		thisTable.currentPage = 1;
-		thisTable.orderByList = new Array();
-		
-		var html = '<form>'
-				+ '<div class="cubee t07-table-above" style="width:90%;">'
-				+ 	'<div class="cubee-table-filter">'
-				+	'	<div class="cubee-table-filter-title">Filtres </div>'
-				+	'	<div class="cubee-model">'
-				+	'		<select disabled="disabled"><option>** choix **</option><option>=</option><option><=</option><option>>=</option><option>!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" />'
-				+	'	</div>'
-				+ 	'</div>'
-				+ 	'<div class="t07-center">'
-				//+ 		'<div class="pull-left">Nb par page<select><option></option></select></div>'
-				+ 		'<div>'
-				+			'<a href="#" class="rew-total"> << </a>'
-				+			'<a href="#" class="rew"> < </a>'
-				+			'Page <input type="text" class="nbpage" value="1"> / <span class="nbpage">1</span>'
-				+			'<a href="#" class="fwd"> > </a>'
-				+			'<a href="#" class="fwd-total"> >> </a>'
-				+		'</div>'
-				+	'</div>'
-				+'</div>'
-			+'</form>';
-		var elem = $(html);
-		elem.on('submit', function(e){
-			e.preventDefault();
-			alert('todo: submit');
-			return false;
-		});
-		elem.find('.cubee-model').prepend(stdTableFilter.selectField);
-		elem.find('.cubee-table-filter-title').append(stdTableFilter.spanAddFilter);
-		stdTableFilter.boutonSendFilter.insertAfter(elem.find('.cubee-table-filter'));
-		elem.find('a').click(function(event){
-			event.preventDefault();
-			var hrefElem = $(this);
-			if(hrefElem.hasClass('rew-total')){
-				thisTable.currentPage = 1;
-			}
-			else if(hrefElem.hasClass('rew')){
-				thisTable.currentPage = Math.max(thisTable.currentPage - 1, 1);
-			}
-			else if(hrefElem.hasClass('fwd')){
-				thisTable.currentPage = thisTable.currentPage + 1;
-			}
-			var params = {
-				'page-num': thisTable.currentPage
-			};
-			Http.sendRequest(urlGet, params, function(response){
-				thisTable.append('<tr></tr>');
-			});
-		});
-		elem.insertBefore(this);
-		for(var i=0; i<htmlColumnList.length; i++){
-			var href = htmlColumnList[i];
-			(function(hrefElem){
-				hrefElem.on('click', function(event){
-					event.preventDefault();
-					if(0 == hrefElem.orderby){
-						hrefElem.orderby = 1;
-						hrefElem.html('&utrif;');
-					}
-					else if(1 == hrefElem.orderby){
-						hrefElem.orderby = -1;
-						hrefElem.html('&dtrif;');
-					}
-					else if(-1 == hrefElem.orderby){
-						hrefElem.orderby = 0;
-						hrefElem.html('&squf;');
-					}
-					thisTable.orderByList[hrefElem.fieldId] = hrefElem.orderby;
-					var params = {
-						'page-num': thisTable.currentPage,
-						'order-by': Http.buildOrderBy(thisTable.orderByList)
-					};
-					Http.sendRequest(urlGet, params, function(response){
-						thisTable.append('<tr></tr>');
-					});
-				})
-			})(href);
-		}		
-		
-		var paramsIni = {
-			'page-num': thisTable.currentPage
-		};
-		Http.sendRequest(urlGet, paramsIni, function(response){
-			var jsonResult = response[jsonResultKey];
-			var tBodyElem = thisTable.find('tbody').eq(0);
-			tBodyElem.html('');
-			for(var i=0; i<jsonResult.length; i++){
-				var trElem = document.createElement('tr');
-				for(var j=0; j<options.columnList.length; j++){
-					var tdElem = document.createElement('td');
-					$(tdElem).html('test');
-					trElem.appendChild(tdElem);
-				}
-				tBodyElem.append(trElem);
-			}
-			//console.log('##jsonResult', jsonResult.length);
-		});
-		
-		return this;
-	}
-	
-	var myTable = new stdTable('toto', options);
+			
+	var myTable = new StdTable('toto', options);
+	myTable.createHtmlTable();
 	myTable.createFilter(3);
+	myTable.populateRow();
  
 </script>	
 	
