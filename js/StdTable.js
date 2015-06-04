@@ -1,5 +1,5 @@
 "use strict";
-var StdTable = function(idDiv, options){
+var StdTable = function(divElem, options){
 	
 	/**
 	 * creates the jQuery table
@@ -91,10 +91,10 @@ var StdTable = function(idDiv, options){
 		console.log('TODO: create filters with param: ' + p1);
 	}
 		
-	this.changeColumnVisibilty = function(){
+	/*this.changeColumnVisibilty = function(){
 		
 		me.jsonData;
-	}
+	}*/
 	
 	/**
 	 * fires the HttpRequest to get the data from the server 
@@ -230,7 +230,6 @@ var StdTable = function(idDiv, options){
 		tdBodyElem.appendChild(trElem);
 		tableElem.appendChild(tdBodyElem);
 		//----------------------------------//
-		var divElem = document.getElementById(idDiv);
 		divElem.appendChild(tableElem);
 		me.stdTableFilter = new StdTableFilter(options);
 		me.stdTablePaging = new StdTablePaging(me, options);
@@ -244,6 +243,7 @@ var StdTable = function(idDiv, options){
 		me.urlData = 'http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie';
 		me.jsonKeyData = 'records';
 		me.createHtmlTable();
+		me.triggerPageChange(1);
 	}
 	
 	this.constructor();
