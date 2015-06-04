@@ -1,5 +1,5 @@
 "use strict";
-var StdTablePaging = function(options){
+var StdTablePaging = function(stdTable, options){
 
 	var me = this;	
 	
@@ -39,12 +39,13 @@ var StdTablePaging = function(options){
 			else if(hrefElem.hasClass('fwd')){
 				me.currentPage = me.currentPage + 1;
 			}
-			var params = {
+			/*var params = {
 				'page-num': me.currentPage
 			};
 			Http.sendRequest('http://toto.com', params, function(response){
 				thisTable.append('<tr></tr>');
-			});
+			});*/
+			stdTable.triggerPageChange(me.currentPage);
 		});
 	}
 	
