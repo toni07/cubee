@@ -17,7 +17,12 @@ var StdTablePaging = function(stdTable, options){
 				+		'</div>'
 				+	'</div>'
 				+'</div>');
-	}
+	},
+	
+	this.updatePageNumber = function(pageNumber){
+	
+		me.globalDiv.find('.nbpage').val(pageNumber);
+	};
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////// constructor body ///////////////////////////////////////////////////////////////
@@ -45,6 +50,7 @@ var StdTablePaging = function(stdTable, options){
 			Http.sendRequest('http://toto.com', params, function(response){
 				thisTable.append('<tr></tr>');
 			});*/
+			me.updatePageNumber(me.currentPage);
 			stdTable.triggerPageChange(me.currentPage);
 		});
 	}
