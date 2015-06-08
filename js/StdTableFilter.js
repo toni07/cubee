@@ -9,7 +9,7 @@ var StdTableFilter = function(options){
 		me.globalDiv = $('<div class="cubee-table-filter"><div>'
 				+	'	<div class="cubee-table-filter-title">Filtres </div>'
 				+	'	<div class="cubee-model">'
-				+	'		<select disabled="disabled"><option>** choix **</option><option>=</option><option><=</option><option>>=</option><option>!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" />'
+				+	'		<select disabled="disabled" name="filter-operator"><option value="0">=</option><option value="1">%</option><option value="2"><=</option><option value="3">>=</option><option value="4">!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" />'
 				+	'	</div>'
 				+ 	'</div></div>');
 	}
@@ -48,7 +48,7 @@ var StdTableFilter = function(options){
 		this.spanAddFilter = spanAddFilter;
 		
 		/////	<select> for filter field	/////
-		var selectField = $('<select disabled="disabled"><option>** choix **</option></select>');
+		var selectField = $('<select disabled="disabled" name="filter-field-id"><option>** choix **</option></select>');
 		for(var i=0; i<options.columnList.length; i++){
 			var column = options.columnList[i];
 			selectField.append($('<option value="'+ column.fieldId +'">'+ column.label +'</option>'));
