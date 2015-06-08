@@ -84,8 +84,14 @@ var StdTable = function(divElem, options){
 	
 	this.triggerPageChange = function(pageNumber){
 	
-		me.getData(pageNumber);
+		me.pageNumber = pageNumber;
+		me.getData();
 	};
+	
+	/*this.triggerFilterChange = function(){
+	
+		me.getData(pageNumber);
+	};*/
 	
 	this.createFilter = function(p1){
 		console.log('TODO: create filters with param: ' + p1);
@@ -99,12 +105,11 @@ var StdTable = function(divElem, options){
 	/**
 	 * fires the HttpRequest to get the data from the server 
 	*/
-	this.getData = function(pageNumber){
+	this.getData = function(){
 		
-		var paramsIni = {
-			'page-num': pageNumber
-		};
-		Http.sendRequest(me.urlData, paramsIni, function(response){
+		var params = me.globalFormElem.serializeArray();
+		params.push({name: 'page-num', value: me.pageNumber});
+		Http.sendRequest(me.urlData, params, function(response){
 			var jsonResult = response[me.jsonKeyData];
 			me.setData(jsonResult);
 			me.populateRow();
@@ -230,16 +235,20 @@ var StdTable = function(divElem, options){
 		tdBodyElem.appendChild(trElem);
 		tableElem.appendChild(tdBodyElem);
 		//----------------------------------//
-		divElem.appendChild(tableElem);
 		me.stdTableFilter = new StdTableFilter(options);
 		me.stdTablePaging = new StdTablePaging(me, options);
 		me.tableElem = $(tableElem);
 		me.globalFormElem = $('<form></form>');
 		me.globalFormElem.on('submit', function(e){
 			e.preventDefault();
-			alert('todo: submit');
+			var pageNumber = 1;
+			me.pageNumber = pageNumber;
+			me.stdTablePaging.updatePageNumber(pageNumber);
+			me.getData();
 			return false;
 		});
+		me.globalFormElem.append(me.tableElem);
+		divElem.appendChild(me.globalFormElem[0]);
 		me.urlData = 'http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie';
 		me.jsonKeyData = 'records';
 		me.createHtmlTable();
