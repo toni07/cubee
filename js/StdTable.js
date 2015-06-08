@@ -8,6 +8,31 @@ var StdTable = function(divElem, options){
 	
 		me.stdTableFilter.globalDiv.insertBefore(me.tableElem);
 		me.stdTablePaging.globalDiv.insertBefore(me.tableElem);
+		me.orderByList = {};
+		
+		for(var i=0; i<me.htmlColumnList.length; i++){
+			var href = me.htmlColumnList[i];
+			me.orderByList[href.fieldId] = href.orderby;
+			(function(hrefElem){
+				hrefElem.on('click', function(event){
+					event.preventDefault();
+					if(0 == hrefElem.orderby){
+						hrefElem.orderby = 1;
+						hrefElem.html('&utrif;');
+					}
+					else if(1 == hrefElem.orderby){
+						hrefElem.orderby = -1;
+						hrefElem.html('&dtrif;');
+					}
+					else if(-1 == hrefElem.orderby){
+						hrefElem.orderby = 0;
+						hrefElem.html('&squf;');
+					}
+					me.orderByList[hrefElem.fieldId] = hrefElem.orderby;
+					me.getData();
+				})
+			})(href);
+		}
 		
 		/*
 		var jsonResultKey = 'records';
@@ -107,8 +132,13 @@ var StdTable = function(divElem, options){
 	*/
 	this.getData = function(){
 		
+		console.log('##me.orderByList', me.orderByList);
 		var params = me.globalFormElem.serializeArray();
 		params.push({name: 'page-num', value: me.pageNumber});
+		for(var i in me.orderByList){
+			params.push({name: 'order-field-id', value: i});
+			params.push({name: 'order-value', value: me.orderByList[i]});
+		}
 		Http.sendRequest(me.urlData, params, function(response){
 			var jsonResult = response[me.jsonKeyData];
 			me.setData(jsonResult);
@@ -215,7 +245,7 @@ var StdTable = function(divElem, options){
 				});
 			})(tmpColumn, i);
 			$thElem.append(selectElemClone.val(tmpColumn.fieldId));
-			var $a = $('<a href="#">&squf;</a>');
+			var $a = $('<a href="#" style="padding-left:6px;">&squf;</a>');
 			$a.orderby = 0;
 			$a.fieldId = i;
 			htmlColumnList.push($a);
@@ -223,6 +253,7 @@ var StdTable = function(divElem, options){
 			trElem.appendChild(thElem);
 					
 		}
+		me.htmlColumnList = htmlColumnList;
 		tableElem.appendChild(trElem);
 		//---------td 'no row'----------------//
 		var tdBodyElem = document.createElement('tbody');
