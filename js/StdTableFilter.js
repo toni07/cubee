@@ -23,7 +23,6 @@ var StdTableFilter = function(options){
 		var spanAddFilter = $('<span class="cubee-action">+</span>');
 		spanAddFilter.on('click', function(){
 			var thisElem = $(this);
-			console.log('##thisElem', me.spanAddFilter.nbFilterElem);
 			if(null == me.spanAddFilter.nbFilterElem){
 				me.spanAddFilter.nbFilterElem = 0;
 			}
