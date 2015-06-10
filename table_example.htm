@@ -43,10 +43,7 @@
 		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script src="js/Http.js"></script>
-	<script src="js/StdTable.js"></script>
-	<script src="js/StdTableFilter.js"></script>
-	<script src="js/StdTablePaging.js"></script>
+	<script src="js/cubee.min.js"></script>
 </head>
 <body>
 	<br />
@@ -112,7 +109,8 @@
 		columnList: columnList,
 		onClickRow: function(jsonData){
 			console.log('##row click', jsonData);
-		}
+		},
+		urlData: 'http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie'
 	};
 			
 	var myTable = new StdTable($('#toto')[0], options);
