@@ -6,8 +6,8 @@ var StdTablePaging = function(stdTable, options){
 	/////////// global div for filters /////////////
 	this.createGlobalDiv = function(){
 	
-		me.globalDiv = $('<div class="cubee-table-filter">'
-				+ 	'<div class="t07-center">'
+		me.globalDiv = $('<div class="cubee-table-paging">'
+				+ 	'<div class="cubee-center">'
 				+ 		'<div>'
 				+			'<a href="#" class="rew-total"> << </a>'
 				+			'<a href="#" class="rew"> < </a>'
