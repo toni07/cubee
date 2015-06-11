@@ -2,16 +2,20 @@
 <head>
 	<title>Testing</title>
 	<style>
-		.t07-center {
+		/** do not remove! */
+		.cubee-center {
 			text-align: center;
 		}
-		.t07-center>div { /* N.B. child combinators don't work in IE7 or less */
+		.cubee-center>div { /* N.B. child combinators don't work in IE7 or less */
 			display: inline-block;
 		}
-		.t07-table-above{
-			background-color:#dddddd;
-			padding:10px 0;
+		.cubee-model{
+			display:none;
 		}
+		.cubee-action{
+			cursor:pointer;
+		}
+		/** you can remove */
 		.cubee a{
 			text-decoration:none;
 		}
@@ -24,10 +28,13 @@
 		.cubee table{
 			width:100%;
 		}
+		.cubee table td{
+			padding:1px 0px;
+		}
 		.cubee table td, .cubee table th{
 			border:1px solid #cccccc;
 		}
-		.cubee-table-filter, .cubee-table-filter{
+		.cubee-table-filter, .cubee-table-paging{
 			background-color:#eeeeee;
 			margin-bottom:10px;
 			padding:2px 1%;
@@ -35,15 +42,18 @@
 		.cubee-table-filter-title span{
 			font-size:120%;
 		}
-		.cubee-model{
-			display:none;
-		}
-		.cubee-action{
-			cursor:pointer;
+		.cubee-input-error{
+			border:1px solid #ff0000;
 		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="js/Http.js"></script>
+	<script src="js/StdTable.js"></script>
+	<script src="js/StdTableFilter.js"></script>
+	<script src="js/StdTablePaging.js"></script>
+	<!--
 	<script src="js/cubee.min.js"></script>
+	-->
 </head>
 <body>
 	<br />
@@ -110,7 +120,11 @@
 		onClickRow: function(jsonData){
 			console.log('##row click', jsonData);
 		},
-		urlData: 'http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie'
+		urlData: 'http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie',
+		stopOnFiltersError: true,
+		doThisWhenFilterHasError: function(){
+			alert('error in filter values');
+		}
 	};
 			
 	var myTable = new StdTable($('#toto')[0], options);
