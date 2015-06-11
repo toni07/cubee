@@ -1,4 +1,4 @@
-# cubee
+# Cubee
 GUI components built on top of jQuery
 
 For the time being, working on a standard table with paging, search...
