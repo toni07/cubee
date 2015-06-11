@@ -48,6 +48,7 @@
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="js/Http.js"></script>
+	<script src="js/CubeeConstants.js"></script>
 	<script src="js/StdTable.js"></script>
 	<script src="js/StdTableFilter.js"></script>
 	<script src="js/StdTablePaging.js"></script>
@@ -85,33 +86,53 @@
 			fieldId: 2,
 			fieldKey: 'record_timestamp',
 			label: 'col1',
-			width: '10%'
+			width: '10%',
+			type: CUBEE_TABLE_FIELD_TYPE_STRING,
+			renderer: function(jsonRowData){
+				
+			}
 		},
 		{
 			fieldId: 5,
 			fieldKey: 'recordid',
 			label: 'col2',
-			width: '20%'
+			width: '20%',
+			type: CUBEE_TABLE_FIELD_TYPE_DATE,
+			renderer: function(jsonRowData){
+				
+			}
 		},
 		{
 			fieldId: 1,
 			fieldKey: 'datasetid',
 			label: 'col3',
-			width: '70%'
+			width: '70%',
+			type: CUBEE_TABLE_FIELD_TYPE_STRING,
+			renderer: function(jsonRowData){
+				
+			}
 		},
 		{
 			fieldId: 3,
 			fieldKey: 'record_timestamp',
 			label: 'col4',
 			width: '70%',
-			visible: false
+			visible: false,
+			type: CUBEE_TABLE_FIELD_TYPE_DATE,
+			renderer: function(jsonRowData){
+				
+			}
 		},
 		{
 			fieldId: 4,
 			fieldKey: 'recordid',
 			label: 'col5',
 			width: '40%',
-			visible: false
+			visible: false,
+			type: CUBEE_TABLE_FIELD_TYPE_STRING,
+			renderer: function(jsonRowData){
+				
+			}
 		}
 	];
 	
