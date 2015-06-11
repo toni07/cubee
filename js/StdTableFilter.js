@@ -3,20 +3,26 @@ var StdTableFilter = function(options){
 
 	var me = this;	
 	
-	/////////// global div for filters /////////////
+	/////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * creates the global div for the filters
+	*/
+	/////////////////////////////////////////////////////////////////////////////////
 	this.createGlobalDiv = function(){
 	
 		me.globalDiv = $('<div class="cubee-table-filter"><div>'
 				+	'	<div class="cubee-table-filter-title">Filtres </div>'
 				+	'	<div class="cubee-model">'
-				+	'		<select disabled="disabled" name="filter-operator"><option value="0">=</option><option value="1">%</option><option value="2"><=</option><option value="3">>=</option><option value="4">!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" />'
+				+	'		<select disabled="disabled" class="filter-operator-id"><option value="0">=</option><option value="1">%</option><option value="2"><=</option><option value="3">>=</option><option value="4">!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" />'
 				+	'	</div>'
 				+ 	'</div></div>');
 	};
 
+	/////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * validates the values written by the user, and returns the valid ones
 	*/
+	/////////////////////////////////////////////////////////////////////////////////
 	this.validateFilterValues = function(doThrowError){
 	
 		var hasError = false;
@@ -26,13 +32,17 @@ var StdTableFilter = function(options){
 			var filterDivElem = me.filterList[i];
 			if(!filterDivElem.isRemoved){
 				var fiterInputText = filterDivElem.find('input');
-				if('' != fiterInputText.val().replace(' ', '')){
-					if('aa' != fiterInputText.val()){		//TODO: validate the values by the type of field
+				var fiterFieldId = filterDivElem.find('select.filter-field-id').val();
+				var fiterOperatorId = filterDivElem.find('select.filter-operator-id').val();
+				var column = me.findColumnByFieldId(fiterFieldId);
+				var filterValue = fiterInputText.val().replace(' ', '');
+				if('' != filterValue){
+					if(me.isValidFilterValue(filterValue, column)){
 						fiterInputText.removeClass(cssClassInputError);
 						validFilterList.push({
-							'field-id': 2,
-							'operator-id': 3,
-							value: '2012-05-13'
+							'field-id': fiterFieldId,
+							'operator-id': fiterOperatorId,
+							value: filterValue
 						});
 					}
 					else{
@@ -40,13 +50,45 @@ var StdTableFilter = function(options){
 						hasError = true;
 					}
 				}
-				console.log('##in filter, fiterInputText: ', fiterInputText, fiterInputText.val());
 			}
 		}
 		if(hasError && doThrowError){
 			throw new Error('error in filters values');
 		}
 		return validFilterList;
+	};
+	
+	/**
+	 *
+	*/
+	this.findColumnByFieldId = function(fieldId){
+		
+		for(var i=0; i<options.columnList.length; i++){
+			var column = options.columnList[i];
+			if(fieldId == column.fieldId){
+				return column;
+			}
+		}
+		return null;
+	};
+	
+	/**
+	 * returns true or false
+	*/
+	this.isValidFilterValue = function(value, column){
+		
+		if(CUBEE_TABLE_FIELD_TYPE_STRING == column.type){
+			return true;
+		}
+		else if(CUBEE_TABLE_FIELD_TYPE_DATE == column.type){
+			if('2012-01-01' == value){		//TODO: regexp for dates?
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		return true;
 	};
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,12 +131,11 @@ var StdTableFilter = function(options){
 		this.spanAddFilter = spanAddFilter;
 		
 		/////	<select> for filter field	/////
-		var selectField = $('<select disabled="disabled" name="filter-field-id"><option>** choix **</option></select>');
+		var selectField = $('<select disabled="disabled" class="filter-field-id"><option>** choix **</option></select>');
 		for(var i=0; i<options.columnList.length; i++){
 			var column = options.columnList[i];
 			selectField.append($('<option value="'+ column.fieldId +'">'+ column.label +'</option>'));
 		}
-		//me.selectField = selectField;
 		
 		/////	bouton post filter	/////
 		var boutonSendFilter = $('<input type="submit" />');
@@ -108,6 +149,5 @@ var StdTableFilter = function(options){
 	}
 	
 	this.constructor();
-	
 	
 };
