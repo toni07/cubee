@@ -1,17 +1,19 @@
 var Http = {
 
-	sendRequest: function(url, params, callbackFunction, httpMethod){
+	sendRequest: function(url, params, callbackFunction, options){
 
-		if(null == httpMethod){
-			httpMethod = 'GET';
-		}
 		var ajaxAttributes = {
-			type: httpMethod,
+			type: (null != options.httpMethod) ? options.httpMethod : 'get',
 			url: url,
 			data: params,
 			beforeSend: function(){
 			}
 		};
+		if(null != options.dataType){
+			ajaxAttributes.dataType = options.dataType;
+		}
+		
+		
 		$.ajax(ajaxAttributes).
 		done(function(data){
 			callbackFunction(data);
@@ -26,7 +28,7 @@ var Http = {
 	/**
 	 * @param orderbyList: key/value list: key=fieldId,val=fieldOrder
 	*/
-	buildOrderBy(orderbyList){
+	buildOrderBy: function(orderbyList){
 	
 		var result = new Array();
 		//for(var i=0; i<orderbyList; i++){
@@ -43,5 +45,5 @@ var Http = {
 		copiedElem.find('input, select').prop('disabled', false);
 		elemTarget.append(copiedElem);
 		callbackFunction(copiedElem);
-	},
+	}
 };
