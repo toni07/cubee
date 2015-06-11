@@ -122,16 +122,13 @@ var StdTable = function(divElem, options){
 			/*orders: orderFieldList,*/
 			filters: validFilterList,
 			'page-num': me.pageNumber
-        };      
-        $.ajax({
-            url: me.urlData,
-            type: 'post',
-            dataType: 'json',
-            success: function (data) {
-                console.log('##ok');
-            },
-            data: jsonPostData
-        });
+        };
+		var fct = function(response){
+			var jsonResult = response[me.jsonKeyData];
+			me.setData(jsonResult);
+			me.populateRow();
+		};
+		Http.sendRequest(me.urlData, jsonPostData, fct, {httpMethod: 'post', dataType: 'json'});
 	};
 	
 	this.setData = function(jsonData){
