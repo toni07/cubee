@@ -81,12 +81,10 @@ var StdTableFilter = function(options){
 			return true;
 		}
 		else if(CUBEE_TABLE_FIELD_TYPE_DATE == column.type){
-			if('2012-01-01' == value){		//TODO: regexp for dates?
-				return true;
-			}
-			else{
-				return false;
-			}
+			return (/[0-9]{4}-[0-9]{2}-[0-9]{2}/gi).test(value);
+		}
+		else if(CUBEE_TABLE_FIELD_TYPE_NUMBER == column.type){
+			return (1*value == value);
 		}
 		return true;
 	};
