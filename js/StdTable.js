@@ -16,6 +16,7 @@ var StdTable = function(divElem, options){
 			(function(hrefElem){
 				hrefElem.on('click', function(event){
 					event.preventDefault();
+					me.resetOrder(hrefElem.fieldId);
 					if(0 == hrefElem.orderby){
 						hrefElem.orderby = 1;
 						hrefElem.html('&utrif;');
@@ -34,6 +35,21 @@ var StdTable = function(divElem, options){
 			})(href);
 		}
 	}
+	
+	/**
+	 * resets the order for all the columns
+	*/
+	this.resetOrder = function(fieldIdToPreserve){
+	
+		for(var i=0; i<me.htmlColumnList.length; i++){
+			var href = me.htmlColumnList[i];
+			if(fieldIdToPreserve != href.fieldId){
+				me.orderByList[href.fieldId] = 0;
+				href.orderby = 0;
+				href.html('&squf;');
+			}		
+		}
+	};
 	
 	this.triggerPageChange = function(pageNumber){
 	
@@ -73,6 +89,8 @@ var StdTable = function(divElem, options){
 			me.populateRow();
 		});*/
 		console.log('##me.globalFormElem', me.globalFormElem);
+		
+		/*** filters part	***/
 		var doThrowError = (null != me.options.stopOnFiltersError) ? me.options.stopOnFiltersError : false;
 		try{
 			var validFilterList = me.stdTableFilter.validateFilterValues(doThrowError);
@@ -84,16 +102,29 @@ var StdTable = function(divElem, options){
 			}
 		}
 		
+		/*** order part ***/
+		var orderData = {
+			'field-id': 1,
+			'order-value': 0
+		};
+		var orderFieldList = new Array();
+		for(var i in me.orderByList){
+			orderFieldList.push({'field-id': i, 'order-value': me.orderByList[i]});
+			if(0 != me.orderByList[i]){
+				orderData = {
+					'field-id': i,
+					'order-value': me.orderByList[i]
+				};
+			}
+		}
 		var jsonPostData = {
-			order: {
-				'field-id': 5,
-				'order-value': 1
-			},
+			order: orderData,
+			/*orders: orderFieldList,*/
 			filters: validFilterList,
 			'page-num': me.pageNumber
         };      
         $.ajax({
-            url: '/toto.php',
+            url: me.urlData,
             type: 'post',
             dataType: 'json',
             success: function (data) {
