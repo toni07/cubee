@@ -129,7 +129,7 @@
 			label: 'col5',
 			width: '40%',
 			visible: false,
-			type: CUBEE_TABLE_FIELD_TYPE_STRING,
+			type: CUBEE_TABLE_FIELD_TYPE_NUMBER,
 			renderer: function(jsonRowData){
 				
 			}
@@ -141,7 +141,7 @@
 		onClickRow: function(jsonData){
 			console.log('##row click', jsonData);
 		},
-		urlData: 'http://opendata.paris.fr/api/records/1.0/search?dataset=troncon_voie',
+		urlData: '/toto.php',
 		stopOnFiltersError: true,
 		doThisWhenFilterHasError: function(){
 			alert('error in filter values');
