@@ -88,7 +88,7 @@ var StdTable = function(divElem, options){
 			me.setData(jsonResult);
 			me.populateRow();
 		});*/
-		console.log('##me.globalFormElem', me.globalFormElem);
+		//console.log('##me.globalFormElem', me.globalFormElem);
 		
 		/*** filters part	***/
 		var doThrowError = (null != me.options.stopOnFiltersError) ? me.options.stopOnFiltersError : false;
@@ -173,7 +173,13 @@ var StdTable = function(divElem, options){
 			for(var j=0; j<me.visibleColumnList.length; j++){
 				var tmpColumn = me.visibleColumnList[j];
 				var tdElem = document.createElement('td');
-				$(tdElem).html(me.jsonData[i][tmpColumn.fieldKey]);
+				if(null != tmpColumn.renderer){
+					$(tdElem).html(tmpColumn.renderer(me.jsonData[i][tmpColumn.fieldKey], me.jsonData[i]));
+				}
+				else{
+					$(tdElem).html(me.jsonData[i][tmpColumn.fieldKey]);
+				}
+				
 				trElem.appendChild(tdElem);				
 			}
 			tBodyElem.append(trElem);
