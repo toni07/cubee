@@ -159,6 +159,10 @@ var StdTable = function(divElem, options){
 		
 		var tBodyElem = me.tableElem.find('tbody').eq(0);
 		tBodyElem.html('');
+		for(var j=0; j<me.visibleColumnList.length; j++){	
+			var colDomElem = $(me.tableElem.find('col')[j]);
+			colDomElem.css({width: me.visibleColumnList[j].width});
+		}
 		for(var i=0; i<me.jsonData.length; i++){
 			var trElem = document.createElement('tr');
 			if(null != options.onClickRow){
