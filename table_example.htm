@@ -84,37 +84,37 @@
 	var columnList = [
 		{
 			fieldId: 2,
-			fieldKey: 'record_timestamp',
+			fieldKey: 'column1',
 			label: 'col1',
-			width: '10%',
+			width: '20%',
 			type: CUBEE_TABLE_FIELD_TYPE_STRING,
-			renderer: function(jsonRowData){
-				
+			renderer: function(value, jsonRowData){
+				return '<b>'+ value +'</b> (' + jsonRowData.column2 + ')';
 			}
 		},
 		{
 			fieldId: 5,
-			fieldKey: 'recordid',
+			fieldKey: 'column2',
 			label: 'col2',
 			width: '20%',
 			type: CUBEE_TABLE_FIELD_TYPE_DATE,
-			renderer: function(jsonRowData){
-				
+			renderer: function(value, jsonRowData){
+				if('blabla2' == jsonRowData.column1){
+					return '<i style="color:#ff0000;">'+ value + '</i>';
+				}
+				return '<i style="color:#00ffff;">'+ value + '</i>';
 			}
 		},
 		{
 			fieldId: 1,
-			fieldKey: 'datasetid',
+			fieldKey: 'column3',
 			label: 'col3',
-			width: '70%',
-			type: CUBEE_TABLE_FIELD_TYPE_STRING,
-			renderer: function(jsonRowData){
-				
-			}
+			width: '60%',
+			type: CUBEE_TABLE_FIELD_TYPE_STRING
 		},
 		{
 			fieldId: 3,
-			fieldKey: 'record_timestamp',
+			fieldKey: 'column4',
 			label: 'col4',
 			width: '70%',
 			visible: false,
@@ -125,7 +125,7 @@
 		},
 		{
 			fieldId: 4,
-			fieldKey: 'recordid',
+			fieldKey: 'column5',
 			label: 'col5',
 			width: '40%',
 			visible: false,
@@ -141,7 +141,7 @@
 		onClickRow: function(jsonData){
 			console.log('##row click', jsonData);
 		},
-		urlData: '/toto.php',
+		urlData: '/getdata.php',
 		stopOnFiltersError: true,
 		doThisWhenFilterHasError: function(){
 			alert('error in filter values');
