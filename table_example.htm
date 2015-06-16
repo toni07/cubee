@@ -45,6 +45,9 @@
 		.cubee-input-error{
 			border:1px solid #ff0000;
 		}
+		.cubee-filter-input{
+			color:#08088A;
+		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="js/cubee/Http.js"></script>
@@ -157,7 +160,8 @@
 			'0': '&squf;',
 			'1': '&utrif;',
 			'-1': '&dtrif;',
-		}
+		},
+		filtersPlusButtonHtml: '<b style="color:#00ff00;">+</b>'
 	};
 			
 	var myTable = new StdTable($('#toto')[0], options);
