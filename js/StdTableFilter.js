@@ -13,7 +13,7 @@ var StdTableFilter = function(options){
 		me.globalDiv = $('<div class="cubee-table-filter"><div>'
 				+	'	<div class="cubee-table-filter-title">Filtres </div>'
 				+	'	<div class="cubee-model">'
-				+	'		<select disabled="disabled" class="filter-operator-id"><option value="0">=</option><option value="1">%</option><option value="2"><=</option><option value="3">>=</option><option value="4">!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" />'
+				+	'		<select disabled="disabled" class="filter-operator-id cubee-filter-select"><option value="0">=</option><option value="1">%</option><option value="2"><=</option><option value="3">>=</option><option value="4">!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" class="cubee-filter-input" />'
 				+	'	</div>'
 				+ 	'</div></div>');
 	};
@@ -96,7 +96,7 @@ var StdTableFilter = function(options){
 	
 		me.filterList = new Array();
 		/////	span filter		/////
-		var spanAddFilter = $('<span class="cubee-action">+</span>');
+		var spanAddFilter = $('<span class="cubee-action">'+ options.filtersPlusButtonHtml +'</span>');
 		spanAddFilter.on('click', function(){
 			var thisElem = $(this);
 			if(null == me.spanAddFilter.nbFilterElem){
@@ -129,14 +129,14 @@ var StdTableFilter = function(options){
 		this.spanAddFilter = spanAddFilter;
 		
 		/////	<select> for filter field	/////
-		var selectField = $('<select disabled="disabled" class="filter-field-id"><option>** choix **</option></select>');
+		var selectField = $('<select disabled="disabled" class="filter-field-id cubee-filter-select"><option>** choix **</option></select>');
 		for(var i=0; i<options.columnList.length; i++){
 			var column = options.columnList[i];
 			selectField.append($('<option value="'+ column.fieldId +'">'+ column.label +'</option>'));
 		}
 		
 		/////	bouton post filter	/////
-		var boutonSendFilter = $('<input type="submit" />');
+		var boutonSendFilter = $('<input type="submit" class="cubee-filter-submit" />');
 		boutonSendFilter.hide();
 		me.boutonSendFilter = boutonSendFilter;
 		me.createGlobalDiv();
