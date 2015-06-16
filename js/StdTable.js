@@ -185,6 +185,11 @@ var StdTable = function(divElem, options){
 	var me = this;
 	this.constructor = function(){
 	
+		//default options:
+		if(null == options.filtersPlusButtonHtml){
+			options.filtersPlusButtonHtml = '+';
+		}
+	
 		me.options = options;
 		me.columnList = options.columnList;
 		me.visibleColumnList = new Array();
