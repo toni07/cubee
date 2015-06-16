@@ -19,16 +19,17 @@ var StdTable = function(divElem, options){
 					me.resetOrder(hrefElem.fieldId);
 					if(0 == hrefElem.orderby){
 						hrefElem.orderby = 1;
-						hrefElem.html('&utrif;');
+						//hrefElem.html('&utrif;');
 					}
 					else if(1 == hrefElem.orderby){
 						hrefElem.orderby = -1;
-						hrefElem.html('&dtrif;');
+						//hrefElem.html('&dtrif;');
 					}
 					else if(-1 == hrefElem.orderby){
 						hrefElem.orderby = 0;
-						hrefElem.html('&squf;');
+						//hrefElem.html('&squf;');
 					}
+					hrefElem.html(me.options.columnSortHtml[hrefElem.orderby]);
 					me.orderByList[hrefElem.fieldId] = hrefElem.orderby;
 					me.getData();
 				})
@@ -46,7 +47,7 @@ var StdTable = function(divElem, options){
 			if(fieldIdToPreserve != href.fieldId){
 				me.orderByList[href.fieldId] = 0;
 				href.orderby = 0;
-				href.html('&squf;');
+				href.html(me.options.columnSortHtml[href.orderby]);
 			}		
 		}
 	};
@@ -75,21 +76,7 @@ var StdTable = function(divElem, options){
 	 * fires the HttpRequest to get the data from the server 
 	*/
 	this.getData = function(){
-		
-		/*console.log('##me.orderByList', me.orderByList);
-		var params = me.globalFormElem.serializeArray();
-		params.push({name: 'page-num', value: me.pageNumber});
-		for(var i in me.orderByList){
-			params.push({name: 'order-field-id', value: i});
-			params.push({name: 'order-value', value: me.orderByList[i]});
-		}
-		Http.sendRequest(me.urlData, params, function(response){
-			var jsonResult = response[me.jsonKeyData];
-			me.setData(jsonResult);
-			me.populateRow();
-		});*/
-		//console.log('##me.globalFormElem', me.globalFormElem);
-		
+				
 		/*** filters part	***/
 		var doThrowError = (null != me.options.stopOnFiltersError) ? me.options.stopOnFiltersError : false;
 		try{
@@ -131,25 +118,12 @@ var StdTable = function(divElem, options){
 		Http.sendRequest(me.urlData, jsonPostData, fct, {httpMethod: 'post', dataType: 'json'});
 	};
 	
+	/**
+	 *
+	*/
 	this.setData = function(jsonData){
 	
 		me.jsonData = jsonData;
-		/*me.jsonData = [
-			{
-				toto1: 'yooo',
-				toto2: 'gahah',
-				toto3: 12,
-				toto4: '2012-05-06',
-				toto5: 222
-			},
-			{
-				toto1: 'fzedz',
-				toto2: 'cccccc',
-				toto3: 48,
-				toto4: '2017-05-06',
-				toto5: 1
-			}
-		];*/
 	};
 
 	/**
@@ -165,14 +139,18 @@ var StdTable = function(divElem, options){
 		}
 		for(var i=0; i<me.jsonData.length; i++){
 			var trElem = document.createElement('tr');
+			var hasTrElemCursorPointer = false;
 			if(null != options.onClickRow){
 				var $trElem = $(trElem);
-				(function(jsonRow){
-					$trElem.addClass('cubee-action');
-					$trElem.on('click', function(){
-						options.onClickRow(jsonRow);
-					});
-				})(me.jsonData[i]);
+				if(null != me.options.onClickRow){
+					hasTrElemCursorPointer = true;
+					(function(jsonRow){
+						$trElem.addClass('cubee-action');
+						$trElem.on('click', function(){
+							options.onClickRow(jsonRow);
+						});
+					})(me.jsonData[i]);
+				}			
 			}		
 			for(var j=0; j<me.visibleColumnList.length; j++){
 				var tmpColumn = me.visibleColumnList[j];
@@ -182,6 +160,17 @@ var StdTable = function(divElem, options){
 				}
 				else{
 					$(tdElem).html(me.jsonData[i][tmpColumn.fieldKey]);
+				}
+				if(null != tmpColumn.onClick){
+					(function($tdElem, clickFunction, tdData, rowData, hasTrElemCursorPointer){
+						if(!hasTrElemCursorPointer){
+							$tdElem.addClass('cubee-action');
+						}
+						$tdElem.on('click', function(e){
+							clickFunction(tdData, rowData);
+							e.stopPropagation();
+						});
+					})($(tdElem), tmpColumn.onClick, me.jsonData[i][tmpColumn.fieldKey], me.jsonData[i], hasTrElemCursorPointer);
 				}
 				
 				trElem.appendChild(tdElem);				
@@ -241,7 +230,7 @@ var StdTable = function(divElem, options){
 				});
 			})(tmpColumn, i);
 			$thElem.append(selectElemClone.val(tmpColumn.fieldId));
-			var $a = $('<a href="#" style="padding-left:6px;">&squf;</a>');
+			var $a = $('<a href="#" style="padding-left:6px;">'+ me.options.columnSortHtml[0] +'</a>');
 			$a.orderby = 0;
 			$a.fieldId = tmpColumn.fieldId;
 			htmlColumnList.push($a);
