@@ -80,7 +80,6 @@
 </body>
 <script>
 	"use strict";
-	/** this way we can set pure javascript, or enhance the HTML */
 	var columnList = [
 		{
 			fieldId: 2,
@@ -90,6 +89,9 @@
 			type: CUBEE_TABLE_FIELD_TYPE_STRING,
 			renderer: function(value, jsonRowData){
 				return '<b>'+ value +'</b> (' + jsonRowData.column2 + ')';
+			},
+			onClick: function(value, rowData){
+				console.log('##clicked td', value, rowData);
 			}
 		},
 		{
@@ -138,13 +140,23 @@
 	
 	var options = {
 		columnList: columnList,
-		onClickRow: function(jsonData){
+		onClickRow: function(jsonData){				//remove this and there will be no cursor:pointer on the <tr>
 			console.log('##row click', jsonData);
 		},
 		urlData: '/getdata.php',
 		stopOnFiltersError: true,
 		doThisWhenFilterHasError: function(){
 			alert('error in filter values');
+		},
+		/*columnSortHtml: {
+			'0': '<i class="fa fa-long-arrow-up"></i><i class="fa fa-long-arrow-down"></i>',
+			'1': '<i class="fa fa-long-arrow-up"></i>',
+			'-1': '<i class="fa fa-long-arrow-down"></i>',
+		}*/
+		columnSortHtml: {
+			'0': '&squf;',
+			'1': '&utrif;',
+			'-1': '&dtrif;',
 		}
 	};
 			
