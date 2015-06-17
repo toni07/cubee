@@ -271,7 +271,7 @@ var StdTable = function(divElem, options){
 		me.globalFormElem.append(me.tableElem);
 		divElem.appendChild(me.globalFormElem[0]);
 		me.urlData = options.urlData;
-		me.jsonKeyData = 'records';
+		me.jsonKeyData = options.jsonRecordsKeyData;
 		me.createHtmlTable();
 		me.triggerPageChange(1);
 	}
