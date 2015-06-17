@@ -156,7 +156,13 @@ var StdTable = function(divElem, options){
 				var tmpColumn = me.visibleColumnList[j];
 				var tdElem = document.createElement('td');
 				if(null != tmpColumn.renderer){
-					$(tdElem).html(tmpColumn.renderer(me.jsonData[i][tmpColumn.fieldKey], me.jsonData[i]));
+					var objToAppend = tmpColumn.renderer(me.jsonData[i][tmpColumn.fieldKey], me.jsonData[i]);
+					if('string' == $.type(objToAppend)){
+						$(tdElem).html(objToAppend);
+					}
+					else{	//jQuery object given
+						$(tdElem).append(objToAppend);
+					}
 				}
 				else{
 					$(tdElem).html(me.jsonData[i][tmpColumn.fieldKey]);
