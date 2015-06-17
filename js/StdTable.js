@@ -201,7 +201,7 @@ var StdTable = function(divElem, options){
 		}
 		
 		var tableElem = document.createElement('table');
-		tableElem.className = 'cubee';
+		tableElem.className = 'cubee ' + (null != options.tableClass) ? options.tableClass : '';
 		var trElem = document.createElement('tr');
 		var htmlColumnList = new Array();
 		var nbColumnsVisible = 0;
