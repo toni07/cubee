@@ -117,16 +117,23 @@
 			width: '60%',
 			type: CUBEE_TABLE_FIELD_TYPE_STRING,
 			renderer: function(value, jsonRowData){
-				var div = $('<div style="color:#ff0000;">TEST</div>');
-				div.on('click', function(e){
+				var div = $('<div></div>');
+				var span1 = $('<span style="color:#ff0000;">TEST</span>');
+				var span2 = $('<span style="color:#ff00ff;">TEST2</span>');
+				div.append(span1).append(span2);
+				span1.on('click', function(e){
 					e.stopPropagation();
-					console.log('##div clicked');
+					console.log('##span1 clicked');
+				});
+				span2.on('click', function(e){
+					e.stopPropagation();
+					console.log('##span2 clicked');
 				});
 				return div;
-			},
+			}/*,
 			onClick: function(value, rowData){
 				console.log('##clicked td', value, rowData);
-			}
+			}*/
 		},
 		{
 			fieldId: 3,
