@@ -115,7 +115,18 @@
 			fieldKey: 'column3',
 			label: 'col3',
 			width: '60%',
-			type: CUBEE_TABLE_FIELD_TYPE_STRING
+			type: CUBEE_TABLE_FIELD_TYPE_STRING,
+			renderer: function(value, jsonRowData){
+				var div = $('<div style="color:#ff0000;">TEST</div>');
+				div.on('click', function(e){
+					e.stopPropagation();
+					console.log('##div clicked');
+				});
+				return div;
+			},
+			onClick: function(value, rowData){
+				console.log('##clicked td', value, rowData);
+			}
 		},
 		{
 			fieldId: 3,
