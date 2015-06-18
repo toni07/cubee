@@ -12,7 +12,9 @@ var Http = {
 		if(null != options.dataType){
 			ajaxAttributes.dataType = options.dataType;
 		}
-		
+		if(null != options.contentType){
+			ajaxAttributes.contentType = options.contentType;
+		}		
 		
 		$.ajax(ajaxAttributes).
 		done(function(data){
