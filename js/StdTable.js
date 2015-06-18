@@ -115,7 +115,11 @@ var StdTable = function(divElem, options){
 			me.setData(jsonResult);
 			me.populateRow();
 		};
-		Http.sendRequest(me.urlData, jsonPostData, fct, {httpMethod: 'post', dataType: 'json'});
+		var httpOptions = {httpMethod: 'post', dataType: 'json'};
+		if(null != options.contentTypePost){
+			httpOptions.contentTypePost = options.contentTypePost;
+		}
+		Http.sendRequest(me.urlData, jsonPostData, fct, httpOptions);
 	};
 	
 	/**
