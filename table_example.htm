@@ -165,7 +165,7 @@
 			console.log('##row click', jsonData);
 		},
 		urlData: '/getdata.php',
-		contentTypePost: 'application/json; charset=utf-8',
+		contentTypePost: CUBEE_HTTP_POST_HEADER_JSON,
 		stopOnFiltersError: true,
 		doThisWhenFilterHasError: function(){
 			alert('error in filter values');
