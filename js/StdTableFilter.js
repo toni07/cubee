@@ -39,11 +39,13 @@ var StdTableFilter = function(options){
 				if('' != filterValue){
 					if(me.isValidFilterValue(filterValue, column)){
 						fiterInputText.removeClass(cssClassInputError);
-						validFilterList.push({
-							fieldId: fiterFieldId,
-							operatorId: fiterOperatorId,
-							value: filterValue
-						});
+						if(1*fiterFieldId == fiterFieldId && 1*fiterOperatorId == fiterOperatorId){
+							validFilterList.push({
+								fieldId: 1*fiterFieldId,
+								operatorId: 1*fiterOperatorId,
+								value: filterValue
+							});
+						}					
 					}
 					else{
 						fiterInputText.addClass(cssClassInputError);
