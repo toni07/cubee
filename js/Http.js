@@ -1,5 +1,19 @@
 var Http = {
 
+	/*
+	var json = { "toto" : 'test', "toto2" : 'model', "key3": 36};
+	$.ajax({ 
+			url:'/od3m-bo/party/list',    
+			type:"POST", 
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(json),
+			async: false,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+			cache: false,    //This will force requested pages not to be cached by the browser          
+			processData:false, //To avoid making query String instead of JSON
+			success: function(resposeJsonObject){                           
+	}});
+	*/
+
 	sendRequest: function(url, params, callbackFunction, options){
 
 		var ajaxAttributes = {
@@ -12,9 +26,12 @@ var Http = {
 		if(null != options.dataType){
 			ajaxAttributes.dataType = options.dataType;
 		}
-		if(null != options.contentType){
-			ajaxAttributes.contentType = options.contentType;
-		}		
+		if(null != options.contentTypePost){
+			ajaxAttributes.contentType = options.contentTypePost;
+			if(CUBEE_HTTP_POST_HEADER_JSON == options.contentTypePost){
+				ajaxAttributes.data = JSON.stringify(ajaxAttributes.data);
+			}
+		}
 		
 		$.ajax(ajaxAttributes).
 		done(function(data){
