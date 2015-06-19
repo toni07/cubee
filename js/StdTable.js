@@ -91,16 +91,16 @@ var StdTable = function(divElem, options){
 		
 		/*** order part ***/
 		var orderData = {
-			'field-id': 1,
-			'order-value': 0
+			fieldId: 1,
+			orderValue: 0
 		};
 		var orderFieldList = new Array();
 		for(var i in me.orderByList){
-			orderFieldList.push({'field-id': i, 'order-value': me.orderByList[i]});
+			orderFieldList.push({fieldId: i, orderValue: me.orderByList[i]});
 			if(0 != me.orderByList[i]){
 				orderData = {
-					'field-id': i,
-					'order-value': me.orderByList[i]
+					fieldId: i,
+					orderValue: me.orderByList[i]
 				};
 			}
 		}
@@ -108,7 +108,7 @@ var StdTable = function(divElem, options){
 			order: orderData,
 			/*orders: orderFieldList,*/
 			filters: validFilterList,
-			'page-num': me.pageNumber
+			pageNum: me.pageNumber
         };
 		var fct = function(response){
 			var jsonResult = response[me.jsonKeyData];
