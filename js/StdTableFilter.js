@@ -40,8 +40,8 @@ var StdTableFilter = function(options){
 					if(me.isValidFilterValue(filterValue, column)){
 						fiterInputText.removeClass(cssClassInputError);
 						validFilterList.push({
-							'field-id': fiterFieldId,
-							'operator-id': fiterOperatorId,
+							fieldId: fiterFieldId,
+							operatorId: fiterOperatorId,
 							value: filterValue
 						});
 					}
