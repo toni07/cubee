@@ -134,7 +134,9 @@ var StdTableFilter = function(options){
 		var selectField = $('<select disabled="disabled" class="filter-field-id cubee-filter-select"><option>** choix **</option></select>');
 		for(var i=0; i<options.columnList.length; i++){
 			var column = options.columnList[i];
-			selectField.append($('<option value="'+ column.fieldId +'">'+ column.label +'</option>'));
+			if(null == column.actionable || column.actionable){
+				selectField.append($('<option value="'+ column.fieldId +'">'+ column.label +'</option>'));
+			}
 		}
 		
 		/////	bouton post filter	/////
