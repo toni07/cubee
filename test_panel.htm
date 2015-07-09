@@ -1,0 +1,53 @@
+<html>
+<head>
+	<title>Testing</title>
+	<style>
+		/** do not remove! */
+		.cubee-center {
+			text-align: center;
+		}
+		.cubee-center>div { /* N.B. child combinators don't work in IE7 or less */
+			display: inline-block;
+		}
+		.cubee-model{
+			display:none;
+		}
+		.cubee-action{
+			cursor:pointer;
+		}
+		.cubee-panel{
+			border:1px solid #cccccc;
+		}
+		.cubee-panel-title-rotate{
+			-ms-transform: rotate(90deg); /* IE 9 */
+			-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+			transform: rotate(90deg);
+		}
+		/** can be removed */
+		.cubee-panel-title{
+			background-color:#cccccc;
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="js/cubee/util/Http.js"></script>
+	<script src="js/cubee/util/CubeeConstants.js"></script>
+	<script src="js/cubee/panel/CubeePanel.js"></script>
+</head>
+<body>
+	<br />
+	<div id="toto">
+		content
+		<span>span</span>
+	</div>
+	
+</body>
+<script>
+	'use strict';
+	new CubeePanel($('#toto'), {
+		title: 'title test',
+		collapsible: true
+	});
+ 
+</script>	
+	
+</html>
