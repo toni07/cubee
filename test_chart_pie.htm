@@ -1,0 +1,30 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Testing</title>
+	<script src="js/cubee/chart/CubeeChartPie.js"></script>
+</head>
+<body>
+	<h1>Body</h1>
+	<canvas id="can" width="200" height="200" />
+	
+	<script>
+		var chartData = [
+			{
+				value: 200,
+				color: '#ff00f0'
+			},
+			{
+				value: 60,
+				color: '#0000f0'
+			},
+			{
+				value: 15,
+				color: '#ffb2f0'
+			}
+		];
+		new CubeeChartPie(document.getElementById('can'), chartData);
+	</script>
+	
+</body>
+</html>
