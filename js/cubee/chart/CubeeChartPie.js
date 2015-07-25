@@ -13,6 +13,9 @@ var CubeeChartPie = function(divElem, data, options){
 	this.construct = function(){
 	
 		var canvas = divElem;
+		canvas.addEventListener('mousemove', function(p1, p2, p3, p4){
+			console.log('mousemove', p1, p2, p3, p4);
+		});
 		var ctx = canvas.getContext("2d");
 		var lastend = 0;
 		var myTotal = 0; // Automatically calculated so don't touch
