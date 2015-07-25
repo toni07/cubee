@@ -1,6 +1,7 @@
 /**
  * Class used to draw a Pie Chart
  * @author toni07 25/07/2015
+ * @see http://www.elated.com/articles/snazzy-animated-pie-chart-html5-jquery/
 */
 "use strict";
 var CubeeChartPie = function(divElem, data, options){
