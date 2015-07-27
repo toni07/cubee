@@ -93,7 +93,7 @@ var CubeeChartPie = function(divElem, data, options){
 
 			  // Store the slice index in this cell, and attach a click handler to it
 			  $(this).data( 'slice', currentRow );
-			  $(this).click( handleTableClick );
+			  $(this).hover( handleTableClick );
 
 			  // Extract and store the cell colour
 			  if ( rgb = $(this).css('color').match( /rgb\((\d+), (\d+), (\d+)/) ) {
@@ -119,7 +119,7 @@ var CubeeChartPie = function(divElem, data, options){
 
 			// All ready! Now draw the pie chart, and add the click handler to it
 			drawChart();
-			$('#chart').click ( handleChartClick );
+			$('#chart').mousemove ( handleChartClick );
 		  }
 		  
 		  /**
@@ -133,35 +133,37 @@ var CubeeChartPie = function(divElem, data, options){
 
 		  function handleChartClick ( clickEvent ) {
 
-			// Get the mouse cursor position at the time of the click, relative to the canvas
-			var mouseX = clickEvent.pageX - this.offsetLeft;
-			var mouseY = clickEvent.pageY - this.offsetTop;
+				// Get the mouse cursor position at the time of the click, relative to the canvas
+				var mouseX = clickEvent.pageX - this.offsetLeft;
+				var mouseY = clickEvent.pageY - this.offsetTop;
 
-			// Was the click inside the pie chart?
-			var xFromCentre = mouseX - centreX;
-			var yFromCentre = mouseY - centreY;
-			var distanceFromCentre = Math.sqrt( Math.pow( Math.abs( xFromCentre ), 2 ) + Math.pow( Math.abs( yFromCentre ), 2 ) );
+				// Was the click inside the pie chart?
+				var xFromCentre = mouseX - centreX;
+				var yFromCentre = mouseY - centreY;
+				var distanceFromCentre = Math.sqrt( Math.pow( Math.abs( xFromCentre ), 2 ) + Math.pow( Math.abs( yFromCentre ), 2 ) );
+				
+				console.log('##distanceFromCentre <= chartRadius', distanceFromCentre, chartRadius);
 
-			if ( distanceFromCentre <= chartRadius ) {
+				if ( distanceFromCentre <= chartRadius ) {
 
-			  // Yes, the click was inside the chart.
-			  // Find the slice that was clicked by comparing angles relative to the chart centre.
+				  // Yes, the click was inside the chart.
+				  // Find the slice that was clicked by comparing angles relative to the chart centre.
 
-			  var clickAngle = Math.atan2( yFromCentre, xFromCentre ) - chartStartAngle;
-			  if ( clickAngle < 0 ) clickAngle = 2 * Math.PI + clickAngle;
-						  
-			  for ( var slice in chartData ) {
-				if ( clickAngle >= chartData[slice]['startAngle'] && clickAngle <= chartData[slice]['endAngle'] ) {
+				  var clickAngle = Math.atan2( yFromCentre, xFromCentre ) - chartStartAngle;
+				  if ( clickAngle < 0 ) clickAngle = 2 * Math.PI + clickAngle;
+							  
+				  for ( var slice in chartData ) {
+					if ( clickAngle >= chartData[slice]['startAngle'] && clickAngle <= chartData[slice]['endAngle'] ) {
 
-				  // Slice found. Pull it out or push it in, as required.
-				  toggleSlice ( slice );
-				  return;
+					  // Slice found. Pull it out or push it in, as required.
+					  toggleSlice ( slice );
+					  return;
+					}
+				  }
 				}
-			  }
-			}
 
-			// User must have clicked outside the pie. Push any pulled-out slice back in.
-			pushIn();
+				// User must have clicked outside the pie. Push any pulled-out slice back in.
+				pushIn();
 		  }
 		  
 		  /**
