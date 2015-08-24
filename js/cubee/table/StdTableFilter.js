@@ -1,5 +1,5 @@
 "use strict";
-var StdTableFilter = function(options){
+Cubee.StdTableFilter = function(options){
 
 	var me = this;	
 	

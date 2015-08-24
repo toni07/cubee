@@ -3,7 +3,7 @@
  * @author toni07 24/06/2015
 */
 "use strict";
-var CubeeChartLegend = function(options){
+Cubee.CubeeChartLegend = function(options){
 
 	var me = this;
 

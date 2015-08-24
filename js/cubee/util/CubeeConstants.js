@@ -1,5 +1,8 @@
 "use strict";
-var CUBEE_TABLE_FIELD_TYPE_STRING = 0;
-var CUBEE_TABLE_FIELD_TYPE_DATE = 1;
-var CUBEE_TABLE_FIELD_TYPE_NUMBER = 2;
-var CUBEE_HTTP_POST_HEADER_JSON = 'application/json; charset=utf-8';
+var Cubee = {};
+Cubee.Constants = {
+	CUBEE_TABLE_FIELD_TYPE_STRING: 0,
+	CUBEE_TABLE_FIELD_TYPE_DATE: 1,
+	CUBEE_TABLE_FIELD_TYPE_NUMBER: 2,
+	CUBEE_HTTP_POST_HEADER_JSON: 'application/json; charset=utf-8'
+};

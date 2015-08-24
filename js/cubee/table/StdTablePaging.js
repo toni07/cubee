@@ -1,5 +1,5 @@
 "use strict";
-var StdTablePaging = function(stdTable, options){
+Cubee.StdTablePaging = function(stdTable, options){
 
 	var me = this;	
 	

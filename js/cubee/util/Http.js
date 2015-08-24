@@ -1,4 +1,4 @@
-var Http = {
+Cubee.Http = {
 
 	/*
 	var json = { "toto" : 'test', "toto2" : 'model', "key3": 36};

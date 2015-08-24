@@ -1,5 +1,5 @@
 "use strict";
-var StdTable = function(divElem, options){
+Cubee.StdTable = function(divElem, options){
 	
 	/**
 	 * creates the jQuery table

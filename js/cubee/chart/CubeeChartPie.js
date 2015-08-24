@@ -4,7 +4,7 @@
  * @see http://www.elated.com/articles/snazzy-animated-pie-chart-html5-jquery/
 */
 "use strict";
-var CubeeChartPie = function(divElem, data, options){
+Cubee.CubeeChartPie = function(divElem, data, options){
 
 	var me = this;
 		
