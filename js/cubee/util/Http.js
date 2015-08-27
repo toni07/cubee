@@ -1,3 +1,4 @@
+"use strict";
 Cubee.Http = {
 
 	/*
@@ -28,7 +29,7 @@ Cubee.Http = {
 		}
 		if(null != options.contentTypePost){
 			ajaxAttributes.contentType = options.contentTypePost;
-			if(CUBEE_HTTP_POST_HEADER_JSON == options.contentTypePost){
+			if(Cubee.CUBEE_HTTP_POST_HEADER_JSON == options.contentTypePost){
 				ajaxAttributes.data = JSON.stringify(ajaxAttributes.data);
 			}
 		}

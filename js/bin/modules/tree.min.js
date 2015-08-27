@@ -1,5 +1,5 @@
 "use strict";
-var StdTree = function(divElem, options){
+Cubee.StdTree = function(divElem, options){
 
 	var me = this;
 	this.buildHtmlChildren = function(elem){

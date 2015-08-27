@@ -1,5 +1,5 @@
 "use strict";
-var Cubee = {};
+//var Cubee = {};
 Cubee.Constants = {
 	CUBEE_TABLE_FIELD_TYPE_STRING: 0,
 	CUBEE_TABLE_FIELD_TYPE_DATE: 1,

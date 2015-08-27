@@ -50,6 +50,7 @@
 		}
 	</style>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script>var Cubee = {};</script>
 	<script src="js/cubee/util/Http.js"></script>
 	<script src="js/cubee/util/CubeeConstants.js"></script>
 	<script src="js/cubee/table/StdTable.js"></script>
@@ -89,7 +90,7 @@
 			fieldKey: 'column1',
 			label: 'col1',
 			width: '20%',
-			type: CUBEE_TABLE_FIELD_TYPE_STRING,
+			type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_STRING,
 			renderer: function(value, jsonRowData){
 				return '<b>'+ value +'</b> (' + jsonRowData.column2 + ')';
 			},
@@ -102,7 +103,7 @@
 			fieldKey: 'column2',
 			label: 'col2',
 			width: '20%',
-			type: CUBEE_TABLE_FIELD_TYPE_DATE,
+			type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_DATE,
 			renderer: function(value, jsonRowData){
 				if('blabla2' == jsonRowData.column1){
 					return '<i style="color:#ff0000;">'+ value + '</i>';
@@ -115,7 +116,7 @@
 			fieldKey: 'column3',
 			label: 'col3',
 			width: '60%',
-			type: CUBEE_TABLE_FIELD_TYPE_STRING,
+			type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_STRING,
 			renderer: function(value, jsonRowData){
 				var div = $('<div></div>');
 				var span1 = $('<span style="color:#ff0000;">TEST</span>');
@@ -141,7 +142,7 @@
 			label: 'col4',
 			width: '70%',
 			visible: false,
-			type: CUBEE_TABLE_FIELD_TYPE_DATE,
+			type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_DATE,
 			renderer: function(jsonRowData){
 				
 			}
@@ -152,7 +153,7 @@
 			label: 'col5',
 			width: '40%',
 			visible: false,
-			type: CUBEE_TABLE_FIELD_TYPE_NUMBER,
+			type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_NUMBER,
 			renderer: function(jsonRowData){
 				return 'toto';
 			},
@@ -166,7 +167,7 @@
 			console.log('##row click', jsonData);
 		},
 		urlData: '/getdata.php',
-		contentTypePost: CUBEE_HTTP_POST_HEADER_JSON,
+		contentTypePost: Cubee.Constants.CUBEE_HTTP_POST_HEADER_JSON,
 		stopOnFiltersError: true,
 		doThisWhenFilterHasError: function(){
 			alert('error in filter values');
@@ -186,7 +187,7 @@
 		jsonRecordsKeyData: 'records'		//mandatory
 	};
 			
-	var myTable = new StdTable($('#toto')[0], options);
+	var myTable = new Cubee.StdTable($('#toto')[0], options);
 	/*myTable.createHtmlTable();
 	myTable.createFilter(3);
 	myTable.populateRow();*/
