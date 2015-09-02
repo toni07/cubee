@@ -110,7 +110,7 @@ Cubee.StdTableFilter = function(options){
 			me.spanAddFilter.nbFilterElem = me.spanAddFilter.nbFilterElem + 1;
 			var parent = thisElem.parent().parent();
 			var divModel = parent.children('div.cubee-model');
-			Http.copyModel(divModel, parent, function(newDiv){
+			Cubee.Http.copyModel(divModel, parent, function(newDiv){
 				var positionOfNewDiv = me.filterList.length;
 				newDiv.indexInFilterList = positionOfNewDiv;
 				newDiv.isRemoved = false;
