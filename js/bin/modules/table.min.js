@@ -124,7 +124,7 @@ Cubee.StdTable = function(divElem, options){
 		if(null != options.contentTypePost){
 			httpOptions.contentTypePost = options.contentTypePost;
 		}
-		Http.sendRequest(me.urlData, jsonPostData, fct, httpOptions);
+		Cubee.Http.sendRequest(me.urlData, jsonPostData, fct, httpOptions);
 	};
 	
 	/**
@@ -278,8 +278,8 @@ Cubee.StdTable = function(divElem, options){
 		tdBodyElem.appendChild(trElem);
 		tableElem.appendChild(tdBodyElem);
 		//----------------------------------//
-		me.stdTableFilter = new StdTableFilter(options);
-		me.stdTablePaging = new StdTablePaging(me, options);
+		me.stdTableFilter = new Cubee.StdTableFilter(options);
+		me.stdTablePaging = new Cubee.StdTablePaging(me, options);
 		me.tableElem = $(tableElem);
 		me.globalFormElem = $('<form></form>');
 		me.globalFormElem.on('submit', function(e){
