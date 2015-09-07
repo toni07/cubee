@@ -11,7 +11,7 @@ Cubee.StdTablePaging = function(stdTable, options){
 				+ 		'<div>'
 				+			'<a href="#" class="rew-total"> << </a>'
 				+			'<a href="#" class="rew"> < </a>'
-				+			'Page <input type="text" class="nbpage" value="1"> / <span class="nbpage">1</span>'
+				+			'Page <input type="text" class="current-page-num" value="1"> / <span class="nbpage-total">1</span>'
 				+			'<a href="#" class="fwd"> > </a>'
 				+			'<a href="#" class="fwd-total"> >> </a>'
 				+		'</div>'
@@ -21,7 +21,7 @@ Cubee.StdTablePaging = function(stdTable, options){
 	
 	this.updatePageNumber = function(pageNumber){
 	
-		me.globalDiv.find('.nbpage').val(pageNumber);
+		me.globalDiv.find('.current-page-num').val(pageNumber);
 	};
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,6 +31,7 @@ Cubee.StdTablePaging = function(stdTable, options){
 	
 		me.createGlobalDiv();
 		me.currentPage = 1;
+		me.nbTotalPage = options.jsonNbPageKeyData;
 		
 		me.globalDiv.find('a').click(function(event){
 			event.preventDefault();

@@ -234,6 +234,7 @@ Cubee.StdTable = function(divElem, options){
 			tableElem.appendChild(colElem);
 			var thElem = document.createElement('th');
 			var $thElem = $(thElem);
+			$thElem.attr('align', 'center');
 			var selectElemClone = columnSelectHeader.clone();
 			(function(column, index){
 				selectElemClone.on('change', function(){
