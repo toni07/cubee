@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 Cubee.StdTable = function(divElem, options){
 	
 	/**
@@ -32,7 +32,7 @@ Cubee.StdTable = function(divElem, options){
 						}
 						hrefElem.html(me.options.columnSortHtml[hrefElem.orderby]);
 						me.orderByList[hrefElem.fieldId] = hrefElem.orderby;
-						me.getData();
+						me.refreshData();
 					})
 				})(href);
 			}
@@ -60,12 +60,12 @@ Cubee.StdTable = function(divElem, options){
 	this.triggerPageChange = function(pageNumber){
 	
 		me.pageNumber = pageNumber;
-		me.getData();
+		me.refreshData();
 	};
 	
 	/*this.triggerFilterChange = function(){
 	
-		me.getData(pageNumber);
+		me.refreshData(pageNumber);
 	};*/
 	
 	this.createFilter = function(p1){
@@ -80,7 +80,7 @@ Cubee.StdTable = function(divElem, options){
 	/**
 	 * fires the HttpRequest to get the data from the server 
 	*/
-	this.getData = function(){
+	this.refreshData = function(){
 				
 		/*** filters part	***/
 		var doThrowError = (null != me.options.stopOnFiltersError) ? me.options.stopOnFiltersError : false;
@@ -119,6 +119,7 @@ Cubee.StdTable = function(divElem, options){
 			var jsonResult = response[me.jsonKeyData];
 			me.setData(jsonResult);
 			me.populateRow();
+			me.stdTablePaging.updateTotalNbPage(response[me.jsonNbPageKeyData]);
 		};
 		var httpOptions = {httpMethod: 'post', dataType: 'json'};
 		if(null != options.contentTypePost){
@@ -288,13 +289,14 @@ Cubee.StdTable = function(divElem, options){
 			var pageNumber = 1;
 			me.pageNumber = pageNumber;
 			me.stdTablePaging.updatePageNumber(pageNumber);
-			me.getData();
+			me.refreshData();
 			return false;
 		});
 		me.globalFormElem.append(me.tableElem);
 		divElem.appendChild(me.globalFormElem[0]);
 		me.urlData = options.urlData;
 		me.jsonKeyData = options.jsonRecordsKeyData;
+		me.jsonNbPageKeyData = options.jsonNbPageKeyData;
 		me.createHtmlTable();
 		me.triggerPageChange(1);
 	}

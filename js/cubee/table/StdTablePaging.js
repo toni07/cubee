@@ -24,6 +24,11 @@ Cubee.StdTablePaging = function(stdTable, options){
 		me.globalDiv.find('.current-page-num').val(pageNumber);
 	};
 	
+	this.updateTotalNbPage = function(totalNbPage){
+
+		me.globalDiv.find('.nbpage-total').html(totalNbPage);
+	};
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////// constructor body ///////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +36,6 @@ Cubee.StdTablePaging = function(stdTable, options){
 	
 		me.createGlobalDiv();
 		me.currentPage = 1;
-		me.nbTotalPage = options.jsonNbPageKeyData;
 		
 		me.globalDiv.find('a').click(function(event){
 			event.preventDefault();
@@ -43,7 +47,7 @@ Cubee.StdTablePaging = function(stdTable, options){
 				me.currentPage = Math.max(me.currentPage - 1, 1);
 			}
 			else if(hrefElem.hasClass('fwd')){
-				me.currentPage = me.currentPage + 1;
+				me.currentPage = Math.min(me.currentPage + 1, me.nbTotalPage);
 			}
 			/*var params = {
 				'page-num': me.currentPage
