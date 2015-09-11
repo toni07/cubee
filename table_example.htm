@@ -16,17 +16,28 @@
 			cursor:pointer;
 		}
 		/** you can remove */
+		body{
+			background-color:#f6f6f6;
+			font:100%/30px "Helvetica Neue",helvetica,arial,sans-serif;
+		}
+		.cubee table{
+			width:100%;
+			border-collapse:collapse;
+			border-spacing:0;
+			border-radius:5px;
+		}
 		.cubee a{
 			text-decoration:none;
 		}
 		.cubee a:hover{
 			text-decoration:underline;
 		}
+		.cubee th{
+			background-color:#3385ff;
+			height:42px;
+		}
 		.cubee th a:hover{
 			text-decoration:none;
-		}
-		.cubee table{
-			width:100%;
 		}
 		.cubee table td{
 			padding:1px 0px;
@@ -34,10 +45,21 @@
 		.cubee table td, .cubee table th{
 			border:1px solid #cccccc;
 		}
-		.cubee-table-filter, .cubee-table-paging{
-			background-color:#eeeeee;
+		.cubee-table-filter{
+			background-color:#3385ff;
+			color:#ffffff;
 			margin-bottom:10px;
 			padding:2px 1%;
+			font-size:18px;
+			border-radius:5px;
+		}
+		.cubee-table-paging{
+			background-color:#3385ff;
+			color:#ffffff;
+			margin-bottom:10px;
+			padding1:2px 1%;
+			font-size1:18px;
+			border-radius:5px;
 		}
 		.cubee-table-filter-title span{
 			font-size:120%;
@@ -46,14 +68,21 @@
 			border:1px solid #ff0000;
 		}
 		.cubee-filter-input{
-			color:#08088A;
+			color:#08088a;
+		}
+		.cubee-table-paging a{
+			color:#ffffff;
 		}
 		.cubee-table-paging a.disabled, .cubee-table-paging a.disabled:hover{
 			color:#aaaaaa;
 			text-decoration:none;
 		}
+		.current-page-num{
+			text-align: right;
+			width: 10%;
+		}
 	</style>
-	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="jquery-2.1.4.min.js"></script>
 	<script>var Cubee = {};</script>
 	<script src="js/cubee/util/Http.js"></script>
 	<script src="js/cubee/util/CubeeConstants.js"></script>
@@ -65,25 +94,8 @@
 	-->
 </head>
 <body>
-	<br />
-	
-	<!--
-	<iframe src="http://localhost:8080/admin-deploy" style="width:90%;height:600px;"></iframe>
-	-->
-	
+	<h1>Table with sorting and paging example</h1>
 	<div id="toto" class="cubee"></div>
-	<br />
-	<hr /><hr />
-	<br />
-	<table class="t07-table">
-		<tr>
-			<th>Id</th>
-			<th>Label</th>
-		</tr>
-		<tr>
-			<td align="center" colspan="2">No result.</td>
-		</tr>
-	</table>
 	<br />
 </body>
 <script>
@@ -186,7 +198,7 @@
 			'1': '&utrif;',
 			'-1': '&dtrif;',
 		},
-		filtersPlusButtonHtml: '<b style="color:#00ff00;">+</b>',
+		filtersPlusButtonHtml: '<b style="color:#ffffff;border:1px solid #ffffff;padding:0 5px;margin-left:4px;">+</b>',
 		tableClass: '',
 		jsonRecordsKeyData: 'records',		//mandatory
 		jsonNbPageKeyData: 'total-page-num'		//mandatory
