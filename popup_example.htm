@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title>Cubee || Popup example</title>
+	<style>
+		/** do not remove! */
+		.cubee-center {
+			text-align: center;
+		}
+		.cubee-center>div { /* N.B. child combinators don't work in IE7 or less */
+			display: inline-block;
+		}
+		.cubee-model{
+			display:none;
+		}
+		.cubee-action{
+			cursor:pointer;
+		}
+		.cubee-popup-bg{
+			position:absolute;
+			top:0;
+			left:0;
+			width:100%;
+			height:100%;
+		}
+		.cubee-popup-fg{
+			position:absolute;
+			top:10%;
+			left:25%;
+			width:50%;
+		}
+		/** you can remove */
+		body{
+			background-color:#f6f6f6;
+			font:100%/30px "Helvetica Neue",helvetica,arial,sans-serif;
+		}
+		.cubee-popup-bg{
+			background-color:#000000;
+			opacity:0.5;
+		}
+		.cubee-popup-fg{
+			background-color:#f6f6f6;
+		}
+	</style>
+	<script src="jquery-2.1.4.min.js"></script>
+	<script>var Cubee = {};</script>
+	<script src="js/cubee/util/Http.js"></script>
+	<script src="js/cubee/util/CubeeConstants.js"></script>
+	<script src="js/cubee/popup/StdPopup.js"></script>
+</head>
+<body>
+	<h1>Popup example</h1>
+	<button id="popup-button">Open popup</button>
+	<br />
+</body>
+<script>
+	'use strict';	
+	$(document).ready(function(){
+		$('#popup-button').on('click', function(){
+			var options = {
+				bodyHtml: '<h2>Title</h2><div>This is a test.<br />A great test.</div>'		//mandatory
+			};
+			new Cubee.StdPopup(options);
+		});
+		
+	});
+</script>	
+	
+</html>
