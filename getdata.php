@@ -2,7 +2,7 @@
 	//print_r($_REQUEST);
 	header('Content-Type: application/json');
 	$data = array();
-	$data['total-page-num'] = 12;
+	$data['total-page-num'] = 4;
 	for($i=0; $i<10;$i++){
 		$data['records'][] = array(
 			'column1' => "blabla{$i}",
