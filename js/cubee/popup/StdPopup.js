@@ -2,28 +2,53 @@
 Cubee.StdPopup = function(options){
 
 	var me = this;	
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////// close this popup ///////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	this.close = function(){
+		
+		me.foregroundDiv.remove();
+		me.backgroundDiv.remove();
+	};
 		
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////// constructor body ///////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	this.construct = function(){
 	
-		//if()
 		var bodyDOMElem = $('body');
-		var backgroundDiv = $('<div class="cubee-popup-bg idx0"></div>');
-		var foregroundDiv = $('<div class="cubee-popup-fg idx0"></div>');
-		backgroundDiv.on('click', function(){
+		var currentNbPopup = 0;
+		for(var i=0; i<10; i++){
+			if(0 == $('div.cubee-popup-bg.idx' + i).length){
+				currentNbPopup = i;
+				break;
+			}
+		}
+		
+		me.backgroundDiv = $('<div class="cubee-popup-bg idx'+ currentNbPopup +'"></div>');
+		me.foregroundDiv = $('<div class="cubee-popup-fg idx'+ currentNbPopup +'"></div>');
+		var buttonClosePopup = $('<div style="text-align:right;margin-right:6px;cursor:pointer;"> X </div>');
+		var functionClose = function(){
 			if(null != options.closeCallback){
-				options.closeCallback();
+				options.closeCallback(me);
 			}
 			else{
-				foregroundDiv.remove();
-				backgroundDiv.remove();
+				me.close();
 			}
-		});
-		foregroundDiv.html(options.bodyHtml);
-		bodyDOMElem.append(backgroundDiv);
-		bodyDOMElem.append(foregroundDiv);
+		};
+		me.backgroundDiv.on('click', functionClose);
+		buttonClosePopup.on('click', functionClose);
+		if(options.bodyContents instanceof String){
+			me.foregroundDiv.html(options.bodyContents);	
+		}
+		else{
+			me.foregroundDiv.append(options.bodyContents);
+		}
+		me.foregroundDiv.prepend(buttonClosePopup);
+		
+		bodyDOMElem.append(me.backgroundDiv);
+		bodyDOMElem.append(me.foregroundDiv);
 	}
 	
 	this.construct();

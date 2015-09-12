@@ -56,10 +56,27 @@
 	'use strict';	
 	$(document).ready(function(){
 		$('#popup-button').on('click', function(){
+			var firstPopup, secondPopup;
 			var options = {
-				bodyHtml: '<h2>Title</h2><div>This is a test.<br />A great test.</div>'		//mandatory
+				bodyContents: '<h2>Title</h2><div>This is a test.<br />A great test.</div>',		//mandatory
+				closeCallback: function(popupObj){
+					var buttonYes = $('<button>YES</button>');
+					buttonYes.on('click', function(){
+						secondPopup.close();
+						firstPopup.close();
+					});
+					var buttonNo = $('<button>NO</button>');
+					buttonNo.on('click', function(){
+						secondPopup.close();
+					});
+					var options2 = {
+						bodyContents: $('<div><b>Sure to close?</b><br /></div>').append(buttonNo).append(buttonYes),		//mandatory
+						closeCallback: function(){return;}
+					};
+					secondPopup = new Cubee.StdPopup(options2);
+				}
 			};
-			new Cubee.StdPopup(options);
+			firstPopup = new Cubee.StdPopup(options);
 		});
 		
 	});
