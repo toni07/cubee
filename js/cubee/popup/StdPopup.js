@@ -45,7 +45,9 @@ Cubee.StdPopup = function(options){
 		else{
 			me.foregroundDiv.append(options.bodyContents);
 		}
-		me.foregroundDiv.prepend(buttonClosePopup);
+		if(null == options.doNotShowHideButton || !options.doNotShowHideButton){
+			me.foregroundDiv.prepend(buttonClosePopup);
+		}
 		
 		bodyDOMElem.append(me.backgroundDiv);
 		bodyDOMElem.append(me.foregroundDiv);

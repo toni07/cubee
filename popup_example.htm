@@ -46,10 +46,13 @@
 	<script src="js/cubee/util/Http.js"></script>
 	<script src="js/cubee/util/CubeeConstants.js"></script>
 	<script src="js/cubee/popup/StdPopup.js"></script>
+	<script src="js/cubee/popup/StdPopupConfirm.js"></script>
 </head>
 <body>
 	<h1>Popup example</h1>
 	<button id="popup-button">Open popup</button>
+	<br />
+	<button id="confirm-button">Open confirm</button>
 	<br />
 </body>
 <script>
@@ -77,6 +80,10 @@
 				}
 			};
 			firstPopup = new Cubee.StdPopup(options);
+		});
+		
+		$('#confirm-button').on('click', function(){
+			new Cubee.StdPopupConfirm();
 		});
 		
 	});
