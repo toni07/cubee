@@ -181,8 +181,7 @@ Vex.Flow.Formatter = (function() {
     }
 
     // Start by creating a voice and adding all the notes to it.
-    var voice = new Vex.Flow.Voice(Vex.Flow.TIME4_4).
-      setMode(Vex.Flow.Voice.Mode.SOFT);
+    var voice = new Vex.Flow.Voice(Vex.Flow.TIME4_4).setMode(Vex.Flow.Voice.Mode.SOFT);
     voice.addTickables(notes);
 
     // Then create beams, if requested.

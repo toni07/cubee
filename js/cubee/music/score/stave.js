@@ -17,7 +17,7 @@ Vex.Flow.Stave = (function() {
       this.y = y;
       this.width = width;
       this.glyph_start_x = x + 5;
-      this.glyph_end_x = x + width;
+      this.glyph_end_x = x + width - 20;
       this.start_x = this.glyph_start_x;
       this.end_x = this.glyph_end_x;
       this.context = null;
@@ -46,11 +46,8 @@ Vex.Flow.Stave = (function() {
 
       this.resetLines();
 
-      this.modifiers.push(
-          new Vex.Flow.Barline(Vex.Flow.Barline.type.SINGLE, this.x)); // beg bar
-      this.modifiers.push(
-          new Vex.Flow.Barline(Vex.Flow.Barline.type.SINGLE,
-          this.x + this.width)); // end bar
+      this.modifiers.push(new Vex.Flow.Barline(Vex.Flow.Barline.type.SINGLE, this.x)); // beg bar
+      this.modifiers.push(new Vex.Flow.Barline(Vex.Flow.Barline.type.SINGLE, this.x + this.width - 15)); // end bar
     },
 
     resetLines: function() {
