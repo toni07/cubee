@@ -169,6 +169,7 @@ Vex.Flow.Formatter = (function() {
   // `autobeam` automatically generates beams for the notes.
   // `align_rests` aligns rests with nearby notes.
   Formatter.FormatAndDraw = function(ctx, stave, notes, params) {
+	console.log('##FormatAndDraw');
     var opts = {
       auto_beam: false,
       align_rests: false
@@ -182,7 +183,31 @@ Vex.Flow.Formatter = (function() {
 
     // Start by creating a voice and adding all the notes to it.
     var voice = new Vex.Flow.Voice(Vex.Flow.TIME4_4).setMode(Vex.Flow.Voice.Mode.SOFT);
-    voice.addTickables(notes);
+	var noteList = [];
+	var functionClickOnNoteToAddOne = function(){
+		console.log('##AUTO clicked to add on', this);
+	};
+	$.each(notes, function(id, elem){
+		var stringList = [];
+		$.each(elem.positions, function(idP, position){
+			stringList.push(position.str);
+		});
+		if(stringList.length < 6){
+			var stringToAddPlusButton = 6;
+			for(var cptr = 0; cptr<stringList.length; cptr++){
+				if(stringToAddPlusButton == stringList[cptr]){
+					stringToAddPlusButton--;
+				}
+				else{
+					break;
+				}
+			}
+			elem.positions.push({str: stringToAddPlusButton, fret: 0, clickCallBack: functionClickOnNoteToAddOne, isVisible: false});
+		}
+		noteList.push(new Vex.Flow.TabNote({positions: elem.positions, duration: elem.duration}));
+	});
+	console.log('##notes', noteList);
+    voice.addTickables(noteList);
 
     // Then create beams, if requested.
     var beams = null;
@@ -219,8 +244,9 @@ Vex.Flow.Formatter = (function() {
   // * `params` - A configuration object:
   //    * `autobeam` automatically generates beams for the notes.
   //    * `align_rests` aligns rests with nearby notes.
-  Formatter.FormatAndDrawTab = function(ctx,
-      tabstave, stave, tabnotes, notes, autobeam, params) {
+  Formatter.FormatAndDrawTab = function(ctx, tabstave, stave, tabnotes, notes, autobeam, params) {
+	
+	console.log('##FormatAndDrawTab');
     var opts = {
       auto_beam: autobeam,
       align_rests: false
