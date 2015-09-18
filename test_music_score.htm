@@ -4,9 +4,11 @@
 <head>
     <title>Tests</title>
     <script src="jquery-2.1.4.min.js"></script>
+	<script>var Cubee = {MusicScore: {}};</script>
 	<!--
-    <script src="build/vexflow-min.js"></script>
+    <script src="js/bin/cubee.min.js"></script>
 	-->
+	
 	<script src="/js/cubee/music/score/vex.js"></script>
 	<script src="/js/cubee/music/score/flow.js"></script>
 	<script src="/js/cubee/music/score/fraction.js"></script>
@@ -75,13 +77,8 @@
 	<script src="/js/cubee/music/score/pedalmarking.js"></script>
 	<script src="/js/cubee/music/score/textbracket.js"></script>
 	<script src="/js/cubee/music/score/gracenotegroup.js"></script>
-	
-	<!-- <script src="/js/cubee/music/score/fonts/gonville.js"></script>
-	<script src="/js/cubee/music/score/fonts/gonville_all.js"></script>
-	<script src="/js/cubee/music/score/fonts/gonville_original.js"></script>
-	-->
 	<script src="/js/cubee/music/score/fonts/vexflow_font.js"></script>
-	
+
 </head>
 <body>
     <div id="toto"></div>
@@ -90,7 +87,7 @@
             // Get the rendering context
             //var canvas = $("canvas")[0];
             //var renderer = new Vex.Flow.Renderer(canvas, Vex.Flow.Renderer.Backends.CANVAS);*/
-            var renderer = new Vex.Flow.Renderer('toto', Vex.Flow.Renderer.Backends.SVG);
+            var renderer = new Cubee.MusicScore.Renderer('toto');
 
             var ctx = renderer.getContext();
             ctx.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");

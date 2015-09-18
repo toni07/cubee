@@ -7,17 +7,10 @@
 
 /* global document: false */
 
-Vex.Flow.Renderer = (function() {
-  function Renderer(sel, backend) {
-    if (arguments.length > 0) this.init(sel, backend);
+Cubee.MusicScore.Renderer = (function() {
+  function Renderer(sel) {
+    if (arguments.length > 0) this.init(sel);
   }
-
-  Renderer.Backends = {
-    CANVAS: 1,
-    RAPHAEL: 2,
-    SVG: 3,
-    VML: 4
-  };
 
   //End of line types
   Renderer.LineEndType = {
@@ -31,10 +24,9 @@ Vex.Flow.Renderer = (function() {
   // performance degradation due to the extra indirection.
   Renderer.USE_CANVAS_PROXY = false;
 
-  Renderer.buildContext = function(sel,
-      backend, width, height, background) {
+  Renderer.buildContext = function(sel, width, height, background) {
 
-    var renderer = new Renderer(sel, backend);
+    var renderer = new Renderer(sel);
     if (width && height) { renderer.resize(width, height); }
 
     if (!background) background = "#FFF";
@@ -43,21 +35,11 @@ Vex.Flow.Renderer = (function() {
     return ctx;
   };
 
-  Renderer.getCanvasContext = function(sel, width, height, background) {
-    return Renderer.buildContext(sel, Renderer.Backends.CANVAS,
-        width, height, background);
-  };
 
-  Renderer.getRaphaelContext = function(sel, width, height, background) {
-    return Renderer.buildContext(sel, Renderer.Backends.RAPHAEL,
-        width, height, background);
-  };
 
   Renderer.getSVGContext = function(sel, width, height, background) {
-    return Renderer.buildContext(sel, Renderer.Backends.SVG,
-        width, height, background);
+    return Renderer.buildContext(sel, width, height, background);
   };
-
 
   Renderer.bolsterCanvasContext = function(ctx) {
     if (Renderer.USE_CANVAS_PROXY) {
@@ -110,7 +92,7 @@ Vex.Flow.Renderer = (function() {
   };
 
   Renderer.prototype = {
-    init: function(sel, backend) {
+    init: function(sel) {
       // Verify selector
       this.sel = sel;
       if (!this.sel) throw new Vex.RERR("BadArgument",
@@ -123,39 +105,12 @@ Vex.Flow.Renderer = (function() {
       // Verify backend and create context
       this.ctx = null;
       this.paper = null;
-      this.backend = backend;
-      if (this.backend == Renderer.Backends.CANVAS) {
-        // Create context.
-        if (!this.element.getContext) throw new Vex.RERR("BadElement",
-          "Can't get canvas context from element: " + sel);
-        this.ctx = Renderer.bolsterCanvasContext(
-            this.element.getContext('2d'));
-
-      } else if (this.backend == Renderer.Backends.RAPHAEL) {
-        this.ctx = new Vex.Flow.RaphaelContext(this.element);
-
-      } else if (this.backend == Renderer.Backends.SVG) {
-        this.ctx = new Vex.Flow.SVGContext(this.element);
-
-      } else {
-        throw new Vex.RERR("InvalidBackend",
-          "No support for backend: " + this.backend);
-      }
+      this.ctx = new Vex.Flow.SVGContext(this.element);
     },
 
     resize: function(width, height) {
-      if (this.backend == Renderer.Backends.CANVAS) {
-        if (!this.element.getContext) throw new Vex.RERR("BadElement",
-          "Can't get canvas context from element: " + this.sel);
-        this.element.width = width;
-        this.element.height = height;
-        this.ctx = Renderer.bolsterCanvasContext(
-            this.element.getContext('2d'));
-      } else {
-        this.ctx.resize(width, height);
-      }
-
-      return this;
+		this.ctx.resize(width, height);
+		return this;
     },
 
     getContext: function() { return this.ctx; }
