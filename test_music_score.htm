@@ -36,7 +36,7 @@
 	<script src="/js/cubee/music/score/modifiercontext.js"></script>
 	<script src="/js/cubee/music/score/accidental.js"></script>
 	<script src="/js/cubee/music/score/dot.js"></script>
-	<script src="/js/cubee/music/score/formatter.js"></script>
+	<script src="/js/cubee/music/score/MusicScoreFormatter.js"></script>
 	<script src="/js/cubee/music/score/stavetie.js"></script>
 	<script src="/js/cubee/music/score/tabtie.js"></script>
 	<script src="/js/cubee/music/score/tabslide.js"></script>
@@ -114,7 +114,7 @@
 				, new Cubee.MusicScore.TabNote({positions: [{str: 2, fret: 5}], duration: "h"})
             ];
 
-           Vex.Flow.Formatter.FormatAndDraw(ctx, tabstave, notes);
+           Cubee.MusicScore.Formatter.FormatAndDraw(ctx, tabstave, notes);
         });
     </script>
 </body>

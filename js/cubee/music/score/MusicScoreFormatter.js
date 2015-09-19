@@ -17,27 +17,22 @@
 // See `tests/formatter_tests.js` for usage examples. The helper functions included
 // here (`FormatAndDraw`, `FormatAndDrawTab`) also serve as useful usage examples.
 
-Vex.Flow.Formatter = (function() {
-  function Formatter() {
-    // Minimum width required to render all the notes in the voices.
-    this.minTotalWidth = 0;
+Cubee.MusicScore.Formatter = (function() {
+	
+	function Formatter() {
 
-    // This is set to `true` after `minTotalWidth` is calculated.
-    this.hasMinTotalWidth = false;
+		this.minTotalWidth = 0;				// Minimum width required to render all the notes in the voices.
+		this.hasMinTotalWidth = false;		// This is set to `true` after `minTotalWidth` is calculated.
+		this.pixelsPerTick = 0;				// The suggested amount of space for each tick.
+		this.totalTicks = new Vex.Flow.Fraction(0, 1);	// Total number of ticks in the voice.
+		this.tContexts = null;				// Arrays of tick and modifier contexts.
+		this.mContexts = null;
+	}
 
-    // The suggested amount of space for each tick.
-    this.pixelsPerTick = 0;
-
-    // Total number of ticks in the voice.
-    this.totalTicks = new Vex.Flow.Fraction(0, 1);
-
-    // Arrays of tick and modifier contexts.
-    this.tContexts = null;
-    this.mContexts = null;
-  }
-
-  // To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
-  function L() { if (Formatter.DEBUG) Vex.L("Vex.Flow.Formatter", arguments); }
+	// To enable logging for this class. Set `Vex.Flow.Formatter.DEBUG` to `true`.
+	// function L() {
+		// if (Formatter.DEBUG) Vex.L("Vex.Flow.Formatter", arguments); 
+	// }
 
   // ## Private Helpers
   //
@@ -73,83 +68,78 @@ Vex.Flow.Formatter = (function() {
   // * `voices`: Array of `Voice` instances.
   // * `context_type`: A context class (e.g., `ModifierContext`, `TickContext`)
   // * `add_fn`: Function to add tickable to context.
-  function createContexts(voices, context_type, add_fn) {
-    if (!voices || !voices.length) throw new Vex.RERR("BadArgument",
-        "No voices to format");
+	function createContexts(voices, context_type, add_fn) {
+	  
+		if (!voices || !voices.length) throw new Vex.RERR("BadArgument", "No voices to format");
+		// Initialize tick maps.
+		var totalTicks = voices[0].getTotalTicks();
+		var tickToContextMap = {};
+		var tickList = [];
+		var contexts = [];
 
-    // Initialize tick maps.
-    var totalTicks = voices[0].getTotalTicks();
-    var tickToContextMap = {};
-    var tickList = [];
-    var contexts = [];
+		var resolutionMultiplier = 1;
 
-    var resolutionMultiplier = 1;
+		// Find out highest common multiple of resolution multipliers.
+		// The purpose of this is to find out a common denominator
+		// for all fractional tick values in all tickables of all voices,
+		// so that the values can be expanded and the numerator used
+		// as an integer tick value.
+		var i; // shared iterator
+		var voice;
+		for (i = 0; i < voices.length; ++i) {
+		  voice = voices[i];
+		  if (!(voice.getTotalTicks().equals(totalTicks))) {
+			throw new Vex.RERR("TickMismatch", "Voices should have same total note duration in ticks.");
+		  }
+			if (voice.getMode() == Vex.Flow.Voice.Mode.STRICT && !voice.isComplete()){
+				throw new Vex.RERR("IncompleteVoice", "Voice does not have enough notes.");
+			}
 
-    // Find out highest common multiple of resolution multipliers.
-    // The purpose of this is to find out a common denominator
-    // for all fractional tick values in all tickables of all voices,
-    // so that the values can be expanded and the numerator used
-    // as an integer tick value.
-    var i; // shared iterator
-    var voice;
-    for (i = 0; i < voices.length; ++i) {
-      voice = voices[i];
-      if (!(voice.getTotalTicks().equals(totalTicks))) {
-        throw new Vex.RERR("TickMismatch",
-            "Voices should have same total note duration in ticks.");
-      }
+		  var lcm = Vex.Flow.Fraction.LCM(resolutionMultiplier, voice.getResolutionMultiplier());
+		  if (resolutionMultiplier < lcm) {
+			resolutionMultiplier = lcm;
+		  }
+		}
 
-      if (voice.getMode() == Vex.Flow.Voice.Mode.STRICT && !voice.isComplete())
-        throw new Vex.RERR("IncompleteVoice",
-          "Voice does not have enough notes.");
+		// For each voice, extract notes and create a context for every
+		// new tick that hasn't been seen before.
+		for (i = 0; i < voices.length; ++i) {
+		  voice = voices[i];
+		  var tickables = voice.getTickables();
 
-      var lcm = Vex.Flow.Fraction.LCM(resolutionMultiplier,
-          voice.getResolutionMultiplier());
-      if (resolutionMultiplier < lcm) {
-        resolutionMultiplier = lcm;
-      }
-    }
+		  // Use resolution multiplier as denominator to expand ticks
+		  // to suitable integer values, so that no additional expansion
+		  // of fractional tick values is needed.
+		  var ticksUsed = new Vex.Flow.Fraction(0, resolutionMultiplier);
 
-    // For each voice, extract notes and create a context for every
-    // new tick that hasn't been seen before.
-    for (i = 0; i < voices.length; ++i) {
-      voice = voices[i];
+		  for (var j = 0; j < tickables.length; ++j) {
+			var tickable = tickables[j];
+			var integerTicks = ticksUsed.numerator;
 
-      var tickables = voice.getTickables();
+			// If we have no tick context for this tick, create one.
+			if (!tickToContextMap[integerTicks]) {
+			  var newContext = new context_type();
+			  contexts.push(newContext);
+			  tickToContextMap[integerTicks] = newContext;
+			}
 
-      // Use resolution multiplier as denominator to expand ticks
-      // to suitable integer values, so that no additional expansion
-      // of fractional tick values is needed.
-      var ticksUsed = new Vex.Flow.Fraction(0, resolutionMultiplier);
+			// Add this tickable to the TickContext.
+			add_fn(tickable, tickToContextMap[integerTicks]);
 
-      for (var j = 0; j < tickables.length; ++j) {
-        var tickable = tickables[j];
-        var integerTicks = ticksUsed.numerator;
+			// Maintain a sorted list of tick contexts.
+			tickList.push(integerTicks);
+			ticksUsed.add(tickable.getTicks());
+		  }
+		}
 
-        // If we have no tick context for this tick, create one.
-        if (!tickToContextMap[integerTicks]) {
-          var newContext = new context_type();
-          contexts.push(newContext);
-          tickToContextMap[integerTicks] = newContext;
-        }
-
-        // Add this tickable to the TickContext.
-        add_fn(tickable, tickToContextMap[integerTicks]);
-
-        // Maintain a sorted list of tick contexts.
-        tickList.push(integerTicks);
-        ticksUsed.add(tickable.getTicks());
-      }
-    }
-
-    return {
-      map: tickToContextMap,
-      array: contexts,
-      list: Vex.SortAndUnique(tickList, function(a, b) { return a - b; },
-          function(a, b) { return a === b; } ),
-      resolutionMultiplier: resolutionMultiplier
-    };
-  }
+		return {
+		  map: tickToContextMap,
+		  array: contexts,
+		  list: Vex.SortAndUnique(tickList, function(a, b) { return a - b; },
+			  function(a, b) { return a === b; } ),
+		  resolutionMultiplier: resolutionMultiplier
+		};
+	}
 
 
   // ## Static Methods
@@ -360,8 +350,7 @@ Vex.Flow.Formatter = (function() {
       // Create tick contexts if not already created.
       if (!this.tContexts) {
         if (!voices) {
-          throw new Vex.RERR("BadArgument",
-                             "'voices' required to run preCalculateMinTotalWidth");
+          throw new Vex.RERR("BadArgument", "'voices' required to run preCalculateMinTotalWidth");
         }
         this.createTickContexts(voices);
       }
@@ -381,22 +370,17 @@ Vex.Flow.Formatter = (function() {
         context.preFormat();
         this.minTotalWidth += context.getWidth();
       }
-
       this.hasMinTotalWidth = true;
-
       return this.minTotalWidth;
     },
 
     // Get minimum width required to render all voices. Either `format` or
     // `preCalculateMinTotalWidth` must be called before this method.
     getMinTotalWidth: function() {
-      if (!this.hasMinTotalWidth) {
-        throw new Vex.RERR("NoMinTotalWidth",
-            "Need to call 'preCalculateMinTotalWidth' or 'preFormat' before" +
-            " calling 'getMinTotalWidth'");
-      }
-
-      return this.minTotalWidth;
+		if (!this.hasMinTotalWidth) {
+			throw new Vex.RERR("NoMinTotalWidth", "Need to call 'preCalculateMinTotalWidth' or 'preFormat' before calling 'getMinTotalWidth'");
+		}
+		return this.minTotalWidth;
     },
 
     // Create `ModifierContext`s for each tick in `voices`.
