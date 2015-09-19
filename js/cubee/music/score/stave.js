@@ -4,13 +4,12 @@
 // Copyright Mohit Cheppudira 2010
 
 /** @constructor */
-Vex.Flow.Stave = (function() {
+Cubee.MusicScore.Stave = (function() {
   function Stave(x, y, width, options) {
     if (arguments.length > 0) this.init(x, y, width, options);
   }
 
-  var THICKNESS = (Vex.Flow.STAVE_LINE_THICKNESS > 1 ?
-        Vex.Flow.STAVE_LINE_THICKNESS : 0);
+  var THICKNESS = (Vex.Flow.STAVE_LINE_THICKNESS > 1 ? Vex.Flow.STAVE_LINE_THICKNESS : 0);
   Stave.prototype = {
     init: function(x, y, width, options) {
       this.x = x;

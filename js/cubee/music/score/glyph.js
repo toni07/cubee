@@ -18,14 +18,14 @@
  */
 Vex.Flow.renderGlyph = function(ctx, x_pos, y_pos, point, val, nocache) {
   var scale = point * 72.0 / (Vex.Flow.Font.resolution * 100.0);
-  var metrics = Vex.Flow.Glyph.loadMetrics(Vex.Flow.Font, val, !nocache);
-  Vex.Flow.Glyph.renderOutline(ctx, metrics.outline, scale, x_pos, y_pos);
+  var metrics = Cubee.MusicScore.Glyph.loadMetrics(Vex.Flow.Font, val, !nocache);
+  Cubee.MusicScore.Glyph.renderOutline(ctx, metrics.outline, scale, x_pos, y_pos);
 };
 
 /**
  * @constructor
  */
-Vex.Flow.Glyph = (function() {
+Cubee.MusicScore.Glyph = (function() {
   function Glyph(code, point, options) {
     this.code = code;
     this.point = point;
@@ -56,7 +56,7 @@ Vex.Flow.Glyph = (function() {
     getContext: function() { return this.context; },
 
     reset: function() {
-      this.metrics = Vex.Flow.Glyph.loadMetrics(this.options.font, this.code,
+      this.metrics = Cubee.MusicScore.Glyph.loadMetrics(this.options.font, this.code,
           this.options.cache);
       this.scale = this.point * 72 / (this.options.font.resolution * 100);
     },

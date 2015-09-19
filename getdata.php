@@ -1,6 +1,7 @@
 <?php
-	//print_r($_REQUEST);
 	header('Content-Type: application/json');
+	//print_r($_REQUEST);
+	//print_r(fread(__input));
 	$data = array();
 	$data['total-page-num'] = 4;
 	for($i=0; $i<10;$i++){

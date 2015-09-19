@@ -17,7 +17,7 @@
 	<script src="/js/cubee/music/score/glyph.js"></script>
 	<script src="/js/cubee/music/score/stave.js"></script>
 	<script src="/js/cubee/music/score/staveconnector.js"></script>
-	<script src="/js/cubee/music/score/tabstave.js"></script>
+	<script src="/js/cubee/music/score/MusicScoreTabStave.js"></script>
 	<script src="/js/cubee/music/score/tickcontext.js"></script>
 	<script src="/js/cubee/music/score/tickable.js"></script>
 	<script src="/js/cubee/music/score/note.js"></script>
@@ -52,7 +52,7 @@
 	<script src="/js/cubee/music/score/music.js"></script>
 	<script src="/js/cubee/music/score/keymanager.js"></script>
 	<script src="/js/cubee/music/score/svgcontext.js"></script>
-	<script src="/js/cubee/music/score/renderer.js"></script>
+	<script src="/js/cubee/music/score/MusicScoreRenderer.js"></script>
 	<script src="/js/cubee/music/score/raphaelcontext.js"></script>
 	<script src="/js/cubee/music/score/canvascontext.js"></script>
 	<script src="/js/cubee/music/score/stavebarline.js"></script>
@@ -93,7 +93,7 @@
             ctx.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
 
             // Create and draw the tablature stave
-            var tabstave = new Vex.Flow.TabStave(10, 0, 300);
+            var tabstave = new Cubee.MusicScore.TabStave(10, 0, 300);
             tabstave.addTabGlyph();
             tabstave.setContext(ctx).draw();
 

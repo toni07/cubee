@@ -4,12 +4,12 @@
 // Copyright Mohit Cheppudira 2010
 
 /** @constructor */
-Vex.Flow.TabStave = (function() {
+Cubee.MusicScore.TabStave = (function() {
   function TabStave(x, y, width, options) {
     if (arguments.length > 0) this.init(x, y, width, options);
   }
 
-  Vex.Inherit(TabStave, Vex.Flow.Stave, {
+  Vex.Inherit(TabStave, Cubee.MusicScore.Stave, {
     init: function(x, y, width, options) {
       var tab_options = {
         spacing_between_lines_px: 13,
@@ -52,7 +52,7 @@ Vex.Flow.TabStave = (function() {
           break;
       }
 
-      var tabGlyph = new Vex.Flow.Glyph("v2f", glyphScale);
+      var tabGlyph = new Cubee.MusicScore.Glyph("v2f", glyphScale);
       tabGlyph.y_shift = glyphOffset;
       this.addGlyph(tabGlyph);
       return this;
