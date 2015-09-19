@@ -204,7 +204,7 @@ Vex.Flow.Formatter = (function() {
 			}
 			elem.positions.push({str: stringToAddPlusButton, fret: 0, clickCallBack: functionClickOnNoteToAddOne, isVisible: false});
 		}
-		noteList.push(new Vex.Flow.TabNote({positions: elem.positions, duration: elem.duration}));
+		noteList.push(new Cubee.MusicScore.TabNote({positions: elem.positions, duration: elem.duration}));
 	});
 	console.log('##notes', noteList);
     voice.addTickables(noteList);

@@ -6,7 +6,7 @@
 // more fret positions, and can either be drawn with or without stems.
 //
 // See `tests/tabnote_tests.js` for usage examples
-Vex.Flow.TabNote = (function() {
+Cubee.MusicScore.TabNote = (function() {
   function TabNote(tab_struct, draw_stem) {
     if (arguments.length > 0) this.init(tab_struct, draw_stem);
   }
@@ -18,7 +18,7 @@ Vex.Flow.TabNote = (function() {
     // Initialize the TabNote with a `tab_struct` full of properties
     // and whether to `draw_stem` when rendering the note
     init: function(tab_struct, draw_stem) {
-      var superclass = Vex.Flow.TabNote.superclass;
+      var superclass = Cubee.MusicScore.TabNote.superclass;
       superclass.init.call(this, tab_struct);
 
       this.ghost = false; // Renders parenthesis around notes
@@ -112,7 +112,7 @@ Vex.Flow.TabNote = (function() {
 
     // Set the `stave` to the note
     setStave: function(stave) {
-      var superclass = Vex.Flow.TabNote.superclass;
+      var superclass = Cubee.MusicScore.TabNote.superclass;
       superclass.setStave.call(this, stave);
       this.context = stave.context;
       this.width = 0;

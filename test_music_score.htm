@@ -25,7 +25,7 @@
 	<script src="/js/cubee/music/score/stem.js"></script>
 	<script src="/js/cubee/music/score/stemmablenote.js"></script>
 	<script src="/js/cubee/music/score/stavenote.js"></script>
-	<script src="/js/cubee/music/score/tabnote.js"></script>
+	<script src="/js/cubee/music/score/MusicScoreTabNote.js"></script>
 	<script src="/js/cubee/music/score/ghostnote.js"></script>
 	<script src="/js/cubee/music/score/clefnote.js"></script>
 	<script src="/js/cubee/music/score/timesignote.js"></script>
@@ -107,11 +107,11 @@
 
             // Create some notes
             var notes = [
-                new Vex.Flow.TabNote({positions: [{str: 3, fret: 7, iddb: 1, clickCallBack: functionClickOnNote}], duration: "q"})
-                , new Vex.Flow.TabNote({positions: [{str: 2, fret: 10, iddb: 2, clickCallBack: functionClickOnNote}, {str: 3, fret: 9, iddb: 3, clickCallBack: functionClickOnNote}], duration: "q"}).addModifier(new Vex.Flow.Bend("Full"), 1)
-                , new Vex.Flow.TabNote({positions: [{str: 2, fret: 5}, {str: 1, fret: 6, clickCallBack: functionClickOnNote}], duration: "h"}).addModifier(new Vex.Flow.Vibrato().setHarsh(true).setVibratoWidth(70), 0)
-				, new Vex.Flow.TabNote({positions: [{str: 1, fret: 6, clickCallBack: functionClickOnNote}], duration: "q"}).addModifier(new Vex.Flow.Vibrato().setHarsh(true).setVibratoWidth(70), 0)
-				, new Vex.Flow.TabNote({positions: [{str: 2, fret: 5}], duration: "h"})
+                new Cubee.MusicScore.TabNote({positions: [{str: 3, fret: 7, iddb: 1, clickCallBack: functionClickOnNote}], duration: "q"})
+                , new Cubee.MusicScore.TabNote({positions: [{str: 2, fret: 10, iddb: 2, clickCallBack: functionClickOnNote}, {str: 3, fret: 9, iddb: 3, clickCallBack: functionClickOnNote}], duration: "q"}).addModifier(new Vex.Flow.Bend("Full"), 1)
+                , new Cubee.MusicScore.TabNote({positions: [{str: 2, fret: 5}, {str: 1, fret: 6, clickCallBack: functionClickOnNote}], duration: "h"}).addModifier(new Vex.Flow.Vibrato().setHarsh(true).setVibratoWidth(70), 0)
+				, new Cubee.MusicScore.TabNote({positions: [{str: 1, fret: 6, clickCallBack: functionClickOnNote}], duration: "q"}).addModifier(new Vex.Flow.Vibrato().setHarsh(true).setVibratoWidth(70), 0)
+				, new Cubee.MusicScore.TabNote({positions: [{str: 2, fret: 5}], duration: "h"})
             ];
 
            Vex.Flow.Formatter.FormatAndDraw(ctx, tabstave, notes);
