@@ -1,7 +1,22 @@
 <?php
 	header('Content-Type: application/json');
-	//print_r($_REQUEST);
-	//print_r(fread(__input));
+	$postdata = file_get_contents("php://input");
+	$postArray = array();
+	parse_str($postdata, $postArray);
+	print_r($postArray);
+	$orderBySql = '';
+	$pageNumber = 1;
+	if(isset($postArray['order'])){
+		$orderDirection = 'ASC';
+		if(1 == $postArray['order']['orderValue']){
+			$orderDirection = 'DESC';
+		}
+		$orderBySql = " ORDER BY {$postArray['order']['fieldId']} {$orderDirection}";
+	}
+	if(isset($postArray['pageNum'])){
+		$pageNumber = $postArray['pageNum'];
+	}
+	//die($orderBySql);
 	$data = array();
 	$data['total-page-num'] = 4;
 	for($i=0; $i<10;$i++){
