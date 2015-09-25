@@ -1,9 +1,9 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<title>Testing</title>
-	<script src="lib.js"></script>
-	<script src="wrapper.js"></script>
+	<title>Testing Chart</title>
+	<script>var Cubee = {};</script>
+	<script src="js/bin/cubee.min.js"></script>
 	<style>
 		#div_g { position: absolute; left: 20px; right: 100px; top: 100px; bottom: 10px; }
 		.center {text-align: center;}
@@ -12,6 +12,7 @@
 </head>
 <body><h1>Body</h1>
 	
+	<div class="center"><div id="chart-timeline"></div></div>
 	<div class="center"><div id="chart-legend"></div></div>
 	<div id="div_g"></div>
 	
@@ -93,7 +94,7 @@
 			customBars: true,
 			/*labels: ['Période', 'Historique', 'Prévision'],*/
 			connectSeparatedPoints: true,
-			labelsDiv: document.getElementById('chart-legend')
+			chartLegend: new Cubee.CubeeChartLegend({globalDiv: document.getElementById('chart-legend')})
 		});
 	</script>
 	

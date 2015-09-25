@@ -609,7 +609,7 @@ Cubee.MusicScore.Formatter = (function() {
     formatToStave: function(voices, stave, options) {
 		
       var justifyWidth = stave.getNoteEndX() - stave.getNoteStartX() - 10;
-      L("Formatting voices to width: ", justifyWidth);
+      //L("Formatting voices to width: ", justifyWidth);
       var opts = {context: stave.getContext()};
       Vex.Merge(opts, options);
 	    
