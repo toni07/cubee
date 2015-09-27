@@ -3,16 +3,22 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<title>Testing Chart</title>
 	<script>var Cubee = {};</script>
+	<!--
+	<script>var Cubee = {};</script>
 	<script src="js/bin/cubee.min.js"></script>
+	-->
+	<script src="js/cubee/chart/CubeeChartDyGraphs.js"></script>
+	<script src="js/cubee/chart/CubeeChartLegend.js"></script>
+	<script src="js/cubee/chart/CubeeChartWrapper.js"></script>
 	<style>
-		#div_g { position: absolute; left: 20px; right: 100px; top: 100px; bottom: 10px; }
+		#div_g { position: absolute; left: 20px; right: 100px; top: 200px; bottom: 10px; }
 		.center {text-align: center;}
 		.center>div {display: inline-block;}
 	</style>
 </head>
 <body><h1>Body</h1>
 	
-	<div class="center"><div id="chart-timeline"></div></div>
+	<div class="centerNo"><div id="chart-timeline" style="position:relative;"></div></div>
 	<div class="center"><div id="chart-legend"></div></div>
 	<div id="div_g"></div>
 	
