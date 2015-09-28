@@ -556,6 +556,7 @@ Dygraph.prototype.__init__ = function(a, dataArray, chartOptions){
 	}
 	this.isUsingExcanvas_=typeof(G_vmlCanvasManager)!="undefined";
 	this.chartLegend = chartOptions.chartLegend;
+	this.domElemTimeline = chartOptions.domElemTimeline;
 	this.maindiv_=a;
 	this.file_ = dataArray;
 	this.rollPeriod_= chartOptions.rollPeriod||Dygraph.DEFAULT_ROLL_PERIOD;
@@ -2112,8 +2113,10 @@ d=function(s,h,r){
 		};
 		
 		a.prototype.addToGraph_=function(){
-			//var b=this.graphDiv_=this.dygraph_.graphDiv;
-			var b = this.graphDiv_ = document.getElementById('chart-timeline');
+			var b = this.graphDiv_=this.dygraph_.graphDiv;
+			if(null != this.dygraph_.domElemTimeline){
+				b = this.graphDiv_ = this.dygraph_.domElemTimeline;
+			}
 			b.appendChild(this.bgcanvas_);
 			b.appendChild(this.fgcanvas_);
 			b.appendChild(this.leftZoomHandle_);
@@ -2141,8 +2144,11 @@ d=function(s,h,r){
 		};
 		
 		a.prototype.resize_=function(){
+			var me = this;
 			function d(e,f){
-				//e.style.top=f.y+"px";
+				if(null == me.dygraph_.domElemTimeline){
+					e.style.top=f.y+"px";
+				}
 				e.style.left=f.x+"px";
 				e.width=f.w;
 				e.height=f.h;
@@ -2171,8 +2177,10 @@ d=function(s,h,r){
 		
 			this.bgcanvas_=Dygraph.createCanvas();
 			this.bgcanvas_.className="dygraph-rangesel-bgcanvas";
-			//this.bgcanvas_.style.position="absolute";
-			this.bgcanvas_.style.position = 'relative';
+			this.bgcanvas_.style.position="absolute";
+			if(null != this.dygraph_.domElemTimeline){
+				this.bgcanvas_.style.position = 'relative';
+			}
 			this.bgcanvas_.style.zIndex=9;
 			this.bgcanvas_ctx_=Dygraph.getContext(this.bgcanvas_);
 			
@@ -2200,7 +2208,6 @@ d=function(s,h,r){
 			var b = new Image();
 			b.className="dygraph-rangesel-zoomhandle lefthandle";
 			b.style.position="absolute";
-			//b.style.position = 'relative';
 			b.style.zIndex=10;
 			b.style.visibility="hidden";
 			b.style.cursor="col-resize";
@@ -2332,11 +2339,12 @@ d=function(s,h,r){
 				var d=Math.max(this.canvasRect_.y,this.canvasRect_.y+(this.canvasRect_.h-this.leftZoomHandle_.height)/2);
 				var g=this.leftZoomHandle_.width/2;
 				this.leftZoomHandle_.style.left=(i-g)+"px";
-				//this.leftZoomHandle_.style.top = d +"px";
-				this.leftZoomHandle_.style.top = '9px';
+				this.leftZoomHandle_.style.top = d +"px";
+				if(null != this.dygraph_.domElemTimeline){
+					this.leftZoomHandle_.style.top = '9px';
+				}
 				this.rightZoomHandle_.style.left=(e-g)+"px";
 				this.rightZoomHandle_.style.top=this.leftZoomHandle_.style.top;
-				//this.rightZoomHandle_.style.top = '1px';
 				this.leftZoomHandle_.style.visibility="visible";
 				this.rightZoomHandle_.style.visibility="visible";
 			};

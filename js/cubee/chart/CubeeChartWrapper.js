@@ -32,6 +32,7 @@ var DtpDyGraph = {
 			legendHeight: 100,
 			connectSeparatedPoints: true,	// connecte les points séparés d'un graphe 
 			strokeWidth: 1,
+			domElemTimeline: document.getElementById('chart-timeline'),
 			interactionModel: {			
 			
 				mousedown: function(event, g, context){
