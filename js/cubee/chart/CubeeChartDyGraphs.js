@@ -1880,7 +1880,12 @@ c.prototype.layout=function(k){
 		m.appendChild(this.title_div_)
 	}
 		if(i.getOption("xlabel")){
-			var j=k.reserveSpaceBottom(i.getOption("xLabelHeight"));this.xlabel_div_=b(j);this.xlabel_div_.style.textAlign="center";this.xlabel_div_.style.fontSize=(i.getOption("xLabelHeight")-2)+"px";var f=document.createElement("div");
+			var j=k.reserveSpaceBottom(i.getOption("xLabelHeight"));
+			if(null != i.domElemTimeline){
+				j.y = j.y - 40;		//modif aep
+			}
+			this.xlabel_div_=b(j);
+			this.xlabel_div_.style.textAlign="center";this.xlabel_div_.style.fontSize=(i.getOption("xLabelHeight")-2)+"px";var f=document.createElement("div");
 			f.className="dygraph-label dygraph-xlabel";
 			f.innerHTML=i.getOption("xlabel");this.xlabel_div_.appendChild(f);
 			m.appendChild(this.xlabel_div_)
