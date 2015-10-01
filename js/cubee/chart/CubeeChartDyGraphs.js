@@ -1782,18 +1782,37 @@ b.resetZoom()
 
 Dygraph.DEFAULT_ATTRS.interactionModel=Dygraph.Interaction.defaultModel;Dygraph.defaultInteractionModel=Dygraph.Interaction.defaultModel;
 Dygraph.endZoom=Dygraph.Interaction.endZoom;
-Dygraph.moveZoom=Dygraph.Interaction.moveZoom;Dygraph.startZoom=Dygraph.Interaction.startZoom;Dygraph.endPan=Dygraph.Interaction.endPan;Dygraph.movePan=Dygraph.Interaction.movePan;Dygraph.startPan=Dygraph.Interaction.startPan;Dygraph.Interaction.nonInteractiveModel_={mousedown:function(c,b,a){a.initializeMouseDown(c,b,a)},mouseup:function(c,b,a){a.dragEndX=b.dragGetX_(c,a);a.dragEndY=b.dragGetY_(c,a);var e=Math.abs(a.dragEndX-a.dragStartX);var d=Math.abs(a.dragEndY-a.dragStartY);if(e<2&&d<2&&b.lastx_!==undefined&&b.lastx_!=-1){Dygraph.Interaction.treatMouseOpAsClick(b,c,a)}}};Dygraph.Interaction.dragIsPanInteractionModel={mousedown:function(c,b,a){a.initializeMouseDown(c,b,a);Dygraph.startPan(c,b,a)},mousemove:function(c,b,a){if(a.isPanning){Dygraph.movePan(c,b,a)}},mouseup:function(c,b,a){if(a.isPanning){Dygraph.endPan(c,b,a)}}};"use strict";Dygraph.TickList=undefined;Dygraph.Ticker=undefined;Dygraph.numericLinearTicks=function(d,c,i,g,f,h){var e=function(a){if(a==="logscale"){return false}return g(a)};return Dygraph.numericTicks(d,c,i,e,f,h)};Dygraph.numericTicks=function(F,E,u,p,d,q){var z=(p("pixelsPerLabel"));var G=[];var C,A,t,y;if(q){for(C=0;C<q.length;C++){G.push({v:q[C]})}}else{if(p("logscale")){y=Math.floor(u/z);var l=Dygraph.binarySearch(F,Dygraph.PREFERRED_LOG_TICK_VALUES,1);var H=Dygraph.binarySearch(E,Dygraph.PREFERRED_LOG_TICK_VALUES,-1);if(l==-1){l=0}if(H==-1){H=Dygraph.PREFERRED_LOG_TICK_VALUES.length-1}var s=null;if(H-l>=y/4){for(var r=H;r>=l;r--){var m=Dygraph.PREFERRED_LOG_TICK_VALUES[r];var k=Math.log(m/F)/Math.log(E/F)*u;var D={v:m};if(s===null){s={tickValue:m,pixel_coord:k}}else{if(Math.abs(k-s.pixel_coord)>=z){s={tickValue:m,pixel_coord:k}}else{D.label=""}}G.push(D)}G.reverse()}}if(G.length===0){var g=p("labelsKMG2");var n,h;if(g){n=[1,2,4,8,16,32,64,128,256];h=16}else{n=[1,2,5,10,20,50,100];h=10}var w=Math.ceil(u/z);var o=Math.abs(E-F)/w;var v=Math.floor(Math.log(o)/Math.log(h));var f=Math.pow(h,v);var I,x,c,e;for(A=0;A<n.length;A++){I=f*n[A];x=Math.floor(F/I)*I;c=Math.ceil(E/I)*I;y=Math.abs(c-x)/I;e=u/y;if(e>z){break}}if(x>c){I*=-1}for(C=0;C<y;C++){t=x+C*I;G.push({v:t})}}}
+Dygraph.moveZoom=Dygraph.Interaction.moveZoom;Dygraph.startZoom=Dygraph.Interaction.startZoom;Dygraph.endPan=Dygraph.Interaction.endPan;Dygraph.movePan=Dygraph.Interaction.movePan;Dygraph.startPan=Dygraph.Interaction.startPan;Dygraph.Interaction.nonInteractiveModel_={mousedown:function(c,b,a){a.initializeMouseDown(c,b,a)},mouseup:function(c,b,a){a.dragEndX=b.dragGetX_(c,a);a.dragEndY=b.dragGetY_(c,a);var e=Math.abs(a.dragEndX-a.dragStartX);var d=Math.abs(a.dragEndY-a.dragStartY);if(e<2&&d<2&&b.lastx_!==undefined&&b.lastx_!=-1){Dygraph.Interaction.treatMouseOpAsClick(b,c,a)}}};Dygraph.Interaction.dragIsPanInteractionModel={mousedown:function(c,b,a){a.initializeMouseDown(c,b,a);Dygraph.startPan(c,b,a)},mousemove:function(c,b,a){if(a.isPanning){Dygraph.movePan(c,b,a)}},mouseup:function(c,b,a){if(a.isPanning){Dygraph.endPan(c,b,a)}}};"use strict";Dygraph.TickList=undefined;Dygraph.Ticker=undefined;Dygraph.numericLinearTicks=function(d,c,i,g,f,h){var e=function(a){if(a==="logscale"){return false}return g(a)};return Dygraph.numericTicks(d,c,i,e,f,h)};
 
-
-var B=(p("axisLabelFormatter"));
-
-for(C=0;C<G.length;C++){
-	if(G[C].label!==undefined){
-		continue
+Dygraph.numericTicks=function(F,E,u,p,d,q){
+	var z=(p("pixelsPerLabel"));var G=[];var C,A,t,y;if(q){for(C=0;C<q.length;C++){G.push({v:q[C]})}}else{if(p("logscale")){y=Math.floor(u/z);var l=Dygraph.binarySearch(F,Dygraph.PREFERRED_LOG_TICK_VALUES,1);var H=Dygraph.binarySearch(E,Dygraph.PREFERRED_LOG_TICK_VALUES,-1);if(l==-1){l=0}if(H==-1){H=Dygraph.PREFERRED_LOG_TICK_VALUES.length-1}var s=null;if(H-l>=y/4){for(var r=H;r>=l;r--){var m=Dygraph.PREFERRED_LOG_TICK_VALUES[r];var k=Math.log(m/F)/Math.log(E/F)*u;var D={v:m};if(s===null){s={tickValue:m,pixel_coord:k}}else{if(Math.abs(k-s.pixel_coord)>=z){s={tickValue:m,pixel_coord:k}}else{D.label=""}}G.push(D)}G.reverse()}}
+	if(G.length===0){
+		var g=p("labelsKMG2");var n,h;if(g){n=[1,2,4,8,16,32,64,128,256];h=16}else{n=[1,2,5,10,20,50,100];h=10}var w=Math.ceil(u/z);var o=Math.abs(E-F)/w;var v=Math.floor(Math.log(o)/Math.log(h));
+		var f=Math.pow(h,v);var I,x,c,e;for(A=0;A<n.length;A++){I=f*n[A];x=Math.floor(F/I)*I;c=Math.ceil(E/I)*I;y=Math.abs(c-x)/I;e=u/y;
+		if(e>z){break}}
+		if(x>c){
+			I*=-1
+		}
+		if(!d.drawAllTicksOnYAxis){
+			for(C=0;C<y;C++){
+				t=x+C*I;G.push({v:t})
+			}
+		}
+		else{
+			for(C=0; C<d.series.length; C++){
+				G.push({v:C});
+			}
+		}	
 	}
-	G[C].label=B(G[C].v,0,p,d);
-}
-return G
+	}
+	var B=(p("axisLabelFormatter"));
+	for(C=0;C<G.length;C++){
+		if(G[C].label!==undefined){
+			continue
+		}
+		G[C].label=B(G[C].v,0,p,d);
+	}
+	return G
 };
 Dygraph.dateTicker=function(e,c,i,g,f,h){var d=Dygraph.pickDateTickGranularity(e,c,i,g);if(d>=0){return Dygraph.getDateAxis(e,c,d,g,f)}else{return[]}};Dygraph.SECONDLY=0;Dygraph.TWO_SECONDLY=1;Dygraph.FIVE_SECONDLY=2;Dygraph.TEN_SECONDLY=3;Dygraph.THIRTY_SECONDLY=4;Dygraph.MINUTELY=5;Dygraph.TWO_MINUTELY=6;Dygraph.FIVE_MINUTELY=7;Dygraph.TEN_MINUTELY=8;Dygraph.THIRTY_MINUTELY=9;Dygraph.HOURLY=10;Dygraph.TWO_HOURLY=11;Dygraph.SIX_HOURLY=12;Dygraph.DAILY=13;Dygraph.WEEKLY=14;Dygraph.MONTHLY=15;Dygraph.QUARTERLY=16;Dygraph.BIANNUAL=17;Dygraph.ANNUAL=18;Dygraph.DECADAL=19;Dygraph.CENTENNIAL=20;Dygraph.NUM_GRANULARITIES=21;Dygraph.SHORT_SPACINGS=[];Dygraph.SHORT_SPACINGS[Dygraph.SECONDLY]=1000*1;Dygraph.SHORT_SPACINGS[Dygraph.TWO_SECONDLY]=1000*2;Dygraph.SHORT_SPACINGS[Dygraph.FIVE_SECONDLY]=1000*5;Dygraph.SHORT_SPACINGS[Dygraph.TEN_SECONDLY]=1000*10;Dygraph.SHORT_SPACINGS[Dygraph.THIRTY_SECONDLY]=1000*30;Dygraph.SHORT_SPACINGS[Dygraph.MINUTELY]=1000*60;Dygraph.SHORT_SPACINGS[Dygraph.TWO_MINUTELY]=1000*60*2;Dygraph.SHORT_SPACINGS[Dygraph.FIVE_MINUTELY]=1000*60*5;Dygraph.SHORT_SPACINGS[Dygraph.TEN_MINUTELY]=1000*60*10;Dygraph.SHORT_SPACINGS[Dygraph.THIRTY_MINUTELY]=1000*60*30;Dygraph.SHORT_SPACINGS[Dygraph.HOURLY]=1000*3600;Dygraph.SHORT_SPACINGS[Dygraph.TWO_HOURLY]=1000*3600*2;Dygraph.SHORT_SPACINGS[Dygraph.SIX_HOURLY]=1000*3600*6;Dygraph.SHORT_SPACINGS[Dygraph.DAILY]=1000*86400;Dygraph.SHORT_SPACINGS[Dygraph.WEEKLY]=1000*604800;Dygraph.LONG_TICK_PLACEMENTS=[];Dygraph.LONG_TICK_PLACEMENTS[Dygraph.MONTHLY]={months:[0,1,2,3,4,5,6,7,8,9,10,11],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.QUARTERLY]={months:[0,3,6,9],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.BIANNUAL]={months:[0,6],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.ANNUAL]={months:[0],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.DECADAL]={months:[0],year_mod:10};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.CENTENNIAL]={months:[0],year_mod:100};Dygraph.PREFERRED_LOG_TICK_VALUES=function(){var c=[];for(var b=-39;b<=39;b++){var a=Math.pow(10,b);for(var d=1;d<=9;d++){var e=a*d;c.push(e)}}return c}();Dygraph.pickDateTickGranularity=function(d,c,j,h){var g=(h("pixelsPerLabel"));for(var f=0;f<Dygraph.NUM_GRANULARITIES;f++){var e=Dygraph.numDateTicks(d,c,f);if(j/e>=g){return f}}return -1};Dygraph.numDateTicks=function(e,b,f){if(f<Dygraph.MONTHLY){var g=Dygraph.SHORT_SPACINGS[f];return Math.floor(0.5+1*(b-e)/g)}else{var d=Dygraph.LONG_TICK_PLACEMENTS[f];var c=365.2524*24*3600*1000;var a=1*(b-e)/c;return Math.floor(0.5+1*a*d.months.length/d.year_mod)}};Dygraph.getDateAxis=function(p,l,a,n,z){var w=(n("axisLabelFormatter"));var C=[];var m;if(a<Dygraph.MONTHLY){var c=Dygraph.SHORT_SPACINGS[a];var y=c/1000;var A=new Date(p);Dygraph.setDateSameTZ(A,{ms:0});var h;if(y<=60){h=A.getSeconds();Dygraph.setDateSameTZ(A,{s:h-h%y})}else{Dygraph.setDateSameTZ(A,{s:0});y/=60;if(y<=60){h=A.getMinutes();Dygraph.setDateSameTZ(A,{m:h-h%y})}else{Dygraph.setDateSameTZ(A,{m:0});y/=60;if(y<=24){h=A.getHours();A.setHours(h-h%y)}else{A.setHours(0);y/=24;if(y==7){A.setDate(A.getDate()-A.getDay())}}}}p=A.getTime();var B=new Date(p).getTimezoneOffset();var e=(c>=Dygraph.SHORT_SPACINGS[Dygraph.TWO_HOURLY]);for(m=p;m<=l;m+=c){A=new Date(m);if(e&&A.getTimezoneOffset()!=B){var k=A.getTimezoneOffset()-B;m+=k*60*1000;A=new Date(m);B=A.getTimezoneOffset();if(new Date(m+c).getTimezoneOffset()!=B){m+=c;A=new Date(m);B=A.getTimezoneOffset()}}C.push({v:m,label:w(A,a,n,z)})}}else{var f;var r=1;if(a<Dygraph.NUM_GRANULARITIES){f=Dygraph.LONG_TICK_PLACEMENTS[a].months;r=Dygraph.LONG_TICK_PLACEMENTS[a].year_mod}else{Dygraph.warn("Span of dates is too long")}var v=new Date(p).getFullYear();var q=new Date(l).getFullYear();var b=Dygraph.zeropad;for(var u=v;u<=q;u++){if(u%r!==0){continue}for(var s=0;s<f.length;s++){var o=u+"/"+b(1+f[s])+"/01";m=Dygraph.dateStrToMillis(o);if(m<p||m>l){continue}C.push({v:m,label:w(new Date(m),a,n,z)})}}}return C};if(Dygraph&&Dygraph.DEFAULT_ATTRS&&Dygraph.DEFAULT_ATTRS.axes&&Dygraph.DEFAULT_ATTRS.axes["x"]&&Dygraph.DEFAULT_ATTRS.axes["y"]&&Dygraph.DEFAULT_ATTRS.axes["y2"]){
 	Dygraph.DEFAULT_ATTRS.axes["x"]["ticker"]=Dygraph.dateTicker;Dygraph.DEFAULT_ATTRS.axes["y"]["ticker"]=Dygraph.numericTicks;Dygraph.DEFAULT_ATTRS.axes["y2"]["ticker"]=Dygraph.numericTicks
