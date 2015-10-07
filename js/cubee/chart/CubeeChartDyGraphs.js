@@ -2341,9 +2341,25 @@ d=function(s,h,r){
 			o.rightZoomHandle_.style.left=(y-A)+"px";
 			
 			o.drawInteractiveLayer_();
-			if(g){c()}return true};q=function(y){if(!d){return false}d=false;Dygraph.removeEvent(i,"mousemove",t);
-			Dygraph.removeEvent(i,"mouseup",q);if(!g){c()}return true};c=function(){try{o.isChangingRange_=true;o.dygraph_.dateWindow_=p(o.getZoomHandleStatus_());
-			o.dygraph_.drawGraph_(false)}finally{o.isChangingRange_=false}};l=function(y){if(s||d){return}var z=h(y)?"move":"default";if(z!=o.fgcanvas_.style.cursor){o.fgcanvas_.style.cursor=z}};
+			if(g){c()}return true};
+			q=function(y){
+				if(!d){return false}d=false;Dygraph.removeEvent(i,"mousemove",t);
+			Dygraph.removeEvent(i,"mouseup",q);if(!g){c()}return true
+			};
+			c=function(){
+				try{
+					o.isChangingRange_=true;
+					o.dygraph_.dateWindow_=p(o.getZoomHandleStatus_());
+					o.dygraph_.drawGraph_(false);
+					if(null != o.dygraph_.attr_('moveTimeLineCallback')){
+						o.dygraph_.attr_('moveTimeLineCallback')(o.dygraph_.dateWindow_[0], o.dygraph_.dateWindow_[1]);
+					}
+				}
+				finally{
+					o.isChangingRange_=false
+				}
+			};
+			l=function(y){if(s||d){return}var z=h(y)?"move":"default";if(z!=o.fgcanvas_.style.cursor){o.fgcanvas_.style.cursor=z}};
 			e=function(y){if(y.type=="touchstart"&&y.targetTouches.length==1){if(f(y.targetTouches[0])){Dygraph.cancelEvent(y)}}else{if(y.type=="touchmove"&&y.targetTouches.length==1){if(r(y.targetTouches[0])){
 			Dygraph.cancelEvent(y)}}else{j(y)}}};n=function(y){if(y.type=="touchstart"&&y.targetTouches.length==1){if(x(y.targetTouches[0])){Dygraph.cancelEvent(y)}}else{if(y.type=="touchmove"&&y.targetTouches.length==1){
 			if(t(y.targetTouches[0])){Dygraph.cancelEvent(y)}}else{q(y)}}};m=function(B,A){var z=["touchstart","touchend","touchmove","touchcancel"];for(var y=0;y<z.length;y++){o.dygraph_.addAndTrackEvent(B,z[y],A)}};
