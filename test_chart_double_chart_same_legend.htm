@@ -2,10 +2,11 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	<title>Testing</title>
-	<script src="lib.js"></script>
-	<script src="wrapper.js"></script>
-	<script src="CubeeChartLegend.js"></script>
-	<script src="CubeeChartGroup.js"></script>
+	<script>var Cubee = {};</script>
+	<script src="/js/cubee/chart/CubeeChartDyGraphs.js"></script>
+	<script src="/js/cubee/chart/CubeeChartWrapper.js"></script>
+	<script src="/js/cubee/chart/CubeeChartLegend.js"></script>
+	<script src="/js/cubee/chart/CubeeChartGroup.js"></script>
 	<style>
 		#div-chart-1 { position: absolute; left: 20px; right: 100px; top: 100px; bottom: 50%; }
 		#div-chart-2 { position: absolute; left: 20px; right: 100px; top: 50%; bottom: 10px; }
@@ -88,7 +89,7 @@
 			});
 		}
 		
-		var chartLegend = new CubeeChartLegend({
+		var chartLegend = new Cubee.CubeeChartLegend({
 			globalDiv: document.getElementById('chart-legend')
 		});
 		var chart1 = displayChart('div-chart-1', [{
@@ -119,7 +120,7 @@
 					unitLabel: 'kg'
 				}], chartLegend);
 		var chartInstanceList = [chart1, chart2];
-		new CubeeChartGroup(chartInstanceList, {});
+		new Cubee.ChartGroup(chartInstanceList, {});
 	</script>
 	
 </body>
