@@ -24,6 +24,9 @@ Cubee.CubeeChartColumn = function(divElem, options){
 			+ '			<rect x="90" y="350" width="30" height="100" style="fill:rgb(240,0,0);" />'					//data
 			+ '			<rect x="170" y="280" width="30" height="170" style="fill:rgb(200,150,50);" />'
 			+ '			<rect x="250" y="100" width="30" height="350" style="fill:rgb(10,10,255);" />'
+			+ '			<rect x="90" y="400" width="30" height="50" style="fill:rgb(50,240,50);" />'				//small rectangles
+			+ '			<rect x="170" y="400" width="30" height="50" style="fill:rgb(50,240,50);" />'
+			+ '			<rect x="250" y="400" width="30" height="50" style="fill:rgb(50,240,50);" />'
 			+ '			<line x1="105" y1="'+ xAxisHeightPosition +'" x2="105" y2="458" style="stroke:rgb(50,50,50);stroke-width:2;" />'	//x-ticks	
 			+ '			<line x1="185" y1="'+ xAxisHeightPosition +'" x2="185" y2="458" style="stroke:rgb(50,50,50);stroke-width:2;" />'	//x-ticks	
 			+ '			<line x1="265" y1="'+ xAxisHeightPosition +'" x2="265" y2="458" style="stroke:rgb(50,50,50);stroke-width:2;" />'	//x-ticks	
