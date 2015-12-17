@@ -1,0 +1,36 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Testing</title>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script>var Cubee = {};</script>
+	<script src="js/cubee/chart/CubeeChartColumn.js"></script>
+</head>
+<body>
+	<h1>Body</h1>
+	<div id="chart"></div>
+	
+	<script>
+		var chartData = [
+			{
+				value: 50,
+				color: '#ff00f0'
+			},
+			{
+				value: 10,
+				color: '#0000f0'
+			},
+			{
+				value: 15,
+				color: '#ffb2f0'
+			},
+			{
+				value: 25,
+				color: '#a3b2f0'
+			}
+		];
+		new Cubee.CubeeChartColumn(document.getElementById('chart'), chartData);
+	</script>
+	
+</body>
+</html>
