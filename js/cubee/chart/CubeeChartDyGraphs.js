@@ -206,7 +206,8 @@ DygraphLayout.prototype._evaluateLineCharts = function(){		//aep: interesting 2
 	}
 };
 
-DygraphLayout.parseFloat_=function(a){if(a===null){return NaN}return a};DygraphLayout.prototype._evaluateLineTicks=function(){var d,c,b,f;this.xticks=[];for(d=0;d<this.xTicks_.length;d++){c=this.xTicks_[d];b=c.label;f=this.xscale*(c.v-this.minxval);if((f>=0)&&(f<=1)){this.xticks.push([f,b])}}this.yticks=[];for(d=0;d<this.yAxes_.length;d++){var e=this.yAxes_[d];for(var a=0;a<e.ticks.length;a++){c=e.ticks[a];b=c.label;f=this.dygraph_.toPercentYCoord(c.v,d);if((f>=0)&&(f<=1)){this.yticks.push([d,f,b])}}}};DygraphLayout.prototype._evaluateAnnotations=function(){var d;var g={};for(d=0;d<this.annotations.length;d++){var b=this.annotations[d];g[b.xval+","+b.series]=b}this.annotated_points=[];if(!this.annotations||!this.annotations.length){return}for(var h=0;h<this.points.length;h++){var e=this.points[h];for(d=0;d<e.length;d++){var f=e[d];var c=f.xval+","+f.name;if(c in g){f.annotation=g[c];this.annotated_points.push(f)}}}};DygraphLayout.prototype.removeAllDatasets=function(){delete this.points;delete this.setNames;delete this.setPointsLengths;delete this.setPointsOffsets;this.points=[];this.setNames=[];this.setPointsLengths=[];this.setPointsOffsets=[]};"use strict";var DygraphCanvasRenderer=function(d,c,b,e){this.dygraph_=d;this.layout=e;this.element=c;this.elementContext=b;this.container=this.element.parentNode;this.height=this.element.height;this.width=this.element.width;if(!this.isIE&&!(DygraphCanvasRenderer.isSupported(this.element))){throw"Canvas is not supported."}this.area=e.getPlotArea();this.container.style.position="relative";this.container.style.width=this.width+"px";if(this.dygraph_.isUsingExcanvas_){this._createIEClipArea()}else{if(!Dygraph.isAndroid()){var a=this.dygraph_.canvas_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip();a=this.dygraph_.hidden_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip()}}};
+DygraphLayout.parseFloat_=function(a){if(a===null){return NaN}return a};DygraphLayout.prototype._evaluateLineTicks=function(){var d,c,b,f;this.xticks=[];for(d=0;d<this.xTicks_.length;d++){c=this.xTicks_[d];b=c.label;f=this.xscale*(c.v-this.minxval);if((f>=0)&&(f<=1)){this.xticks.push([f,b])}}this.yticks=[];for(d=0;d<this.yAxes_.length;d++){var e=this.yAxes_[d];for(var a=0;a<e.ticks.length;a++){c=e.ticks[a];b=c.label;f=this.dygraph_.toPercentYCoord(c.v,d);if((f>=0)&&(f<=1)){this.yticks.push([d,f,b])}}}};DygraphLayout.prototype._evaluateAnnotations=function(){var d;var g={};for(d=0;d<this.annotations.length;d++){var b=this.annotations[d];g[b.xval+","+b.series]=b}this.annotated_points=[];if(!this.annotations||!this.annotations.length){return}for(var h=0;h<this.points.length;h++){var e=this.points[h];for(d=0;d<e.length;d++){var f=e[d];var c=f.xval+","+f.name;if(c in g){f.annotation=g[c];this.annotated_points.push(f)}}}};DygraphLayout.prototype.removeAllDatasets=function(){delete this.points;
+delete this.setNames;delete this.setPointsLengths;delete this.setPointsOffsets;this.points=[];this.setNames=[];this.setPointsLengths=[];this.setPointsOffsets=[]};"use strict";var DygraphCanvasRenderer=function(d,c,b,e){this.dygraph_=d;this.layout=e;this.element=c;this.elementContext=b;this.container=this.element.parentNode;this.height=this.element.height;this.width=this.element.width;if(!this.isIE&&!(DygraphCanvasRenderer.isSupported(this.element))){throw"Canvas is not supported."}this.area=e.getPlotArea();this.container.style.position="relative";this.container.style.width=this.width+"px";if(this.dygraph_.isUsingExcanvas_){this._createIEClipArea()}else{if(!Dygraph.isAndroid()){var a=this.dygraph_.canvas_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip();a=this.dygraph_.hidden_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip()}}};
 
 DygraphCanvasRenderer.prototype.attr_=function(a,b){return this.dygraph_.attr_(a,b)};
 
@@ -337,20 +338,30 @@ DygraphCanvasRenderer.prototype._updatePoints=function(){
 	}
 };
 
-DygraphCanvasRenderer.prototype._renderLineChart=function(g,u){
-	var h=u||this.elementContext;var n;var a=this.layout.points;var s=this.layout.setNames;var b;
-	this.colors=this.dygraph_.colorsMap_;
-	var o=this.attr_("plotter");
-	var f=o;
-	if(!Dygraph.isArrayLike(f)){f=[f]}var c={};
-	for(n=0;n<s.length;n++){
-		b=s[n];var t=this.attr_("plotter",b);if(t==o){continue}c[b]=t
+DygraphCanvasRenderer.prototype._renderLineChart = function(g, u){
+	
+	var h=u||this.elementContext;
+	var n;
+	var a=this.layout.points;
+	var s=this.layout.setNames;
+	var b;
+	this.colors = this.dygraph_.colorsMap_;
+	var o = this.attr_("plotter");
+	var f = o;
+	if(!Dygraph.isArrayLike(f)){
+		f=[f]
+	}
+	var c = {};
+	for(n=0; n<s.length; n++){
+		b = s[n];
+		var t = this.attr_("plotter",b);
+		if(t==o){continue}c[b]=t
 	}
 	for(n=0;n<f.length;n++){
-		var r=f[n];
-		var q=(n==f.length-1);
-		for(var l=0;l<a.length;l++){
-			b=s[l];
+		var r = f[n];
+		var q = (n==f.length-1);
+		for(var l = 0;l<a.length;l++){
+			b = s[l];
 			if(g&&b!=g){continue}
 			var m=a[l];
 			var e=r;
@@ -360,11 +371,14 @@ DygraphCanvasRenderer.prototype._renderLineChart=function(g,u){
 			var k=this.colors[b];
 			var d=this.dygraph_.getOption("strokeWidth",b);
 			h.save();
-			h.strokeStyle=k;
-			h.lineWidth=d;
+			h.strokeStyle = k;
+			h.lineWidth = d;
 			e({
 				points:m,
-				setName:b,drawingContext:h,color:k,strokeWidth:d,
+				setName:b,
+				drawingContext:h,
+				color:k,
+				strokeWidth:d,
 				dygraph:this.dygraph_,
 				axis:this.dygraph_.axisPropertiesForSeries(b),
 				plotArea:this.area,
@@ -403,8 +417,8 @@ DygraphCanvasRenderer._errorPlotter=function(s){
 	var c=NaN;
 	var d=[-1,-1];
 	var a=new RGBColorParser(n);
-	console.log('##s', s);
-	if(s.setName != 'Hypothèse climat tempéré'){	//TODO
+	var serieObj = s.dygraph.series[s.seriesIndex];
+	if(!serieObj.hasDoubleEnveloppe || !serieObj.hasEnveloppe){	//TODO
 		return;
 	}
 	
@@ -868,7 +882,20 @@ Dygraph.prototype.findClosestRow=function(a){
 };
 
 Dygraph.prototype.findClosestPoint=function(f,e){
-	var k=Infinity;var h,o,n,l,d,c,j;for(var b=this.layout_.points.length-1;b>=0;--b){var m=this.layout_.points[b];for(var g=0;g<m.length;++g){l=m[g];if(!Dygraph.isValidPoint(l)){continue}o=l.canvasx-f;n=l.canvasy-e;h=o*o+n*n;if(h<k){k=h;d=l;c=b;j=l.idx}}}var a=this.layout_.setNames[c];return{row:j,seriesName:a,point:d}
+	var k=Infinity;var h,o,n,l,d,c,j;
+	for(var b=this.layout_.points.length-1;b>=0;--b){
+		var m=this.layout_.points[b];
+		for(var g=0;g<m.length;++g){
+			l=m[g];
+			if(!Dygraph.isValidPoint(l)){continue}
+			o=l.canvasx-f;
+			n=l.canvasy-e;
+			h=o*o+n*n;
+			if(h<k){k=h;d=l;c=b;j=l.idx}
+		}
+	}
+	var a=this.layout_.setNames[c];
+	return{row:j,seriesName:a,point:d}
 };
 
 Dygraph.prototype.findStackedPoint=function(i,h){
@@ -1924,7 +1951,7 @@ Dygraph.Plugins.Annotations=(function(){
 				var h=F.numAxes();
 				for(D=0; D<I.yticks.length; D++){
 					E = I.yticks[D];
-					console.log('##E', E);
+					//console.log('##E', E);
 					if(typeof(E)=="function"){
 						return
 					}
