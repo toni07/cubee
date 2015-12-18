@@ -11,7 +11,7 @@ Cubee.CubeeChartCursor = function(divElem, options){
 		var valueList = {
 			min: 1000,
 			max: 8000,
-			value: 8600
+			value: 5000
 		};
 		var xRectLeftPosition = 90;
 		var rectWidth = 300;
