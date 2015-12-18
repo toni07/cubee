@@ -1,0 +1,112 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Testing Chart</title>
+	<script>var Cubee = {};</script>
+	<!--
+	<script>var Cubee = {};</script>
+	<script src="js/bin/cubee.min.js"></script>
+	-->
+	<script src="js/cubee/chart/CubeeChartDyGraphs.js"></script>
+	<script src="js/cubee/chart/CubeeChartLegend.js"></script>
+	<script src="js/cubee/chart/CubeeChartWrapper.js"></script>
+	<style>
+		#div_g { position: absolute; left: 20px; right: 100px; top: 200px; bottom: 10px; }
+		.center {text-align: center;}
+		.center>div {display: inline-block;}
+	</style>
+</head>
+<body><h1>Body</h1>
+	
+	<div class="centerNo"><div id="chart-timeline" style="position:relative;"></div></div>
+	<div class="center"><div id="chart-legend"></div></div>
+	<div id="div_g"></div>
+	
+	<script>
+		function getDataJSON(){
+			 return [{"history":100.16,"prevision":null,"observ_max":null,"timing":"2013-01-01","observ_min":null},
+				{"history":150.26,"prevision":150,"observ_max":150,"timing":"2013-02-10","observ_min":150},
+				{"history":null,"prevision":170,"observ_max":240.92,"timing":"2013-04-21","observ_min":160.96},
+				{"history":null,"prevision":200,"observ_max":350,"timing":"2013-04-28","observ_min":163},
+				{"history":null,"prevision":220,"observ_max":380,"timing":"2013-05-10","observ_min":164},
+				{"history":null,"prevision":270,"observ_max":460,"timing":"2013-05-17","observ_min":180},
+				{"history":null,"prevision":300,"observ_max":500,"timing":"2013-05-23","observ_min":200},
+				{"history":null,"prevision":1000,"observ_max":1500,"timing":"2014-01-01","observ_min":500}];
+		 };
+			   
+		 function getData(){
+			
+			var result = [];
+			var dataList = getDataJSON();
+			for(var i=0; i<dataList.length; i++){
+				var dataLine = dataList[i];
+				result.push(
+					[new Date(dataLine.timing)
+					, [null, dataLine.history, null]
+					, [dataLine.observ_min, dataLine.prevision, dataLine.observ_max]
+					]
+				);
+			}
+			return result;
+		 }
+		 
+		 var legendDomElement =  function(val, serie, serieIndex, graphObj){
+			var tmpVal = 'N/A';
+			if(null != val){
+				tmpVal = val.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+			}
+			var tmpDiv = document.createElement('span');
+			tmpDiv.style.cursor = 'pointer';
+			tmpDiv.innerHTML = '<span><span class="legend-square" style="background-color:'+ serie.color +  ';">&nbsp;&nbsp;&nbsp;&nbsp;</span> '  + serie.label + ': '+ tmpVal + ' '+ serie.unitLabel +' </span>&nbsp;';
+			tmpDiv.addEventListener('click', function(){
+				if(null == serie.visible){
+					serie.visible = true;
+				}
+				serie.visible = !serie.visible;
+				graphObj.setVisibility(serieIndex, serie.visible);
+			});
+			return tmpDiv;
+		};
+			
+		DtpDyGraph.dipslayChart('div_g', getData(), {
+			series: [{
+				color: '#00ff00',
+				label: 'Historique',
+				dataIndex: 1,
+				legendDomElement: legendDomElement,
+				unitLabel: 'kWh'
+			}, {
+				color: '#905D06',
+				label: 'Hypothèse climat tempéré',
+				dataIndex: 2,
+				legendDomElement: legendDomElement,
+				unitLabel: 'kWh'
+			}],
+			xAxisConfiguration: {
+				legendDomElement: function(val, dygraph){
+					var tmpDate = new Date(val);
+					var tmpDay = String('0' + tmpDate.getDate()).slice(-2);
+					var tmpMonth = String('0' + (tmpDate.getMonth() + 1)).slice(-2);
+					var tmpYear = tmpDate.getFullYear();
+					if(null == val){
+						tmpDay = 'xx';
+						tmpMonth = 'xx';
+						tmpYear = 'xxxx';
+					}
+					var tmpDiv = document.createElement('div');
+					tmpDiv.innerHTML = '<u>' + tmpDay + '/' + tmpMonth + '/' + tmpYear + '</u>';
+					tmpDiv.style.margin = 'auto';
+					tmpDiv.style.width = '10%';
+					return tmpDiv;
+				}
+			},
+			/*colors: ['#00ff00', '#ff0000'],*/
+			customBars: true,
+			/*labels: ['Période', 'Historique', 'Prévision'],*/
+			connectSeparatedPoints: true,
+			chartLegend: new Cubee.CubeeChartLegend({globalDiv: document.getElementById('chart-legend')})
+		});
+	</script>
+	
+</body>
+</html>

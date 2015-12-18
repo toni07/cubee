@@ -397,17 +397,29 @@ DygraphCanvasRenderer._errorPlotter=function(s){
 	var p=s.points;
 	//var q = Dygraph.createIterator(p,0,p.length,DygraphCanvasRenderer._getIteratorPredicate(r.getOption("connectSeparatedPoints")));
 	var q = Dygraph.createIterator(p,0,p.length,DygraphCanvasRenderer._getIteratorPredicate(false));	//modif aep: to display the entire enveloppe
+	var q2 = Dygraph.createIterator(p,0,p.length,DygraphCanvasRenderer._getIteratorPredicate(false));	//modif aep: to display the entire enveloppe
 	var j;
 	var h=NaN;
 	var c=NaN;
 	var d=[-1,-1];
 	var a=new RGBColorParser(n);
-	var u = "rgba(" + a.r + "," + a.g + "," + a.b + ", 0.2)"; //modif aep
-	m.fillStyle=u;
-	m.beginPath();
+	console.log('##s', s);
+	if(s.setName != 'Hypothèse climat tempéré'){	//TODO
+		return;
+	}
+	
+	//m.beginPath();	//put back to what it was if no need for different colors
 	var b=function(e){return(e===null||e===undefined||isNaN(e))};
+	
+	//bottom line
 	while(q.hasNext){
-		var l=q.next();
+		//var u = "rgba(" + a.r + "," + a.g + "," + a.b + ", 0.2)"; //modif aep
+		var u = "rgba(255, 0, 0, 0.2)"; //modif aep
+		//if(l.)
+		//console.log('##l', l);
+		m.fillStyle = u;
+		m.beginPath();
+		var l = q.next();
 		if((!i&&b(l.y))||(i&&!isNaN(c)&&b(c))){
 			//h=NaN;
 			//continue;		//modif aep: to display the entire enveloppe
@@ -417,24 +429,57 @@ DygraphCanvasRenderer._errorPlotter=function(s){
 			j=[l.y_bottom,l.y_top];c=l.y
 		}
 		else{
-			j=[l.y_bottom,l.y_top]
+			//j = [l.y_bottom, l.y_top];
+			j = [l.y, l.y_top];
 		}
-		j[0]=s.plotArea.h*j[0]+s.plotArea.y;
-		j[1]=s.plotArea.h*j[1]+s.plotArea.y;
+		j[0] = s.plotArea.h * j[0] + s.plotArea.y;
+		j[1] = s.plotArea.h * j[1] + s.plotArea.y;
 		if(!isNaN(h)){
 			if(i){
-				m.moveTo(h,d[0]);m.lineTo(l.canvasx,d[0]);m.lineTo(l.canvasx,d[1])
+				m.moveTo(h,d[0]);
+				m.lineTo(l.canvasx,d[0]);
+				m.lineTo(l.canvasx,d[1]);
 			}
 			else{
-				m.moveTo(h,d[0]);
-				m.lineTo(l.canvasx,j[0]);
-				m.lineTo(l.canvasx,j[1]);
-			}m.lineTo(h,d[1]);m.closePath()
+				m.moveTo(h, d[0]);
+				m.lineTo(l.canvasx, j[0]);
+				m.lineTo(l.canvasx, j[1]);
+			}
+			m.lineTo(h, d[1]);
+			//m.closePath();
 		}
 		d=j;
 		h=l.canvasx;
+		m.closePath();
+		m.fill();
 	}
-	m.fill()
+	
+	//top line (same code, only "j" definition changes)
+	h = NaN;
+	d = [-1,-1];
+	while(q2.hasNext){
+		var u = 'rgba(63, 103, 233, 0.9)'; //modif aep
+		//if(l.)
+		//console.log('##l', l);
+		m.fillStyle = u;
+		m.beginPath();
+		var l = q2.next();		
+		j = [l.y_bottom, l.y];
+		j[0] = s.plotArea.h * j[0] + s.plotArea.y;
+		j[1] = s.plotArea.h * j[1] + s.plotArea.y;
+		if(!isNaN(h)){			
+			m.moveTo(h, d[0]);
+			m.lineTo(l.canvasx, j[0]);
+			m.lineTo(l.canvasx, j[1]);
+			m.lineTo(h, d[1]);
+			//m.closePath();
+		}
+		d=j;
+		h=l.canvasx;
+		m.closePath();
+		m.fill();
+	}
+	//m.fill();
 };
 
 DygraphCanvasRenderer._fillPlotter=function(F){
