@@ -4,7 +4,6 @@
 	<title>Testing</title>
 	<script>var Cubee = {};</script>
 	<script src="webcomponents.min.js"></script>
-	<script src="/js/cubee/chart/CubeeCodeBlock.js"></script>
 </head>
 <body>
 	<a href="/">Home page</a>
@@ -21,6 +20,7 @@
 			-moz-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
+			text-align:right;
 		}
 		.keyword{
 			color:#C31C05;
@@ -31,21 +31,9 @@
 	</style>
 	<table style="width:100%">
 		<colgroup>
-			<col style="width:4%;" />
-			<col style="width:96%;" />
+			<col style="width:2%;" />
+			<col style="width:98%;" />
 		</colgroup>
-		<tr>
-			<td>1</td>
-			<td><span class="keyword">public static void main</span>(<span class="keyword">String</span> args[]){</td>
-		</tr>
-		<tr>
-			<td>2</td>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="string">"hello"</span>);</td>
-		</tr>
-		<tr>
-			<td>3</td>
-			<td>}</td>
-		</tr>
 	</table>
 </template>
 <script>
@@ -55,8 +43,28 @@
 		createdCallback: {
 			value: function() {
 				var root = this.createShadowRoot();
-				root.appendChild(document.importNode(content, true));
-				console.log('##this', this);
+				var templateContentsElem = document.importNode(content, true);
+				var table = templateContentsElem.querySelector('table');
+				root.appendChild(templateContentsElem);
+				var tagContents = this.childNodes[0].innerHTML;
+				var lineList = tagContents.split('\n');
+				for(var i=0; i<lineList.length; i++){
+					var tr = document.createElement('tr');
+					var td1 = document.createElement('td');
+					td1.innerHTML = i + 1;
+					var td2 = document.createElement('td');
+					var line = lineList[i];
+					line = line.replace(/public/g, '<span class="keyword">public</span>');
+					line = line.replace(/ /g, '&nbsp;');
+					line = line.replace(/\\t/g, '&nbsp;');
+					console.log('##line', line);
+					td2.innerHTML = line;
+					tr.appendChild(td1);
+					tr.appendChild(td2);
+					table.appendChild(tr);
+				}
+				//root.innerHTML = 'toto';
+				//console.log('##this', tagContents, tagContents.split('\n'), table, this);
 			}
 		}
 	});
@@ -67,6 +75,12 @@
 	  prototype: Panel
 	});
 </script>
-	<my-panel toto="1"></my-panel> 
+	<my-panel toto="1"><pre>super 
+		t'as
+		public static void main(String args[]){
+			System.out.println("Hello World");
+		}
+	vu
+	ouaich ma gueule</pre></my-panel> 
 </body>
 </html>
