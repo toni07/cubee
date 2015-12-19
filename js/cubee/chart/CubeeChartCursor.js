@@ -19,8 +19,6 @@ Cubee.CubeeChartCursor = function(divElem, options){
 		//calculated params (not to be changed!)
 		var xRectRightPosition = xRectLeftPosition + rectWidth;
 		var xCursorPosition = xRectLeftPosition + ((valueList.value - 1000)* (rectWidth/(valueList.max - valueList.min)));
-		//var xCursorPosition = valueList.value * (xRectRightPosition/valueList.max);
-		console.log(xCursorPosition);
 		var xCursorLabelPosition = xCursorPosition - 25;
 		var hasDataOutsideTheBox = (valueList.value > valueList.max || valueList.value < valueList.min);
 		

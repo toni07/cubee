@@ -1,0 +1,72 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Testing</title>
+	<script>var Cubee = {};</script>
+	<script src="webcomponents.min.js"></script>
+	<script src="/js/cubee/chart/CubeeCodeBlock.js"></script>
+</head>
+<body>
+	<a href="/">Home page</a>
+	<br /><br /><br />
+<!-- THE WEB COMPONENT -->
+<template id="myTemplate">
+	<style>
+		tr:nth-child(even) {background:#dddddd;}
+		tr:nth-child(odd) {background:#eeeeee;}
+		td:first-child{
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+		.keyword{
+			color:#C31C05;
+		}
+		.string{
+			color:#aaaaaa;
+		}
+	</style>
+	<table style="width:100%">
+		<colgroup>
+			<col style="width:4%;" />
+			<col style="width:96%;" />
+		</colgroup>
+		<tr>
+			<td>1</td>
+			<td><span class="keyword">public static void main</span>(<span class="keyword">String</span> args[]){</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="string">"hello"</span>);</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>}</td>
+		</tr>
+	</table>
+</template>
+<script>
+    // Get the template content
+    var content = document.querySelector('#myTemplate').content;
+	var Panel = Object.create(HTMLElement.prototype, {
+		createdCallback: {
+			value: function() {
+				var root = this.createShadowRoot();
+				root.appendChild(document.importNode(content, true));
+				console.log('##this', this);
+			}
+		}
+	});
+	
+	
+		
+	document.registerElement('my-panel', {
+	  prototype: Panel
+	});
+</script>
+	<my-panel toto="1"></my-panel> 
+</body>
+</html>
