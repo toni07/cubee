@@ -22,6 +22,11 @@
 			user-select: none;
 			text-align:right;
 		}
+		@media print{
+			td:first-child{
+				display:none;
+			}
+		}		
 		.keyword{
 			color:#C31C05;
 		}
@@ -51,12 +56,14 @@
 				for(var i=0; i<lineList.length; i++){
 					var tr = document.createElement('tr');
 					var td1 = document.createElement('td');
-					td1.innerHTML = i + 1;
+					td1.style.position = 'relative';
+					td1.innerHTML = '<span style="width:100%;position:absolute;left:0;top:0;z-index:0;">'+ (i+1) +'</span><span style="width:100%;position:absolute;left:0;top:0;z-index:2;">&nbsp;</span>';
 					var td2 = document.createElement('td');
 					var line = lineList[i];
 					line = line.replace(/public/g, '<span class="keyword">public</span>');
-					line = line.replace(/ /g, '&nbsp;');
-					line = line.replace(/\\t/g, '&nbsp;');
+					//line = line.replace(/ /g, '&nbsp;');
+					//line = line.replace(/\\t/g, '&nbsp;');
+					line = line.split('\t').join('&nbsp;&nbsp;&nbsp;&nbsp;');
 					console.log('##line', line);
 					td2.innerHTML = line;
 					tr.appendChild(td1);
@@ -82,5 +89,15 @@
 		}
 	vu
 	ouaich ma gueule</pre></my-panel> 
+	
+	<br /><br /><br />
+	<div style="width:100%;background-color:#dddddd;position:relative;">
+		<div style="float:left;width:4%;text-align:right;z-index:1;">1 </div>
+		<div style="position:absolute;width:4%;top:0;left:0;z-index:2;">aaa </div>
+		<div style="float:left;width:1%;text-align:right;background-color:#ffffff;">&nbsp;</div>
+		<div style="float:left;width:95%;">toto génial</div>
+		<div style="clear:both;"></div>
+	</div>
+	
 </body>
 </html>
