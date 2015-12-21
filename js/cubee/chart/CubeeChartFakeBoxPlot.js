@@ -40,15 +40,18 @@ Cubee.CubeeChartFakeBoxPlot = function(divElem, options){
 			if(valueList.value > valueList.max){
 				centerLineXEnd = xCursorPosition + xValuePadding;
 			}
-			html+=  '   <line x1="'+ centerLineXStart +'" y1="185" x2="'+ centerLineXEnd +'" y2="185" style="stroke:rgb(100,100,100);stroke-width:1;" />'	//central line if data outside the box
+			html+=  '   <line x1="'+ centerLineXStart +'" y1="185" x2="'+ centerLineXEnd +'" y2="185" style="stroke:rgb(100,100,100);stroke-width:1;" />';	//central line if data outside the box
+			html+=  '   <line x1="'+ (centerLineXEnd - 5) +'" y1="182" x2="'+ centerLineXEnd +'" y2="185" style="stroke:rgb(100,100,100);stroke-width:1;" />';	//central line arrow top
+			html+=  '   <line x1="'+ centerLineXEnd +'" y1="185" x2="'+ (centerLineXEnd - 5) +'" y2="188" style="stroke:rgb(100,100,100);stroke-width:1;" />';	//central line arrow bottom
+			html+=  '   <text x="'+ (centerLineXEnd - 15) +'" y="202" fill="#000000" font-family="calibri" font-size="13">kWh</text>';	//unit
 		}
 		
-		html+=  '   <line x1="'+ xRectLeftPosition +'" y1="180" x2="'+ xRectLeftPosition +'" y2="190" style="stroke:rgb(0,0,0);stroke-width:1;" />'	//left tick
-		html+=  '   <line x1="'+ xRectRightPosition +'" y1="180" x2="'+ xRectRightPosition +'" y2="190" style="stroke:rgb(0,0,0);stroke-width:1;" />'	//right tick
-		html+=  '   <line x1="'+ xCursorPosition +'" y1="70" x2="'+ xCursorPosition +'" y2="180" style="stroke:rgb(0,255,0);stroke-width:4;" />'	//cursor for the data
-		html+=  '   <text x="'+ (xRectLeftPosition - 14) +'" y="206" fill="#000000" font-family="calibri" font-size="14">'+ valueList.min +'</text>'	//value left
-		html+=  '   <text x="'+ (xRectRightPosition - 14) +'" y="206" fill="#000000" font-family="calibri" font-size="14">'+ valueList.max +'</text>'	//value right
-		html+=  '   <text x="'+ xCursorLabelPosition +'" y="60" fill="#00ff00" font-family="calibri" font-size="16" style="font-weight:bold;">'+ valueList.value +' kWh</text>'	//value data
+		html+=  '   <line x1="'+ xRectLeftPosition +'" y1="180" x2="'+ xRectLeftPosition +'" y2="190" style="stroke:rgb(0,0,0);stroke-width:1;" />';	//left tick
+		html+=  '   <line x1="'+ xRectRightPosition +'" y1="180" x2="'+ xRectRightPosition +'" y2="190" style="stroke:rgb(0,0,0);stroke-width:1;" />';	//right tick
+		html+=  '   <line x1="'+ xCursorPosition +'" y1="70" x2="'+ xCursorPosition +'" y2="180" style="stroke:rgb(0,255,0);stroke-width:4;" />';	//cursor for the data
+		html+=  '   <text x="'+ (xRectLeftPosition - 14) +'" y="206" fill="#000000" font-family="calibri" font-size="14">'+ valueList.min +'</text>';	//value left
+		html+=  '   <text x="'+ (xRectRightPosition - 14) +'" y="206" fill="#000000" font-family="calibri" font-size="14">'+ valueList.max +'</text>';	//value right
+		//html+=  '   <text x="'+ xCursorLabelPosition +'" y="60" fill="#00ff00" font-family="calibri" font-size="16" style="font-weight:bold;">'+ valueList.value +' kWh</text>'	//value data
 		html+=	'';
 		
 		var tickIntervalValue = (valueList.max - valueList.min) / (nbTicks-2);
