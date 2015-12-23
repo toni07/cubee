@@ -10,6 +10,9 @@ Cubee.CubeeChartFakeBoxPlot = function(divElem, options){
 		var svgHeight = 350;
 		var valueList = {
 			min: 1000,
+			q1: 1550,
+			q2: 3000,
+			q3: 7000,
 			max: 8000,
 			value: 7000
 		};
