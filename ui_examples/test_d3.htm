@@ -1,0 +1,22 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Testing</title>
+	<script>var Cubee = {};</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.12/d3.min.js"></script>
+</head>
+<body>
+	<h1>Body</h1>
+	<div id="chart"></div>
+	
+	<script>
+		var scale = d3.scale.linear()
+			.range(0)
+			.domain([1820, 20650]);
+
+		var axis = d3.svg.axis().scale(scale).ticks(9);
+		console.log("all the points", axis.scale().ticks(axis.ticks()));
+	</script>
+	
+</body>
+</html>
