@@ -1,4 +1,4 @@
-var DtpDyGraph = {
+var CubeeChartWrapper = {
 
 	/**
 	* toggles a special event on a chart, based on the event ID
@@ -159,8 +159,8 @@ var DtpDyGraph = {
 			labelFontColor: "black",		    
 			xlabel: (null !=options.xlabel) ? options.xlabel : 'Période',
 			axes: (null !=options.axes) ? options.axes : {
-				/*x: {
-					valueFormatter: function(val, opts, dygraph, p1, p2){
+				x: {
+					/*valueFormatter: function(val, opts, dygraph, p1, p2){
 
                         var tmpDate = new Date(val);
                         var tmpDay = String('0' + tmpDate.getDate()).slice(-2);
@@ -176,8 +176,38 @@ var DtpDyGraph = {
 						tmpDiv.style.margin = 'auto';
 						tmpDiv.style.width = '10%';
 						return tmpDiv;
-                    }
-				},*/
+                    }*/
+					axisLabelFormatter: function(val, granularity, opts, dygraph){
+						var b = new Date(val);
+						var tmpDate = b;
+                        var tmpDay = String('0' + tmpDate.getDate()).slice(-2);
+                        var tmpMonth = String('0' + (tmpDate.getMonth() + 1)).slice(-2);
+                        var tmpYear = tmpDate.getFullYear();
+						console.warn('##in cubeechartwrapper , l86, granularity is always ', granularity);
+						//console.log(granularity, Dygraph.MONTHLY, Dygraph.DECADAL);
+						if(granularity <= Dygraph.MONTHLY){
+							return tmpMonth + '/' + tmpYear;
+						}
+						return tmpDay + '/' + tmpMonth + '/' + tmpYear;
+						
+						// if(granularity >= Dygraph.DECADAL){
+							// return b.strftime("%Y");
+						// }
+						// else{
+							// if(granularity >= Dygraph.MONTHLY){
+								// return b.strftime("%b %y");
+							// }else{
+								// var a = b.getHours()*3600+b.getMinutes()*60+b.getSeconds()+b.getMilliseconds();
+								// if(a===0|| granularity >= Dygraph.DAILY){
+									// return new Date(b.getTime()+3600*1000).strftime("%d%b");
+								// }
+								// else{
+									// return Dygraph.hmsString_(b.getTime());
+								// }
+							// }
+						// }
+					}
+				},
 				y: {
 					isFullCustomLegend: true
 				},				

@@ -63,7 +63,7 @@
 		};					
 		function displayChart(idDiv, series, chartLegend){
 		
-			return DtpDyGraph.dipslayChart(idDiv, getData(), {
+			return CubeeChartWrapper.dipslayChart(idDiv, getData(), {
 				series: series,
 				xAxisConfiguration: {
 					legendDomElement: function(val, dygraph){
