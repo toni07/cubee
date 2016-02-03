@@ -1,0 +1,23 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>Test</title>
+	<style>	
+		.unselectable {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+	</style>
+</head>
+<body>
+		
+	<div>Start</div>
+	<div class="unselectable" onselectstart="return false">Unselectable text</div>
+	<div>End</div>
+	
+</body>
+</html>

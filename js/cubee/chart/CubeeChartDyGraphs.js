@@ -179,7 +179,13 @@ var DygraphOptions=(function(){
 "use strict";var DygraphLayout=function(a){this.dygraph_=a;this.points=[];this.setNames=[];this.annotations=[];this.yAxes_=null;this.xTicks_=null;this.yTicks_=null};
 DygraphLayout.prototype.attr_=function(a){return this.dygraph_.attr_(a)};
 
-DygraphLayout.prototype.addDataset=function(a,b){this.points.push(b);this.setNames.push(a)};DygraphLayout.prototype.getPlotArea=function(){return this.area_};DygraphLayout.prototype.computePlotArea=function(){var a={x:0,y:0};a.w=this.dygraph_.width_-a.x-this.attr_("rightGap");a.h=this.dygraph_.height_;var b={chart_div:this.dygraph_.graphDiv,reserveSpaceLeft:function(c){var d={x:a.x,y:a.y,w:c,h:a.h};a.x+=c;a.w-=c;return d},reserveSpaceRight:function(c){var d={x:a.x+a.w-c,y:a.y,w:c,h:a.h};a.w-=c;return d},reserveSpaceTop:function(c){var d={x:a.x,y:a.y,w:a.w,h:c};a.y+=c;a.h-=c;return d},reserveSpaceBottom:function(c){var d={x:a.x,y:a.y+a.h-c,w:a.w,h:c};a.h-=c;return d},chartRect:function(){return{x:a.x,y:a.y,w:a.w,h:a.h}}};this.dygraph_.cascadeEvents_("layout",b);this.area_=a};DygraphLayout.prototype.setAnnotations=function(d){this.annotations=[];var e=this.attr_("xValueParser")||function(a){return a};for(var c=0;c<d.length;c++){var b={};if(!d[c].xval&&d[c].x===undefined){this.dygraph_.error("Annotations must have an 'x' property");return}if(d[c].icon&&!(d[c].hasOwnProperty("width")&&d[c].hasOwnProperty("height"))){this.dygraph_.error("Must set width and height when setting annotation.icon property");return}Dygraph.update(b,d[c]);if(!b.xval){b.xval=e(b.x)}this.annotations.push(b)}};DygraphLayout.prototype.setXTicks=function(a){this.xTicks_=a};DygraphLayout.prototype.setYAxes=function(a){this.yAxes_=a};DygraphLayout.prototype.evaluate=function(){this._evaluateLimits();this._evaluateLineCharts();this._evaluateLineTicks();this._evaluateAnnotations()};DygraphLayout.prototype._evaluateLimits=function(){var a=this.dygraph_.xAxisRange();this.minxval=a[0];this.maxxval=a[1];var d=a[1]-a[0];this.xscale=(d!==0?1/d:1);for(var b=0;b<this.yAxes_.length;b++){var c=this.yAxes_[b];c.minyval=c.computedValueRange[0];c.maxyval=c.computedValueRange[1];c.yrange=c.maxyval-c.minyval;c.yscale=(c.yrange!==0?1/c.yrange:1);if(c.g.attr_("logscale")){c.ylogrange=Dygraph.log10(c.maxyval)-Dygraph.log10(c.minyval);c.ylogscale=(c.ylogrange!==0?1/c.ylogrange:1);if(!isFinite(c.ylogrange)||isNaN(c.ylogrange)){c.g.error("axis "+b+" of graph at "+c.g+" can't be displayed in log scale for range ["+c.minyval+" - "+c.maxyval+"]")}}}};DygraphLayout._calcYNormal=function(b,c,a){if(a){return 1-((Dygraph.log10(c)-Dygraph.log10(b.minyval))*b.ylogscale)}else{return 1-((c-b.minyval)*b.yscale)}};
+DygraphLayout.prototype.addDataset=function(a,b){this.points.push(b);this.setNames.push(a)};DygraphLayout.prototype.getPlotArea=function(){return this.area_};DygraphLayout.prototype.computePlotArea=function(){var a={x:0,y:0};a.w=this.dygraph_.width_-a.x-this.attr_("rightGap");a.h=this.dygraph_.height_;var b={chart_div:this.dygraph_.graphDiv,reserveSpaceLeft:function(c){var d={x:a.x,y:a.y,w:c,h:a.h};a.x+=c;a.w-=c;return d},reserveSpaceRight:function(c){var d={x:a.x+a.w-c,y:a.y,w:c,h:a.h};a.w-=c;return d},reserveSpaceTop:function(c){var d={x:a.x,y:a.y,w:a.w,h:c};a.y+=c;a.h-=c;return d},reserveSpaceBottom:function(c){var d={x:a.x,y:a.y+a.h-c,w:a.w,h:c};a.h-=c;return d},chartRect:function(){return{x:a.x,y:a.y,w:a.w,h:a.h}}};this.dygraph_.cascadeEvents_("layout",b);this.area_=a};DygraphLayout.prototype.setAnnotations=function(d){this.annotations=[];var e=this.attr_("xValueParser")||function(a){return a};for(var c=0;c<d.length;c++){var b={};if(!d[c].xval&&d[c].x===undefined){this.dygraph_.error("Annotations must have an 'x' property");return}if(d[c].icon&&!(d[c].hasOwnProperty("width")&&d[c].hasOwnProperty("height"))){this.dygraph_.error("Must set width and height when setting annotation.icon property");return}Dygraph.update(b,d[c]);if(!b.xval){b.xval=e(b.x)}this.annotations.push(b)}};
+
+DygraphLayout.prototype.setXTicks=function(a){this.xTicks_=a};
+DygraphLayout.prototype.setYAxes=function(a){this.yAxes_=a};
+DygraphLayout.prototype.evaluate=function(){this._evaluateLimits();this._evaluateLineCharts();this._evaluateLineTicks();this._evaluateAnnotations()};
+DygraphLayout.prototype._evaluateLimits=function(){var a=this.dygraph_.xAxisRange();this.minxval=a[0];this.maxxval=a[1];var d=a[1]-a[0];this.xscale=(d!==0?1/d:1);for(var b=0;b<this.yAxes_.length;b++){var c=this.yAxes_[b];c.minyval=c.computedValueRange[0];c.maxyval=c.computedValueRange[1];c.yrange=c.maxyval-c.minyval;c.yscale=(c.yrange!==0?1/c.yrange:1);if(c.g.attr_("logscale")){c.ylogrange=Dygraph.log10(c.maxyval)-Dygraph.log10(c.minyval);c.ylogscale=(c.ylogrange!==0?1/c.ylogrange:1);if(!isFinite(c.ylogrange)||isNaN(c.ylogrange)){c.g.error("axis "+b+" of graph at "+c.g+" can't be displayed in log scale for range ["+c.minyval+" - "+c.maxyval+"]")}}}};
+DygraphLayout._calcYNormal=function(b,c,a){if(a){return 1-((Dygraph.log10(c)-Dygraph.log10(b.minyval))*b.ylogscale)}else{return 1-((c-b.minyval)*b.yscale)}};
 
 DygraphLayout.prototype._evaluateLineCharts = function(){		//aep: interesting 2
 	var c = this.attr_("connectSeparatedPoints");
@@ -206,8 +212,40 @@ DygraphLayout.prototype._evaluateLineCharts = function(){		//aep: interesting 2
 	}
 };
 
-DygraphLayout.parseFloat_=function(a){if(a===null){return NaN}return a};DygraphLayout.prototype._evaluateLineTicks=function(){var d,c,b,f;this.xticks=[];for(d=0;d<this.xTicks_.length;d++){c=this.xTicks_[d];b=c.label;f=this.xscale*(c.v-this.minxval);if((f>=0)&&(f<=1)){this.xticks.push([f,b])}}this.yticks=[];for(d=0;d<this.yAxes_.length;d++){var e=this.yAxes_[d];for(var a=0;a<e.ticks.length;a++){c=e.ticks[a];b=c.label;f=this.dygraph_.toPercentYCoord(c.v,d);if((f>=0)&&(f<=1)){this.yticks.push([d,f,b])}}}};DygraphLayout.prototype._evaluateAnnotations=function(){var d;var g={};for(d=0;d<this.annotations.length;d++){var b=this.annotations[d];g[b.xval+","+b.series]=b}this.annotated_points=[];if(!this.annotations||!this.annotations.length){return}for(var h=0;h<this.points.length;h++){var e=this.points[h];for(d=0;d<e.length;d++){var f=e[d];var c=f.xval+","+f.name;if(c in g){f.annotation=g[c];this.annotated_points.push(f)}}}};DygraphLayout.prototype.removeAllDatasets=function(){delete this.points;
-delete this.setNames;delete this.setPointsLengths;delete this.setPointsOffsets;this.points=[];this.setNames=[];this.setPointsLengths=[];this.setPointsOffsets=[]};"use strict";var DygraphCanvasRenderer=function(d,c,b,e){this.dygraph_=d;this.layout=e;this.element=c;this.elementContext=b;this.container=this.element.parentNode;this.height=this.element.height;this.width=this.element.width;if(!this.isIE&&!(DygraphCanvasRenderer.isSupported(this.element))){throw"Canvas is not supported."}this.area=e.getPlotArea();this.container.style.position="relative";this.container.style.width=this.width+"px";if(this.dygraph_.isUsingExcanvas_){this._createIEClipArea()}else{if(!Dygraph.isAndroid()){var a=this.dygraph_.canvas_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip();a=this.dygraph_.hidden_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip()}}};
+DygraphLayout.parseFloat_=function(a){if(a===null){return NaN}return a};
+
+DygraphLayout.prototype._evaluateLineTicks=function(){
+	var d,c,b,f;
+	this.xticks=[];
+	for(d=0;d<this.xTicks_.length;d++){
+		c=this.xTicks_[d];
+		b=c.label;
+		f=this.xscale*(c.v-this.minxval);
+		if((f>=0)&&(f<=1)){
+			this.xticks.push([f,b])
+		}
+	}
+	this.yticks=[];
+	for(d=0;d<this.yAxes_.length;d++){
+		var e=this.yAxes_[d];
+		for(var a=0;a<e.ticks.length;a++){
+			c=e.ticks[a];
+			b=c.label;
+			f=this.dygraph_.toPercentYCoord(c.v,d);
+			if((f>=0)&&(f<=1)){this.yticks.push([d,f,b])}
+		}
+	}
+};
+
+DygraphLayout.prototype._evaluateAnnotations=function(){
+	var d;var g={};for(d=0;d<this.annotations.length;d++){var b=this.annotations[d];g[b.xval+","+b.series]=b}this.annotated_points=[];if(!this.annotations||!this.annotations.length){return}for(var h=0;h<this.points.length;h++){var e=this.points[h];for(d=0;d<e.length;d++){var f=e[d];var c=f.xval+","+f.name;if(c in g){f.annotation=g[c];this.annotated_points.push(f)}}}
+};
+DygraphLayout.prototype.removeAllDatasets=function(){
+	delete this.points;
+	delete this.setNames;delete this.setPointsLengths;delete this.setPointsOffsets;this.points=[];this.setNames=[];this.setPointsLengths=[];this.setPointsOffsets=[]
+};
+"use strict";
+var DygraphCanvasRenderer=function(d,c,b,e){this.dygraph_=d;this.layout=e;this.element=c;this.elementContext=b;this.container=this.element.parentNode;this.height=this.element.height;this.width=this.element.width;if(!this.isIE&&!(DygraphCanvasRenderer.isSupported(this.element))){throw"Canvas is not supported."}this.area=e.getPlotArea();this.container.style.position="relative";this.container.style.width=this.width+"px";if(this.dygraph_.isUsingExcanvas_){this._createIEClipArea()}else{if(!Dygraph.isAndroid()){var a=this.dygraph_.canvas_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip();a=this.dygraph_.hidden_ctx_;a.beginPath();a.rect(this.area.x,this.area.y,this.area.w,this.area.h);a.clip()}}};
 
 DygraphCanvasRenderer.prototype.attr_=function(a,b){return this.dygraph_.attr_(a,b)};
 
@@ -1030,7 +1068,20 @@ Dygraph.prototype.setSelection=function(f,h,g){
 	}
 	return e
 };
-Dygraph.prototype.mouseOut_=function(a){if(this.attr_("unhighlightCallback")){this.attr_("unhighlightCallback")(a)}if(this.attr_("hideOverlayOnMouseOut")&&!this.lockedSet_){this.clearSelection()}};Dygraph.prototype.clearSelection=function(){this.cascadeEvents_("deselect",{});this.lockedSet_=false;if(this.fadeLevel){this.animateSelection_(-1);return}this.canvas_ctx_.clearRect(0,0,this.width_,this.height_);this.fadeLevel=0;this.selPoints_=[];this.lastx_=-1;this.lastRow_=-1;this.highlightSet_=null};Dygraph.prototype.getSelection=function(){if(!this.selPoints_||this.selPoints_.length<1){return -1}for(var c=0;c<this.layout_.points.length;c++){var a=this.layout_.points[c];for(var b=0;b<a.length;b++){if(a[b].x==this.selPoints_[0].x){return a[b].idx}}}return -1};Dygraph.prototype.getHighlightSeries=function(){return this.highlightSet_};Dygraph.prototype.isSeriesLocked=function(){return this.lockedSet_};Dygraph.prototype.loadedEvent_=function(a){this.rawData_=this.parseCSV_(a);this.predraw_()};Dygraph.prototype.addXTicks_=function(){var a;if(this.dateWindow_){a=[this.dateWindow_[0],this.dateWindow_[1]]}else{a=this.xAxisExtremes()}var c=this.optionsViewForAxis_("x");var b=c("ticker")(a[0],a[1],this.width_,c,this);this.layout_.setXTicks(b)};
+Dygraph.prototype.mouseOut_=function(a){if(this.attr_("unhighlightCallback")){this.attr_("unhighlightCallback")(a)}if(this.attr_("hideOverlayOnMouseOut")&&!this.lockedSet_){this.clearSelection()}};Dygraph.prototype.clearSelection=function(){this.cascadeEvents_("deselect",{});this.lockedSet_=false;if(this.fadeLevel){this.animateSelection_(-1);return}this.canvas_ctx_.clearRect(0,0,this.width_,this.height_);this.fadeLevel=0;this.selPoints_=[];this.lastx_=-1;this.lastRow_=-1;this.highlightSet_=null};Dygraph.prototype.getSelection=function(){if(!this.selPoints_||this.selPoints_.length<1){return -1}for(var c=0;c<this.layout_.points.length;c++){var a=this.layout_.points[c];for(var b=0;b<a.length;b++){if(a[b].x==this.selPoints_[0].x){return a[b].idx}}}return -1};Dygraph.prototype.getHighlightSeries=function(){return this.highlightSet_};Dygraph.prototype.isSeriesLocked=function(){return this.lockedSet_};Dygraph.prototype.loadedEvent_=function(a){this.rawData_=this.parseCSV_(a);this.predraw_()};
+
+Dygraph.prototype.addXTicks_=function(){
+	var a;
+	if(this.dateWindow_){
+		a=[this.dateWindow_[0],this.dateWindow_[1]]
+	}
+	else{
+		a=this.xAxisExtremes()
+	}
+	var c=this.optionsViewForAxis_("x");
+	var b=c("ticker")(a[0], a[1], this.width_, c, this);
+	this.layout_.setXTicks(b)
+};
 
 Dygraph.prototype.extremeValues_=function(d){
 	var h = null,
@@ -1320,7 +1371,8 @@ Dygraph.prototype.numAxes=function(){
 	return this.attributes_.numAxes()
 };
 
-Dygraph.prototype.axisPropertiesForSeries=function(a){return this.axes_[this.attributes_.axisForSeries(a)]};Dygraph.prototype.computeYAxisRanges_=function(a){var g=function(i){return isNaN(parseFloat(i))};var q=this.attributes_.numAxes();var b,x,o,B;var p;for(var y=0;y<q;y++){var c=this.axes_[y];var C=this.attributes_.getForAxis("logscale",y);var G=this.attributes_.getForAxis("includeZero",y);var l=this.attributes_.getForAxis("independentTicks",y);o=this.attributes_.seriesForAxis(y);b=true;B=0.1;if(this.attr_("yRangePad")!==null){b=false;B=this.attr_("yRangePad")/this.plotter_.area.h}if(o.length===0){c.extremeRange=[0,1]}else{var D=Infinity;var A=-Infinity;var t,s;for(var w=0;w<o.length;w++){if(!a.hasOwnProperty(o[w])){continue}t=a[o[w]][0];if(t!==null){D=Math.min(t,D)}s=a[o[w]][1];if(s!==null){A=Math.max(s,A)}}if(G&&!C){if(D>0){D=0}if(A<0){A=0}}if(D==Infinity){D=0}if(A==-Infinity){A=1}x=A-D;if(x===0){if(A!==0){x=Math.abs(A)}else{A=1;x=1}}var h,H;if(C){if(b){h=A+B*x;H=D}else{var E=Math.exp(Math.log(x)*B);h=A*E;H=D/E}}else{h=A+B*x;H=D-B*x;if(b&&!this.attr_("avoidMinZero")){if(H<0&&D>=0){H=0}if(h>0&&A<=0){h=0}}}c.extremeRange=[H,h]}if(c.valueWindow){c.computedValueRange=[c.valueWindow[0],c.valueWindow[1]]}else{if(c.valueRange){var e=g(c.valueRange[0])?c.extremeRange[0]:c.valueRange[0];var d=g(c.valueRange[1])?c.extremeRange[1]:c.valueRange[1];if(!b){if(c.logscale){var E=Math.exp(Math.log(x)*B);e*=E;d/=E}else{x=d-e;e-=x*B;d+=x*B}}c.computedValueRange=[e,d]}else{c.computedValueRange=c.extremeRange}}if(l){c.independentTicks=l;var r=this.optionsViewForAxis_("y"+(y?"2":""));var F=r("ticker");c.ticks=F(c.computedValueRange[0],c.computedValueRange[1],this.height_,r,this);if(!p){p=c}}}if(p===undefined){throw ('Configuration Error: At least one axis has to have the "independentTicks" option activated.')}for(var y=0;y<q;y++){var c=this.axes_[y];if(!c.independentTicks){var r=this.optionsViewForAxis_("y"+(y?"2":""));var F=r("ticker");var m=p.ticks;var n=p.computedValueRange[1]-p.computedValueRange[0];var I=c.computedValueRange[1]-c.computedValueRange[0];var f=[];for(var v=0;v<m.length;v++){var u=(m[v].v-p.computedValueRange[0])/n;var z=c.computedValueRange[0]+u*I;f.push(z)}c.ticks=F(c.computedValueRange[0],c.computedValueRange[1],this.height_,r,this,f)}}};Dygraph.prototype.extractSeries_=function(a,f,c){var g=[];var h=this.attr_("errorBars");var e=this.attr_("customBars");for(var d=0;d<a.length;d++){var l=a[d][0];var m=a[d][f];if(c){if(h||e){for(var b=0;b<m.length;b++){if(m[b]<=0){m=null;break}}}else{if(m<=0){m=null}}}if(m!==null){g.push([l,m])}else{g.push([l,h?[null,null]:e?[null,null,null]:m])}}return g};
+Dygraph.prototype.axisPropertiesForSeries=function(a){return this.axes_[this.attributes_.axisForSeries(a)]};Dygraph.prototype.computeYAxisRanges_=function(a){var g=function(i){return isNaN(parseFloat(i))};var q=this.attributes_.numAxes();var b,x,o,B;var p;for(var y=0;y<q;y++){var c=this.axes_[y];var C=this.attributes_.getForAxis("logscale",y);var G=this.attributes_.getForAxis("includeZero",y);var l=this.attributes_.getForAxis("independentTicks",y);o=this.attributes_.seriesForAxis(y);b=true;B=0.1;if(this.attr_("yRangePad")!==null){b=false;B=this.attr_("yRangePad")/this.plotter_.area.h}if(o.length===0){c.extremeRange=[0,1]}else{var D=Infinity;var A=-Infinity;var t,s;for(var w=0;w<o.length;w++){if(!a.hasOwnProperty(o[w])){continue}t=a[o[w]][0];if(t!==null){D=Math.min(t,D)}s=a[o[w]][1];if(s!==null){A=Math.max(s,A)}}if(G&&!C){if(D>0){D=0}if(A<0){A=0}}if(D==Infinity){D=0}if(A==-Infinity){A=1}x=A-D;if(x===0){if(A!==0){x=Math.abs(A)}else{A=1;x=1}}var h,H;if(C){if(b){h=A+B*x;H=D}else{var E=Math.exp(Math.log(x)*B);h=A*E;H=D/E}}else{h=A+B*x;H=D-B*x;if(b&&!this.attr_("avoidMinZero")){if(H<0&&D>=0){H=0}if(h>0&&A<=0){h=0}}}c.extremeRange=[H,h]}if(c.valueWindow){c.computedValueRange=[c.valueWindow[0],c.valueWindow[1]]}else{if(c.valueRange){var e=g(c.valueRange[0])?c.extremeRange[0]:c.valueRange[0];var d=g(c.valueRange[1])?c.extremeRange[1]:c.valueRange[1];if(!b){if(c.logscale){var E=Math.exp(Math.log(x)*B);e*=E;d/=E}else{x=d-e;e-=x*B;d+=x*B}}c.computedValueRange=[e,d]}else{c.computedValueRange=c.extremeRange}}if(l){c.independentTicks=l;var r=this.optionsViewForAxis_("y"+(y?"2":""));
+var F=r("ticker");c.ticks=F(c.computedValueRange[0],c.computedValueRange[1],this.height_,r,this);if(!p){p=c}}}if(p===undefined){throw ('Configuration Error: At least one axis has to have the "independentTicks" option activated.')}for(var y=0;y<q;y++){var c=this.axes_[y];if(!c.independentTicks){var r=this.optionsViewForAxis_("y"+(y?"2":""));var F=r("ticker");var m=p.ticks;var n=p.computedValueRange[1]-p.computedValueRange[0];var I=c.computedValueRange[1]-c.computedValueRange[0];var f=[];for(var v=0;v<m.length;v++){var u=(m[v].v-p.computedValueRange[0])/n;var z=c.computedValueRange[0]+u*I;f.push(z)}c.ticks=F(c.computedValueRange[0],c.computedValueRange[1],this.height_,r,this,f)}}};Dygraph.prototype.extractSeries_=function(a,f,c){var g=[];var h=this.attr_("errorBars");var e=this.attr_("customBars");for(var d=0;d<a.length;d++){var l=a[d][0];var m=a[d][f];if(c){if(h||e){for(var b=0;b<m.length;b++){if(m[b]<=0){m=null;break}}}else{if(m<=0){m=null}}}if(m!==null){g.push([l,m])}else{g.push([l,h?[null,null]:e?[null,null,null]:m])}}return g};
 
 Dygraph.prototype.rollingAverage = function(seriesArray, d){
 
@@ -1451,40 +1503,26 @@ Dygraph.prototype.detectTypeFromString_=function(b){
 	var a=false;var c=b.indexOf("-");if((c>0&&(b[c-1]!="e"&&b[c-1]!="E"))||b.indexOf("/")>=0||isNaN(parseFloat(b))){a=true}else{if(b.length==8&&b>"19700101"&&b<"20371231"){a=true}}this.setXAxisOptions_(a)
 };
 
-Dygraph.prototype.setXAxisOptions_=function(a){if(a){this.attrs_.xValueParser=Dygraph.dateParser;this.attrs_.axes.x.valueFormatter=Dygraph.dateString_;this.attrs_.axes.x.ticker=Dygraph.dateTicker;this.attrs_.axes.x.axisLabelFormatter=Dygraph.dateAxisFormatter}
-else{
-	this.attrs_.xValueParser=function(b){
-		return parseFloat(b)
-	};
-	this.attrs_.axes.x.valueFormatter=function(b){
-		return b
-	};
-	this.attrs_.axes.x.ticker=Dygraph.numericLinearTicks;
-	this.attrs_.axes.x.axisLabelFormatter=this.attrs_.axes.x.valueFormatter;
+Dygraph.prototype.setXAxisOptions_=function(a){
+	if(a){this.attrs_.xValueParser=Dygraph.dateParser;this.attrs_.axes.x.valueFormatter=Dygraph.dateString_;
+	this.attrs_.axes.x.ticker=Dygraph.dateTicker;
+	this.attrs_.axes.x.axisLabelFormatter=Dygraph.dateAxisFormatter}
+	else{
+		this.attrs_.xValueParser=function(b){
+			return parseFloat(b)
+		};
+		this.attrs_.axes.x.valueFormatter=function(b){
+			return b
+		};
+		this.attrs_.axes.x.ticker=Dygraph.numericLinearTicks;
+		this.attrs_.axes.x.axisLabelFormatter=this.attrs_.axes.x.valueFormatter;
 	
-}};Dygraph.prototype.parseFloat_=function(a,c,b){var e=parseFloat(a);if(!isNaN(e)){return e}if(/^ *$/.test(a)){return null}if(/^ *nan *$/i.test(a)){return NaN}var d="Unable to parse '"+a+"' as a number";if(b!==null&&c!==null){d+=" on line "+(1+c)+" ('"+b+"') of CSV."}this.error(d);return null};
-
-/*Dygraph.prototype.parseCSV_=function(t){var r=[];var s=Dygraph.detectLineDelimiter(t);var a=t.split(s||"\n");var g,k;var p=this.attr_("delimiter");if(a[0].indexOf(p)==-1&&a[0].indexOf("\t")>=0){p="\t"}
-	var b=0;if(!("labels" in this.user_attrs_)){
-		b=1;this.attrs_.labels=a[0].split(p);this.attributes_.reparseSeries()
 	}
-	var o=0;
-	var m;
-	var q=false;
-	var c=this.attr_("labels").length;
-	var f=false;
-	for(var l=b;l<a.length;l++){
-		var e=a[l];o=l;if(e.length===0){continue}if(e[0]=="#"){continue}var d=e.split(p);if(d.length<2){continue}var h=[];if(!q){this.detectTypeFromString_(d[0]);m=this.attr_("xValueParser");q=true}h[0]=m(d[0],this);if(this.fractions_){for(k=1;k<d.length;k++){g=d[k].split("/");if(g.length!=2){this.error('Expected fractional "num/den" values in CSV data but found a value \''+d[k]+"' on line "+(1+l)+" ('"+e+"') which is not of this form.");h[k]=[0,0]}else{h[k]=[this.parseFloat_(g[0],l,e),this.parseFloat_(g[1],l,e)]}}}else{if(this.attr_("errorBars")){if(d.length%2!=1){this.error("Expected alternating (value, stdev.) pairs in CSV data but line "+(1+l)+" has an odd number of values ("+(d.length-1)+"): '"+e+"'")}for(k=1;k<d.length;k+=2){h[(k+1)/2]=[this.parseFloat_(d[k],l,e),this.parseFloat_(d[k+1],l,e)]}}else{if(this.attr_("customBars")){for(k=1;k<d.length;k++){var u=d[k];if(/^ *$/.test(u)){h[k]=[null,null,null]}else{g=u.split(";");if(g.length==3){h[k]=[this.parseFloat_(g[0],l,e),this.parseFloat_(g[1],l,e),this.parseFloat_(g[2],l,e)]}else{this.warn('When using customBars, values must be either blank or "low;center;high" tuples (got "'+u+'" on line '+(1+l))}}}}else{for(k=1;k<d.length;k++){h[k]=this.parseFloat_(d[k],l,e)}}}}if(r.length>0&&h[0]<r[r.length-1][0]){f=true}
-		if(h.length!=c){
-			this.error("Number of columns in line "+l+" ("+h.length+") does not agree with number of labels ("+c+") "+e)}if(l===0&&this.attr_("labels")){var n=true;for(k=0;n&&k<h.length;k++){if(h[k]){n=false}}if(n){this.warn("The dygraphs 'labels' option is set, but the first row of CSV data ('"+e+"') appears to also contain labels. Will drop the CSV labels and use the option labels.");continue}}r.push(h)
-		}
-		if(f){this.warn("CSV is out of order; order it correctly to speed loading.");
-		r.sort(function(j,i){
-			return j[0]-i[0]
-		}
-		)
-		}
-	return r};*/
+};
+
+Dygraph.prototype.parseFloat_=function(a,c,b){
+	var e=parseFloat(a);if(!isNaN(e)){return e}if(/^ *$/.test(a)){return null}if(/^ *nan *$/i.test(a)){return NaN}var d="Unable to parse '"+a+"' as a number";if(b!==null&&c!==null){d+=" on line "+(1+c)+" ('"+b+"') of CSV."}this.error(d);return null
+};
 
 	
 Dygraph.prototype.parseArray_ = function(c){
@@ -1886,7 +1924,16 @@ Dygraph.numericTicks=function(F,E,u,p,d,q){
 	}
 	return G
 };
-Dygraph.dateTicker=function(e,c,i,g,f,h){var d=Dygraph.pickDateTickGranularity(e,c,i,g);if(d>=0){return Dygraph.getDateAxis(e,c,d,g,f)}else{return[]}};Dygraph.SECONDLY=0;Dygraph.TWO_SECONDLY=1;Dygraph.FIVE_SECONDLY=2;Dygraph.TEN_SECONDLY=3;Dygraph.THIRTY_SECONDLY=4;Dygraph.MINUTELY=5;Dygraph.TWO_MINUTELY=6;Dygraph.FIVE_MINUTELY=7;Dygraph.TEN_MINUTELY=8;Dygraph.THIRTY_MINUTELY=9;Dygraph.HOURLY=10;Dygraph.TWO_HOURLY=11;Dygraph.SIX_HOURLY=12;Dygraph.DAILY=13;Dygraph.WEEKLY=14;Dygraph.MONTHLY=15;Dygraph.QUARTERLY=16;Dygraph.BIANNUAL=17;Dygraph.ANNUAL=18;Dygraph.DECADAL=19;Dygraph.CENTENNIAL=20;Dygraph.NUM_GRANULARITIES=21;Dygraph.SHORT_SPACINGS=[];Dygraph.SHORT_SPACINGS[Dygraph.SECONDLY]=1000*1;Dygraph.SHORT_SPACINGS[Dygraph.TWO_SECONDLY]=1000*2;Dygraph.SHORT_SPACINGS[Dygraph.FIVE_SECONDLY]=1000*5;Dygraph.SHORT_SPACINGS[Dygraph.TEN_SECONDLY]=1000*10;Dygraph.SHORT_SPACINGS[Dygraph.THIRTY_SECONDLY]=1000*30;Dygraph.SHORT_SPACINGS[Dygraph.MINUTELY]=1000*60;Dygraph.SHORT_SPACINGS[Dygraph.TWO_MINUTELY]=1000*60*2;Dygraph.SHORT_SPACINGS[Dygraph.FIVE_MINUTELY]=1000*60*5;Dygraph.SHORT_SPACINGS[Dygraph.TEN_MINUTELY]=1000*60*10;Dygraph.SHORT_SPACINGS[Dygraph.THIRTY_MINUTELY]=1000*60*30;Dygraph.SHORT_SPACINGS[Dygraph.HOURLY]=1000*3600;Dygraph.SHORT_SPACINGS[Dygraph.TWO_HOURLY]=1000*3600*2;Dygraph.SHORT_SPACINGS[Dygraph.SIX_HOURLY]=1000*3600*6;Dygraph.SHORT_SPACINGS[Dygraph.DAILY]=1000*86400;Dygraph.SHORT_SPACINGS[Dygraph.WEEKLY]=1000*604800;Dygraph.LONG_TICK_PLACEMENTS=[];Dygraph.LONG_TICK_PLACEMENTS[Dygraph.MONTHLY]={months:[0,1,2,3,4,5,6,7,8,9,10,11],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.QUARTERLY]={months:[0,3,6,9],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.BIANNUAL]={months:[0,6],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.ANNUAL]={months:[0],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.DECADAL]={months:[0],year_mod:10};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.CENTENNIAL]={months:[0],year_mod:100};Dygraph.PREFERRED_LOG_TICK_VALUES=function(){var c=[];for(var b=-39;b<=39;b++){var a=Math.pow(10,b);for(var d=1;d<=9;d++){var e=a*d;c.push(e)}}return c}();Dygraph.pickDateTickGranularity=function(d,c,j,h){var g=(h("pixelsPerLabel"));for(var f=0;f<Dygraph.NUM_GRANULARITIES;f++){var e=Dygraph.numDateTicks(d,c,f);if(j/e>=g){return f}}return -1};Dygraph.numDateTicks=function(e,b,f){if(f<Dygraph.MONTHLY){var g=Dygraph.SHORT_SPACINGS[f];return Math.floor(0.5+1*(b-e)/g)}else{var d=Dygraph.LONG_TICK_PLACEMENTS[f];var c=365.2524*24*3600*1000;var a=1*(b-e)/c;return Math.floor(0.5+1*a*d.months.length/d.year_mod)}};Dygraph.getDateAxis=function(p,l,a,n,z){var w=(n("axisLabelFormatter"));var C=[];var m;if(a<Dygraph.MONTHLY){var c=Dygraph.SHORT_SPACINGS[a];var y=c/1000;var A=new Date(p);Dygraph.setDateSameTZ(A,{ms:0});var h;if(y<=60){h=A.getSeconds();Dygraph.setDateSameTZ(A,{s:h-h%y})}else{Dygraph.setDateSameTZ(A,{s:0});y/=60;if(y<=60){h=A.getMinutes();Dygraph.setDateSameTZ(A,{m:h-h%y})}else{Dygraph.setDateSameTZ(A,{m:0});y/=60;if(y<=24){h=A.getHours();A.setHours(h-h%y)}else{A.setHours(0);y/=24;if(y==7){A.setDate(A.getDate()-A.getDay())}}}}p=A.getTime();var B=new Date(p).getTimezoneOffset();var e=(c>=Dygraph.SHORT_SPACINGS[Dygraph.TWO_HOURLY]);for(m=p;m<=l;m+=c){A=new Date(m);if(e&&A.getTimezoneOffset()!=B){var k=A.getTimezoneOffset()-B;m+=k*60*1000;A=new Date(m);B=A.getTimezoneOffset();if(new Date(m+c).getTimezoneOffset()!=B){m+=c;A=new Date(m);B=A.getTimezoneOffset()}}C.push({v:m,label:w(A,a,n,z)})}}else{var f;var r=1;if(a<Dygraph.NUM_GRANULARITIES){f=Dygraph.LONG_TICK_PLACEMENTS[a].months;r=Dygraph.LONG_TICK_PLACEMENTS[a].year_mod}else{Dygraph.warn("Span of dates is too long")}var v=new Date(p).getFullYear();var q=new Date(l).getFullYear();var b=Dygraph.zeropad;for(var u=v;u<=q;u++){if(u%r!==0){continue}for(var s=0;s<f.length;s++){var o=u+"/"+b(1+f[s])+"/01";m=Dygraph.dateStrToMillis(o);if(m<p||m>l){continue}C.push({v:m,label:w(new Date(m),a,n,z)})}}}return C};if(Dygraph&&Dygraph.DEFAULT_ATTRS&&Dygraph.DEFAULT_ATTRS.axes&&Dygraph.DEFAULT_ATTRS.axes["x"]&&Dygraph.DEFAULT_ATTRS.axes["y"]&&Dygraph.DEFAULT_ATTRS.axes["y2"]){
+Dygraph.dateTicker=function(e,c,i,g,f,h){
+	var d=Dygraph.pickDateTickGranularity(e,c,i,g);if(d>=0){return Dygraph.getDateAxis(e,c,d,g,f)}else{return[]}
+};
+Dygraph.SECONDLY=0;
+Dygraph.TWO_SECONDLY=1;
+Dygraph.FIVE_SECONDLY=2;
+Dygraph.TEN_SECONDLY=3;Dygraph.THIRTY_SECONDLY=4;Dygraph.MINUTELY=5;Dygraph.TWO_MINUTELY=6;Dygraph.FIVE_MINUTELY=7;Dygraph.TEN_MINUTELY=8;Dygraph.THIRTY_MINUTELY=9;Dygraph.HOURLY=10;
+Dygraph.TWO_HOURLY=11;Dygraph.SIX_HOURLY=12;Dygraph.DAILY=13;Dygraph.WEEKLY=14;Dygraph.MONTHLY=15;Dygraph.QUARTERLY=16;Dygraph.BIANNUAL=17;Dygraph.ANNUAL=18;
+Dygraph.DECADAL=19;Dygraph.CENTENNIAL=20;Dygraph.NUM_GRANULARITIES=21;
+Dygraph.SHORT_SPACINGS=[];Dygraph.SHORT_SPACINGS[Dygraph.SECONDLY]=1000*1;Dygraph.SHORT_SPACINGS[Dygraph.TWO_SECONDLY]=1000*2;Dygraph.SHORT_SPACINGS[Dygraph.FIVE_SECONDLY]=1000*5;Dygraph.SHORT_SPACINGS[Dygraph.TEN_SECONDLY]=1000*10;Dygraph.SHORT_SPACINGS[Dygraph.THIRTY_SECONDLY]=1000*30;Dygraph.SHORT_SPACINGS[Dygraph.MINUTELY]=1000*60;Dygraph.SHORT_SPACINGS[Dygraph.TWO_MINUTELY]=1000*60*2;Dygraph.SHORT_SPACINGS[Dygraph.FIVE_MINUTELY]=1000*60*5;Dygraph.SHORT_SPACINGS[Dygraph.TEN_MINUTELY]=1000*60*10;Dygraph.SHORT_SPACINGS[Dygraph.THIRTY_MINUTELY]=1000*60*30;Dygraph.SHORT_SPACINGS[Dygraph.HOURLY]=1000*3600;Dygraph.SHORT_SPACINGS[Dygraph.TWO_HOURLY]=1000*3600*2;Dygraph.SHORT_SPACINGS[Dygraph.SIX_HOURLY]=1000*3600*6;Dygraph.SHORT_SPACINGS[Dygraph.DAILY]=1000*86400;Dygraph.SHORT_SPACINGS[Dygraph.WEEKLY]=1000*604800;Dygraph.LONG_TICK_PLACEMENTS=[];Dygraph.LONG_TICK_PLACEMENTS[Dygraph.MONTHLY]={months:[0,1,2,3,4,5,6,7,8,9,10,11],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.QUARTERLY]={months:[0,3,6,9],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.BIANNUAL]={months:[0,6],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.ANNUAL]={months:[0],year_mod:1};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.DECADAL]={months:[0],year_mod:10};Dygraph.LONG_TICK_PLACEMENTS[Dygraph.CENTENNIAL]={months:[0],year_mod:100};Dygraph.PREFERRED_LOG_TICK_VALUES=function(){var c=[];for(var b=-39;b<=39;b++){var a=Math.pow(10,b);for(var d=1;d<=9;d++){var e=a*d;c.push(e)}}return c}();Dygraph.pickDateTickGranularity=function(d,c,j,h){var g=(h("pixelsPerLabel"));for(var f=0;f<Dygraph.NUM_GRANULARITIES;f++){var e=Dygraph.numDateTicks(d,c,f);if(j/e>=g){return f}}return -1};Dygraph.numDateTicks=function(e,b,f){if(f<Dygraph.MONTHLY){var g=Dygraph.SHORT_SPACINGS[f];return Math.floor(0.5+1*(b-e)/g)}else{var d=Dygraph.LONG_TICK_PLACEMENTS[f];var c=365.2524*24*3600*1000;var a=1*(b-e)/c;return Math.floor(0.5+1*a*d.months.length/d.year_mod)}};Dygraph.getDateAxis=function(p,l,a,n,z){var w=(n("axisLabelFormatter"));var C=[];var m;if(a<Dygraph.MONTHLY){var c=Dygraph.SHORT_SPACINGS[a];var y=c/1000;var A=new Date(p);Dygraph.setDateSameTZ(A,{ms:0});var h;if(y<=60){h=A.getSeconds();Dygraph.setDateSameTZ(A,{s:h-h%y})}else{Dygraph.setDateSameTZ(A,{s:0});y/=60;if(y<=60){h=A.getMinutes();Dygraph.setDateSameTZ(A,{m:h-h%y})}else{Dygraph.setDateSameTZ(A,{m:0});y/=60;if(y<=24){h=A.getHours();A.setHours(h-h%y)}else{A.setHours(0);y/=24;if(y==7){A.setDate(A.getDate()-A.getDay())}}}}p=A.getTime();var B=new Date(p).getTimezoneOffset();var e=(c>=Dygraph.SHORT_SPACINGS[Dygraph.TWO_HOURLY]);for(m=p;m<=l;m+=c){A=new Date(m);if(e&&A.getTimezoneOffset()!=B){var k=A.getTimezoneOffset()-B;m+=k*60*1000;A=new Date(m);B=A.getTimezoneOffset();if(new Date(m+c).getTimezoneOffset()!=B){m+=c;A=new Date(m);B=A.getTimezoneOffset()}}C.push({v:m,label:w(A,a,n,z)})}}else{var f;var r=1;if(a<Dygraph.NUM_GRANULARITIES){f=Dygraph.LONG_TICK_PLACEMENTS[a].months;r=Dygraph.LONG_TICK_PLACEMENTS[a].year_mod}else{Dygraph.warn("Span of dates is too long")}var v=new Date(p).getFullYear();var q=new Date(l).getFullYear();var b=Dygraph.zeropad;for(var u=v;u<=q;u++){if(u%r!==0){continue}for(var s=0;s<f.length;s++){var o=u+"/"+b(1+f[s])+"/01";m=Dygraph.dateStrToMillis(o);if(m<p||m>l){continue}C.push({v:m,label:w(new Date(m),a,n,z)})}}}return C};if(Dygraph&&Dygraph.DEFAULT_ATTRS&&Dygraph.DEFAULT_ATTRS.axes&&Dygraph.DEFAULT_ATTRS.axes["x"]&&Dygraph.DEFAULT_ATTRS.axes["y"]&&Dygraph.DEFAULT_ATTRS.axes["y2"]){
 	Dygraph.DEFAULT_ATTRS.axes["x"]["ticker"]=Dygraph.dateTicker;Dygraph.DEFAULT_ATTRS.axes["y"]["ticker"]=Dygraph.numericTicks;Dygraph.DEFAULT_ATTRS.axes["y2"]["ticker"]=Dygraph.numericTicks
 }
 Dygraph.Plugins={};
@@ -1902,14 +1949,27 @@ Dygraph.Plugins.Annotations=(function(){
 	
 	Dygraph.Plugins.Axes=(function(){
 		var a=function(){
-			this.xlabels_=[];this.ylabels_=[]
+			this.xlabels_=[];
+			this.ylabels_=[]
 		};
-		a.prototype.toString=function(){return"Axes Plugin"};a.prototype.activate=function(b){return{layout:this.layout,clearChart:this.clearChart,willDrawChart:this.willDrawChart}};
-		a.prototype.layout=function(f){var d=f.dygraph;if(d.getOption("drawYAxis")){var b=d.getOption("yAxisLabelWidth")+2*d.getOption("axisTickSize");f.reserveSpaceLeft(b)}if(d.getOption("drawXAxis")){var c;
+		a.prototype.toString=function(){return"Axes Plugin"};
+		a.prototype.activate=function(b){
+			return{
+				layout:this.layout,clearChart:this.clearChart,willDrawChart:this.willDrawChart
+			}
+		};
+		a.prototype.layout=function(f){
+			var d=f.dygraph;if(d.getOption("drawYAxis")){var b=d.getOption("yAxisLabelWidth")+2*d.getOption("axisTickSize");f.reserveSpaceLeft(b)}if(d.getOption("drawXAxis")){var c;
 		if(d.getOption("xAxisHeight")){c=d.getOption("xAxisHeight")}else{c=d.getOptionForAxis("axisLabelFontSize","x")+2*d.getOption("axisTickSize")}f.reserveSpaceBottom(c)}if(d.numAxes()==2){
 		if(d.getOption("drawYAxis")){var b=d.getOption("yAxisLabelWidth")+2*d.getOption("axisTickSize");f.reserveSpaceRight(b)}}else{if(d.numAxes()>2){
-		d.error("Only two y-axes are supported at this time. (Trying to use "+d.numAxes()+")")}}};a.prototype.detachLabels=function(){function b(d){for(var c=0;c<d.length;c++){
-		var e=d[c];if(e.parentNode){e.parentNode.removeChild(e)}}}b(this.xlabels_);b(this.ylabels_);this.xlabels_=[];this.ylabels_=[]};a.prototype.clearChart=function(b){this.detachLabels()};
+		d.error("Only two y-axes are supported at this time. (Trying to use "+d.numAxes()+")")}}
+		};
+		
+		a.prototype.detachLabels=function(){
+			function b(d){for(var c=0;c<d.length;c++){
+			var e=d[c];if(e.parentNode){e.parentNode.removeChild(e)}}}b(this.xlabels_);b(this.ylabels_);this.xlabels_=[];this.ylabels_=[]
+		};
+		a.prototype.clearChart=function(b){this.detachLabels()};
 		
 		a.prototype.willDrawChart=function(H){
 			var F=H.dygraph;
@@ -1945,43 +2005,74 @@ Dygraph.Plugins.Annotations=(function(){
 				K.appendChild(i);
 				return K
 			};
-			j.save();var I=F.layout_;
-			var G=H.dygraph.plotter_.area;if(F.getOption("drawYAxis")){
-			if(I.yticks&&I.yticks.length>0){
-				var h=F.numAxes();
-				for(D=0; D<I.yticks.length; D++){
-					E = I.yticks[D];
-					//console.log('##E', E);
-					if(typeof(E)=="function"){
-						return
+			j.save();
+			var I=F.layout_;
+			var G=H.dygraph.plotter_.area;
+			if(F.getOption("drawYAxis")){
+				if(I.yticks&&I.yticks.length>0){
+					var h=F.numAxes();
+					for(D=0; D<I.yticks.length; D++){
+						E = I.yticks[D];
+						//console.log('##E', E);
+						if(typeof(E)=="function"){
+							return
+						}
+						u=G.x;
+						var o=1;
+						var f="y1";
+						if(E[0]==1){u=G.x+G.w;o=-1;f="y2"}var k=F.getOptionForAxis("axisLabelFontSize",f);t=G.y+E[1]*G.h;
+						s = m(E[2], "y" , h==2 ? f : null);
+						var z=(t-k/2);if(z<0){z=0}if(z+k+3>d){s.style.bottom="0px"}else{s.style.top=z+"px"}if(E[0]===0){
+							s.style.left=(G.x-F.getOption("yAxisLabelWidth")-F.getOption("axisTickSize"))+"px";
+						s.style.textAlign="right"}else{if(E[0]==1){s.style.left=(G.x+G.w+F.getOption("axisTickSize"))+"px";
+						s.style.textAlign="left"}}s.style.width=F.getOption("yAxisLabelWidth")+"px";v.appendChild(s);
+						this.ylabels_.push(s)
 					}
-					u=G.x;
-					var o=1;
-					var f="y1";
-					if(E[0]==1){u=G.x+G.w;o=-1;f="y2"}var k=F.getOptionForAxis("axisLabelFontSize",f);t=G.y+E[1]*G.h;
-					s = m(E[2], "y" , h==2 ? f : null);
-					var z=(t-k/2);if(z<0){z=0}if(z+k+3>d){s.style.bottom="0px"}else{s.style.top=z+"px"}if(E[0]===0){s.style.left=(G.x-F.getOption("yAxisLabelWidth")-F.getOption("axisTickSize"))+"px";
-					s.style.textAlign="right"}else{if(E[0]==1){s.style.left=(G.x+G.w+F.getOption("axisTickSize"))+"px";s.style.textAlign="left"}}s.style.width=F.getOption("yAxisLabelWidth")+"px";v.appendChild(s);
-					this.ylabels_.push(s)
+					var n=this.ylabels_[0];var k=F.getOptionForAxis("axisLabelFontSize","y");
+					var q=parseInt(n.style.top,10)+k;if(q>d-k){n.style.top=(parseInt(n.style.top,10)-k/2)+"px"}
 				}
-				var n=this.ylabels_[0];var k=F.getOptionForAxis("axisLabelFontSize","y");
-				var q=parseInt(n.style.top,10)+k;if(q>d-k){n.style.top=(parseInt(n.style.top,10)-k/2)+"px"}
+				var c;if(F.getOption("drawAxesAtZero")){
+					var w=F.toPercentXCoord(0);if(w>1||w<0||isNaN(w)){w=0}c=B(G.x+w*G.w)
+				}
+				else{
+					c=B(G.x)
+				}
+				j.strokeStyle=F.getOptionForAxis("axisLineColor","y");j.lineWidth=F.getOptionForAxis("axisLineWidth","y");j.beginPath();
+				j.moveTo(c,A(G.y));j.lineTo(c,A(G.y+G.h));
+				j.closePath();j.stroke();if(F.numAxes()==2){j.strokeStyle=F.getOptionForAxis("axisLineColor","y2");
+				j.lineWidth=F.getOptionForAxis("axisLineWidth","y2");
+				j.beginPath();j.moveTo(A(G.x+G.w),A(G.y));j.lineTo(A(G.x+G.w),A(G.y+G.h));
+				j.closePath();j.stroke()}
 			}
-			var c;if(F.getOption("drawAxesAtZero")){
-				var w=F.toPercentXCoord(0);if(w>1||w<0||isNaN(w)){w=0}c=B(G.x+w*G.w)
-			}
-			else{
-				c=B(G.x)
-			}
-			j.strokeStyle=F.getOptionForAxis("axisLineColor","y");j.lineWidth=F.getOptionForAxis("axisLineWidth","y");j.beginPath();j.moveTo(c,A(G.y));j.lineTo(c,A(G.y+G.h));
-			j.closePath();j.stroke();if(F.numAxes()==2){j.strokeStyle=F.getOptionForAxis("axisLineColor","y2");j.lineWidth=F.getOptionForAxis("axisLineWidth","y2");
-			j.beginPath();j.moveTo(A(G.x+G.w),A(G.y));j.lineTo(A(G.x+G.w),A(G.y+G.h));j.closePath();j.stroke()}}if(F.getOption("drawXAxis")){if(I.xticks){
-				for(D=0;D<I.xticks.length;D++){E=I.xticks[D];u=G.x+E[0]*G.w;t=G.y+G.h;s=m(E[1],"x");s.style.textAlign="center";s.style.top=(t+F.getOption("axisTickSize"))+"px";var l=(u-F.getOption("axisLabelWidth")/2);if(l+F.getOption("axisLabelWidth")>J){l=J-F.getOption("xAxisLabelWidth");s.style.textAlign="right"}if(l<0){l=0;s.style.textAlign="left"}s.style.left=l+"px";s.style.width=F.getOption("xAxisLabelWidth")+"px";v.appendChild(s);this.xlabels_.push(s)}
-			}
+			if(F.getOption("drawXAxis")){
+				//console.log('##I.xticks', I.xticks, I);
+				if(I.xticks){
+					for(D=0;D<I.xticks.length;D++){
+						E=I.xticks[D];
+						u=G.x+E[0]*G.w;
+						t=G.y+G.h;
+						s=m(E[1],"x");
+						s.style.textAlign="center";
+						s.style.top=(t+F.getOption("axisTickSize"))+"px";
+						var l=(u-F.getOption("axisLabelWidth")/2);
+						if(l+F.getOption("axisLabelWidth")>J){
+							l=J-F.getOption("xAxisLabelWidth");s.style.textAlign="right"
+						}
+						if(l<0){
+							l=0;s.style.textAlign="left"
+						}
+						s.style.left=l+"px";
+						s.style.width = F.getOption("xAxisLabelWidth")+"px";
+						v.appendChild(s);
+						this.xlabels_.push(s)
+					}
+				}
 			j.strokeStyle=F.getOptionForAxis("axisLineColor","x");j.lineWidth=F.getOptionForAxis("axisLineWidth","x");
 			j.beginPath();var b;if(F.getOption("drawAxesAtZero")){var w=F.toPercentYCoord(0,0);if(w>1||w<0){w=1}b=A(G.y+w*G.h)}else{b=A(G.y+G.h)}j.moveTo(B(G.x),b);
 			j.lineTo(B(G.x+G.w),b);j.closePath();
-			j.stroke()}j.restore()
+			j.stroke()
+			}
+			j.restore()
 		};
 		return a
 	})();
@@ -2062,7 +2153,11 @@ c.prototype.layout=function(k){
 	Dygraph.Plugins.Grid=(function(){
 	var a=function(){
 	};
-	a.prototype.toString=function(){return"Gridline Plugin"};a.prototype.activate=function(b){return{willDrawChart:this.willDrawChart}};a.prototype.willDrawChart=function(s){var q=s.dygraph;var l=s.drawingContext;var t=q.layout_;var r=s.dygraph.plotter_.area;function k(e){return Math.round(e)+0.5}function j(e){return Math.round(e)-0.5}var h,f,p,u;if(q.getOption("drawYGrid")){var o=["y","y2"];var m=[],v=[],b=[],n=[],d=[];for(var p=0;p<o.length;p++){b[p]=q.getOptionForAxis("drawGrid",o[p]);if(b[p]){m[p]=q.getOptionForAxis("gridLineColor",o[p]);v[p]=q.getOptionForAxis("gridLineWidth",o[p]);d[p]=q.getOptionForAxis("gridLinePattern",o[p]);n[p]=d[p]&&(d[p].length>=2)}}u=t.yticks;l.save();for(p=0;p<u.length;p++){var c=u[p][0];if(b[c]){if(n[c]){l.installPattern(d[c])}l.strokeStyle=m[c];l.lineWidth=v[c];h=k(r.x);f=j(r.y+u[p][1]*r.h);l.beginPath();l.moveTo(h,f);l.lineTo(h+r.w,f);l.closePath();l.stroke();if(n[c]){l.uninstallPattern()}}}l.restore()}if(q.getOption("drawXGrid")&&q.getOptionForAxis("drawGrid","x")){u=t.xticks;l.save();var d=q.getOptionForAxis("gridLinePattern","x");var n=d&&(d.length>=2);if(n){l.installPattern(d)}l.strokeStyle=q.getOptionForAxis("gridLineColor","x");l.lineWidth=q.getOptionForAxis("gridLineWidth","x");for(p=0;p<u.length;p++){h=k(r.x+u[p][0]*r.w);f=j(r.y+r.h);l.beginPath();l.moveTo(h,f);l.lineTo(h,r.y);l.closePath();l.stroke()}if(n){l.uninstallPattern()}l.restore()}};a.prototype.destroy=function(){};return a
+	a.prototype.toString=function(){return"Gridline Plugin"};a.prototype.activate=function(b){return{willDrawChart:this.willDrawChart}};a.prototype.willDrawChart=function(s){var q=s.dygraph;var l=s.drawingContext;var t=q.layout_;var r=s.dygraph.plotter_.area;function k(e){return Math.round(e)+0.5}function j(e){return Math.round(e)-0.5}var h,f,p,u;if(q.getOption("drawYGrid")){var o=["y","y2"];var m=[],v=[],b=[],n=[],d=[];for(var p=0;p<o.length;p++){b[p]=q.getOptionForAxis("drawGrid",o[p]);if(b[p]){m[p]=q.getOptionForAxis("gridLineColor",o[p]);v[p]=q.getOptionForAxis("gridLineWidth",o[p]);d[p]=q.getOptionForAxis("gridLinePattern",o[p]);n[p]=d[p]&&(d[p].length>=2)}}u=t.yticks;l.save();for(p=0;p<u.length;p++){var c=u[p][0];if(b[c]){if(n[c]){l.installPattern(d[c])}l.strokeStyle=m[c];l.lineWidth=v[c];h=k(r.x);f=j(r.y+u[p][1]*r.h);l.beginPath();l.moveTo(h,f);l.lineTo(h+r.w,f);l.closePath();l.stroke();if(n[c]){l.uninstallPattern()}}}l.restore()}
+	if(q.getOption("drawXGrid")&&q.getOptionForAxis("drawGrid","x")){
+		u=t.xticks;l.save();var d=q.getOptionForAxis("gridLinePattern","x");var n=d&&(d.length>=2);if(n){l.installPattern(d)}l.strokeStyle=q.getOptionForAxis("gridLineColor","x");l.lineWidth=q.getOptionForAxis("gridLineWidth","x");for(p=0;p<u.length;p++){h=k(r.x+u[p][0]*r.w);f=j(r.y+r.h);l.beginPath();l.moveTo(h,f);l.lineTo(h,r.y);l.closePath();l.stroke()}if(n){l.uninstallPattern()}l.restore()
+	}};
+	a.prototype.destroy=function(){};return a
 })();
 
 
