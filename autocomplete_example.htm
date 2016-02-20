@@ -14,9 +14,18 @@
 	"use strict";
 	
 	var options = {
+		onValueSelected: function(value){
+			console.log('##selected', value);
+		},
+		mouseOverColor: '#a0f3f1'
+		/*onKeyUp: function(valuesToDisplay){
+			
+		},
+		onKeyUpCallBack: function(){
+		}*/
 		
 	}
-	new Cubee.CubeeAutocomplete($('#toto')[0], options);
+	new Cubee.Autocomplete($('#toto')[0], options);
 	
  
 </script>	
