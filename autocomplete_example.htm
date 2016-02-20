@@ -17,7 +17,16 @@
 		onValueSelected: function(value){
 			console.log('##selected', value);
 		},
-		mouseOverColor: '#a0f3f1'
+		mouseOverColor: '#a0f3f1',
+		onKeyUp: function(inputValue, innerDiv){
+			for(var i=0; i<5; i++){
+				var elementValue = {
+					idx: i,
+					value: 'i=' + i
+				};
+				options.addUIData(elementValue, '('+ inputValue +') suggestionAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA '+ i +'', innerDiv);
+			}
+		}
 		/*onKeyUp: function(valuesToDisplay){
 			
 		},
