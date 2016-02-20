@@ -45,16 +45,29 @@ Cubee.StdTable = function(divElem, options){
 	*/
 	this.resetOrder = function(fieldIdToPreserve){
 	
-		for(var i=0; i<me.htmlColumnList.length; i++){
-			var href = me.htmlColumnList[i];
-			if(null == href.actionable || href.actionable){
-				if(fieldIdToPreserve != href.fieldId){
-					me.orderByList[href.fieldId] = 0;
-					href.orderby = 0;
-					href.html(me.options.columnSortHtml[href.orderby]);
-				}		
-			}			
+		if(null == fieldIdToPreserve){
+			for(var i=0; i<me.htmlColumnList.length; i++){
+				var href = me.htmlColumnList[i];
+				href.orderby = 0;
+				href.html(me.options.columnSortHtml[href.orderby]);
+			}
+			for(var i in me.orderByList){
+				me.orderByList[i] = 0;
+			}
 		}
+		else{
+			for(var i=0; i<me.htmlColumnList.length; i++){
+				var href = me.htmlColumnList[i];
+				if(null == href.actionable || href.actionable){
+					if(fieldIdToPreserve != href.fieldId){
+						me.orderByList[href.fieldId] = 0;
+						href.orderby = 0;
+						href.html(me.options.columnSortHtml[href.orderby]);
+					}		
+				}			
+			}
+		}
+		
 	};
 	
 	this.triggerPageChange = function(pageNumber){
@@ -220,6 +233,7 @@ Cubee.StdTable = function(divElem, options){
 		tableElem.className = 'cubee ' + (null != options.tableClass) ? options.tableClass : '';
 		var trElem = document.createElement('tr');
 		var htmlColumnList = new Array();
+		me.selectElementList = new Array();
 		var nbColumnsVisible = 0;
 		var columnSelectHeader = $('<select></select>');
 		for(var i=0; i<me.columnList.length; i++){
@@ -237,8 +251,14 @@ Cubee.StdTable = function(divElem, options){
 			var $thElem = $(thElem);
 			$thElem.attr('align', 'center');
 			var selectElemClone = columnSelectHeader.clone();
+			selectElemClone.cubeeIndex = i;
+			me.selectElementList.push(selectElemClone);
 			(function(column, index){
 				selectElemClone.on('change', function(){
+					for(var i=0; i<me.htmlColumnList.length; i++){
+						me.htmlColumnList[i].fieldId = me.selectElementList[i].val();
+					}
+					me.resetOrder();
 					var selectedFieldId = $(this).val();
 					var newVisibleColumn = null;
 					for(var i=0; i<me.columnList.length; i++){
@@ -246,8 +266,9 @@ Cubee.StdTable = function(divElem, options){
 						if(selectedFieldId == tmpCol.fieldId){
 							newVisibleColumn = tmpCol;
 						}
-					}
-					var nextHref = $(this).next('a');
+					}			
+					var nextHref = selectElemClone.hrefElem;
+					nextHref.fieldId = newVisibleColumn.fieldId;
 					if(null != newVisibleColumn.actionable && !newVisibleColumn.actionable){
 						nextHref.css({display: 'none'});
 					}
@@ -262,10 +283,10 @@ Cubee.StdTable = function(divElem, options){
 			var $a = $('<a href="#" style="padding-left:6px;">'+ me.options.columnSortHtml[0] +'</a>');
 			$a.orderby = 0;
 			$a.fieldId = tmpColumn.fieldId;
+			selectElemClone.hrefElem = $a;
 			htmlColumnList.push($a);
 			$thElem.append($a);
 			trElem.appendChild(thElem);
-					
 		}
 		me.htmlColumnList = htmlColumnList;
 		tableElem.appendChild(trElem);
