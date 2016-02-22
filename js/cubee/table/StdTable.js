@@ -92,8 +92,10 @@ Cubee.StdTable = function(divElem, options){
 	
 	/**
 	 * fires the HttpRequest to get the data from the server 
+	 * @url if not null, it is the url for export - else it is the options.urlData
+	 * @callBackFunction if null, populate the table rows
 	*/
-	this.refreshData = function(){
+	this.refreshData = function(url, callBackFunction){
 				
 		/*** filters part	***/
 		var doThrowError = (null != me.options.stopOnFiltersError) ? me.options.stopOnFiltersError : false;
@@ -128,7 +130,7 @@ Cubee.StdTable = function(divElem, options){
 			filters: validFilterList,
 			pageNum: me.pageNumber
         };
-		var fct = function(response){
+		var fct = (null != callBackFunction) ? callBackFunction : function(response){
 			var jsonResult = response[me.jsonKeyData];
 			me.setData(jsonResult);
 			me.populateRow();
@@ -138,7 +140,8 @@ Cubee.StdTable = function(divElem, options){
 		if(null != options.contentTypePost){
 			httpOptions.contentTypePost = options.contentTypePost;
 		}
-		Cubee.Http.sendRequest(me.urlData, jsonPostData, fct, httpOptions);
+		var urlData = (null == url) ? me.urlData : url;
+		Cubee.Http.sendRequest(urlData, jsonPostData, fct, httpOptions);
 	};
 	
 	/**
@@ -206,7 +209,21 @@ Cubee.StdTable = function(divElem, options){
 			}
 			tBodyElem.append(trElem);
 		}
-	}
+	};
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////// "public methods" ///////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	this.exportData = function(){
+	
+		console.log('##exportData url', options.exportUrl);
+		var fct = function(response){
+			var jsonResult = response[me.jsonKeyData];
+			console.log('##export response', jsonResult);
+		};
+		me.refreshData(options.exportUrl, fct);
+	};
+	
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////// constructor body ///////////////////////////////////////////////////////////////
