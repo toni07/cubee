@@ -307,6 +307,7 @@ Cubee.StdTable = function(divElem, options){
 				$thElem.append($a);
 			}
 			else{
+				$thElem.addClass('sticky');
 				$thElem.html(tmpColumn.label);
 			}
 			trElem.appendChild(thElem);
