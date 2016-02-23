@@ -241,7 +241,7 @@ Cubee.StdTable = function(divElem, options){
 		me.visibleColumnList = new Array();
 		for(var i=0; i<me.columnList.length; i++){
 			var tmpColumn = me.columnList[i];
-			if(null == tmpColumn.visible || tmpColumn.visible){
+			if(null == tmpColumn.visible || tmpColumn.visible || tmpColumn.sticky){
 				me.visibleColumnList.push(tmpColumn);
 			}
 		}
@@ -255,7 +255,9 @@ Cubee.StdTable = function(divElem, options){
 		var columnSelectHeader = $('<select></select>');
 		for(var i=0; i<me.columnList.length; i++){
 			var tmpColumn = me.columnList[i];
-			columnSelectHeader.append($('<option value="'+ tmpColumn.fieldId +'">'+ tmpColumn.label +'</option>'));
+			if(!tmpColumn.sticky){
+				columnSelectHeader.append($('<option value="'+ tmpColumn.fieldId +'">'+ tmpColumn.label +'</option>'));
+			}
 		}
 		
 		for(var i=0; i<me.visibleColumnList.length; i++){
@@ -266,43 +268,47 @@ Cubee.StdTable = function(divElem, options){
 			tableElem.appendChild(colElem);
 			var thElem = document.createElement('th');
 			var $thElem = $(thElem);
-			$thElem.attr('align', 'center');
-			var selectElemClone = columnSelectHeader.clone();
-			selectElemClone.cubeeIndex = i;
-			me.selectElementList.push(selectElemClone);
-			(function(column, index){
-				selectElemClone.on('change', function(){
-					for(var i=0; i<me.htmlColumnList.length; i++){
-						me.htmlColumnList[i].fieldId = me.selectElementList[i].val();
-					}
-					me.resetOrder();
-					var selectedFieldId = $(this).val();
-					var newVisibleColumn = null;
-					for(var i=0; i<me.columnList.length; i++){
-						var tmpCol = me.columnList[i];
-						if(selectedFieldId == tmpCol.fieldId){
-							newVisibleColumn = tmpCol;
+			if(!tmpColumn.sticky){
+				var selectElemClone = columnSelectHeader.clone();
+				selectElemClone.cubeeIndex = i;
+				me.selectElementList.push(selectElemClone);
+				(function(column, index){
+					selectElemClone.on('change', function(){
+						for(var i=0; i<me.htmlColumnList.length; i++){
+							me.htmlColumnList[i].fieldId = me.selectElementList[i].val();
 						}
-					}			
-					var nextHref = selectElemClone.hrefElem;
-					nextHref.fieldId = newVisibleColumn.fieldId;
-					if(null != newVisibleColumn.actionable && !newVisibleColumn.actionable){
-						nextHref.css({display: 'none'});
-					}
-					else{
-						nextHref.css({display: ''});
-					}
-					me.visibleColumnList[index] = newVisibleColumn;
-					me.populateRow();
-				});
-			})(tmpColumn, i);
-			$thElem.append(selectElemClone.val(tmpColumn.fieldId));
-			var $a = $('<a href="#" style="padding-left:6px;">'+ me.options.columnSortHtml[0] +'</a>');
-			$a.orderby = 0;
-			$a.fieldId = tmpColumn.fieldId;
-			selectElemClone.hrefElem = $a;
-			htmlColumnList.push($a);
-			$thElem.append($a);
+						me.resetOrder();
+						var selectedFieldId = $(this).val();
+						var newVisibleColumn = null;
+						for(var i=0; i<me.columnList.length; i++){
+							var tmpCol = me.columnList[i];
+							if(selectedFieldId == tmpCol.fieldId){
+								newVisibleColumn = tmpCol;
+							}
+						}			
+						var nextHref = selectElemClone.hrefElem;
+						nextHref.fieldId = newVisibleColumn.fieldId;
+						if(null != newVisibleColumn.actionable && !newVisibleColumn.actionable){
+							nextHref.css({display: 'none'});
+						}
+						else{
+							nextHref.css({display: ''});
+						}
+						me.visibleColumnList[index] = newVisibleColumn;
+						me.populateRow();
+					});
+				})(tmpColumn, i);
+				$thElem.append(selectElemClone.val(tmpColumn.fieldId));
+				var $a = $('<a href="#" style="padding-left:6px;">'+ me.options.columnSortHtml[0] +'</a>');
+				$a.orderby = 0;
+				$a.fieldId = tmpColumn.fieldId;
+				selectElemClone.hrefElem = $a;
+				htmlColumnList.push($a);
+				$thElem.append($a);
+			}
+			else{
+				$thElem.html(tmpColumn.label);
+			}
 			trElem.appendChild(thElem);
 		}
 		me.htmlColumnList = htmlColumnList;

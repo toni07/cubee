@@ -177,11 +177,18 @@
 			fieldId: 4,
 			fieldKey: 'column5',
 			label: 'col5',
-			width: '40%',
-			visible: false,
-			type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_NUMBER,
-			renderer: function(jsonRowData){
-				return 'toto';
+			width: '10%',
+			sticky: true,		//means no select, and always visible
+			//type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_NUMBER,
+			renderer: function(value, jsonRowData){
+				var div = $('<div></div>');
+				var button = $('<button>click me</button>');
+				div.append(button);
+				button.on('click', function(e){
+					e.stopPropagation();
+					console.log('##button clicked');
+				});
+				return div;
 			},
 			actionable: false
 		}
