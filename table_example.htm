@@ -219,7 +219,13 @@
 		tableClass: '',
 		jsonRecordsKeyData: 'records',		//mandatory
 		jsonNbPageKeyData: 'total-page-num',		//mandatory
-		exportUrl: '/getdata.php?export=1'
+		exportUrl: '/getdata.php?export=1',
+		paging: {
+			rewTotalHtml: '<button> << </button>',
+			rewHtml: '<',
+			fwdHtml: '>',
+			fwdTotalHtml: '>>',
+		}
 	};
 			
 	var myTable = new Cubee.StdTable($('#toto')[0], options);

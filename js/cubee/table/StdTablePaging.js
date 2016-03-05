@@ -6,14 +6,23 @@ Cubee.StdTablePaging = function(stdTable, options){
 	/////////// global div for filters /////////////
 	this.createGlobalDiv = function(){
 	
+		var pagingHtml = {
+			rewTotalHtml: ' << ',
+			rewHtml: ' < ',
+			fwdHtml: ' > ',
+			fwdTotalHtml: ' >> ',
+		};
+		if(null != options.paging){
+			pagingHtml = options.paging;
+		}
 		me.globalDiv = $('<div class="cubee-table-paging">'
 				+ 	'<div class="cubee-center">'
 				+ 		'<div>'
-				+			'<a href="#" class="rew-total disabled"> << </a>'
-				+			'<a href="#" class="rew disabled"> < </a>'
+				+			'<a href="#" class="rew-total disabled">'+ pagingHtml.rewTotalHtml +'</a>'
+				+			'<a href="#" class="rew disabled">'+ pagingHtml.rewHtml +'</a>'
 				+			'Page <input type="text" class="current-page-num" value="1"> / <span class="nbpage-total">1</span>'
-				+			'<a href="#" class="fwd"> > </a>'
-				+			'<a href="#" class="fwd-total"> >> </a>'
+				+			'<a href="#" class="fwd">'+ pagingHtml.fwdHtml +'</a>'
+				+			'<a href="#" class="fwd-total">'+ pagingHtml.fwdTotalHtml +'</a>'
 				+		'</div>'
 				+	'</div>'
 				+'</div>');
