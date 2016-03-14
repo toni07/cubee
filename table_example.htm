@@ -104,6 +104,7 @@
 </head>
 <body>
 	<h1>Table with sorting and paging example</h1>
+	<button id="btn-export">Export data</button>
 	<div id="toto" class="cubee"></div>
 	<br />
 </body>
@@ -176,11 +177,18 @@
 			fieldId: 4,
 			fieldKey: 'column5',
 			label: 'col5',
-			width: '40%',
-			visible: false,
-			type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_NUMBER,
-			renderer: function(jsonRowData){
-				return 'toto';
+			width: '10%',
+			sticky: true,		//means no select, and always visible
+			//type: Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_NUMBER,
+			renderer: function(value, jsonRowData){
+				var div = $('<div></div>');
+				var button = $('<button>click me</button>');
+				div.append(button);
+				button.on('click', function(e){
+					e.stopPropagation();
+					console.log('##button clicked');
+				});
+				return div;
 			},
 			actionable: false
 		}
@@ -210,13 +218,23 @@
 		filtersPlusButtonHtml: '<b style="color:#ffffff;border:1px solid #ffffff;padding:0 5px;margin-left:4px;">+</b>',
 		tableClass: '',
 		jsonRecordsKeyData: 'records',		//mandatory
-		jsonNbPageKeyData: 'total-page-num'		//mandatory
+		jsonNbPageKeyData: 'total-page-num',		//mandatory
+		exportUrl: '/getdata.php?export=1',
+		paging: {
+			rewTotalHtml: '<button> << </button>',
+			rewHtml: '<',
+			fwdHtml: '>',
+			fwdTotalHtml: '>>',
+		}
 	};
 			
 	var myTable = new Cubee.StdTable($('#toto')[0], options);
 	/*myTable.createHtmlTable();
 	myTable.createFilter(3);
 	myTable.populateRow();*/
+	document.getElementById('btn-export').addEventListener('click', function(){
+		myTable.exportData();
+	});
  
 </script>	
 	
