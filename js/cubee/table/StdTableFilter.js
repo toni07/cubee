@@ -79,13 +79,13 @@ Cubee.StdTableFilter = function(options){
 	*/
 	this.isValidFilterValue = function(value, column){
 		
-		if(CUBEE_TABLE_FIELD_TYPE_STRING == column.type){
+		if(Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_STRING == column.type){
 			return true;
 		}
-		else if(CUBEE_TABLE_FIELD_TYPE_DATE == column.type){
+		else if(Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_DATE == column.type){
 			return (/[0-9]{4}-[0-9]{2}-[0-9]{2}/gi).test(value);
 		}
-		else if(CUBEE_TABLE_FIELD_TYPE_NUMBER == column.type){
+		else if(Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_NUMBER == column.type){
 			return (1*value == value);
 		}
 		return true;

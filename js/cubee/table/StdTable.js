@@ -332,6 +332,10 @@ Cubee.StdTable = function(divElem, options){
 		me.globalFormElem.on('submit', function(e){
 			e.preventDefault();
 			var pageNumber = 1;
+			var inputPageNumberElem = me.globalFormElem.find('input.current-page-num');
+			if(inputPageNumberElem.length > 0){
+				pageNumber = inputPageNumberElem.val();
+			}
 			me.pageNumber = pageNumber;
 			me.stdTablePaging.updatePageNumber(pageNumber);
 			me.refreshData();
