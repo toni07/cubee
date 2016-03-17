@@ -110,10 +110,13 @@ Cubee.StdTable = function(divElem, options){
 		}
 		
 		/*** order part ***/
-		var orderData = {
-			fieldId: 1,
-			orderValue: 0
-		};
+		var orderData;
+		if(null != options.defaultOrder){
+			orderData = {
+				fieldId: options.defaultOrder.fieldId,
+				orderValue: options.defaultOrder.orderValue
+			};
+		}
 		var orderFieldList = new Array();
 		for(var i in me.orderByList){
 			orderFieldList.push({fieldId: i, orderValue: me.orderByList[i]});
@@ -125,11 +128,13 @@ Cubee.StdTable = function(divElem, options){
 			}
 		}
 		var jsonPostData = {
-			order: orderData,
 			/*orders: orderFieldList,*/
 			filters: validFilterList,
 			pageNum: me.pageNumber
         };
+		if(null != orderData){
+			jsonPostData.order = orderData;
+		}
 		var fct = (null != callBackFunction) ? callBackFunction : function(response){
 			var jsonResult = response[me.jsonKeyData];
 			me.setData(jsonResult);
