@@ -28,6 +28,10 @@ Cubee.StdPopup = function(options){
 		
 		me.backgroundDiv = $('<div class="cubee-popup-bg idx'+ currentNbPopup +'"></div>');
 		me.foregroundDiv = $('<div class="cubee-popup-fg idx'+ currentNbPopup +'"></div>');
+		me.foregroundDiv.css({
+			'max-height': 0.9*screen.height,
+			'overflow-y': 'auto'
+		});
 		var buttonClosePopup = $('<div style="text-align:right;margin-right:6px;cursor:pointer;"> X </div>');
 		var functionClose = function(){
 			if(null != options.closeCallback){
