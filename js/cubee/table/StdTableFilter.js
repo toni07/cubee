@@ -10,10 +10,16 @@ Cubee.StdTableFilter = function(options){
 	/////////////////////////////////////////////////////////////////////////////////
 	this.createGlobalDiv = function(){
 	
+		var filterOperatorHtml = '<option value="0">=</option><option value="1">%</option><option value="2"><=</option><option value="3">>=</option><option value="4">!=</option>';
+		if(null != options.filterOperatorHtml){
+			filterOperatorHtml = options.filterOperatorHtml;
+		}
 		me.globalDiv = $('<div class="cubee-table-filter"><div>'
 				+	'	<div class="cubee-table-filter-title">Filtres </div>'
 				+	'	<div class="cubee-model">'
-				+	'		<select disabled="disabled" class="filter-operator-id cubee-filter-select"><option value="0">=</option><option value="1">%</option><option value="2"><=</option><option value="3">>=</option><option value="4">!=</option></select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" class="cubee-filter-input" />'
+				+	'		<select disabled="disabled" class="filter-operator-id cubee-filter-select">'
+				+	filterOperatorHtml			
+				+	'		</select> <input disabled="disabled" name="filter-value" type="text" placeholder=" valeur" class="cubee-filter-input" />'
 				+	'	</div>'
 				+ 	'</div></div>');
 	};
