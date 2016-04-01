@@ -168,7 +168,8 @@ Cubee.StdTable = function(divElem, options){
 			var colDomElem = $(me.tableElem.find('col')[j]);
 			colDomElem.css({width: me.visibleColumnList[j].width});
 		}
-		for(var i=0; i<me.jsonData.length; i++){
+		var jsonData = (null != me.jsonData) ? me.jsonData : [];
+		for(var i=0; i<jsonData.length; i++){
 			var trElem = document.createElement('tr');
 			var hasTrElemCursorPointer = false;
 			if(null != options.onClickRow){
@@ -180,14 +181,14 @@ Cubee.StdTable = function(divElem, options){
 						$trElem.on('click', function(){
 							options.onClickRow(jsonRow);
 						});
-					})(me.jsonData[i]);
+					})(jsonData[i]);
 				}			
 			}		
 			for(var j=0; j<me.visibleColumnList.length; j++){
 				var tmpColumn = me.visibleColumnList[j];
 				var tdElem = document.createElement('td');
 				if(null != tmpColumn.renderer){
-					var objToAppend = tmpColumn.renderer(me.jsonData[i][tmpColumn.fieldKey], me.jsonData[i]);
+					var objToAppend = tmpColumn.renderer(jsonData[i][tmpColumn.fieldKey], jsonData[i]);
 					if('string' == $.type(objToAppend)){
 						$(tdElem).html(objToAppend);
 					}
@@ -196,7 +197,7 @@ Cubee.StdTable = function(divElem, options){
 					}
 				}
 				else{
-					$(tdElem).html(me.jsonData[i][tmpColumn.fieldKey]);
+					$(tdElem).html(jsonData[i][tmpColumn.fieldKey]);
 				}
 				if(null != tmpColumn.onClick){
 					(function($tdElem, clickFunction, tdData, rowData, hasTrElemCursorPointer){
@@ -207,13 +208,20 @@ Cubee.StdTable = function(divElem, options){
 							clickFunction(tdData, rowData);
 							e.stopPropagation();
 						});
-					})($(tdElem), tmpColumn.onClick, me.jsonData[i][tmpColumn.fieldKey], me.jsonData[i], hasTrElemCursorPointer);
+					})($(tdElem), tmpColumn.onClick, jsonData[i][tmpColumn.fieldKey], jsonData[i], hasTrElemCursorPointer);
 				}
-				
-				trElem.appendChild(tdElem);				
+				trElem.appendChild(tdElem);
 			}
-			tBodyElem.append(trElem);
 		}
+		if(jsonData.length <= 0){
+			var trElem = document.createElement('tr');
+			var tdNoRowElem = document.createElement('td');
+			var $tdNoRowElem = $(tdNoRowElem);
+			$tdNoRowElem.attr('colspan', me.nbColumnsVisible).attr('align', 'center');
+			$tdNoRowElem.html(options.noResultMessage);
+			trElem.appendChild(tdNoRowElem);
+		}
+		tBodyElem.append(trElem);
 	};
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,6 +325,7 @@ Cubee.StdTable = function(divElem, options){
 			}
 			trElem.appendChild(thElem);
 		}
+		me.nbColumnsVisible = nbColumnsVisible;
 		me.htmlColumnList = htmlColumnList;
 		tableElem.appendChild(trElem);
 		//---------td 'no row'----------------//
@@ -325,7 +334,7 @@ Cubee.StdTable = function(divElem, options){
 		var tdNoRowElem = document.createElement('td');
 		var $tdNoRowElem = $(tdNoRowElem);
 		$tdNoRowElem.attr('colspan', nbColumnsVisible).attr('align', 'center');
-		$tdNoRowElem.html('no result');
+		$tdNoRowElem.html(options.noResultMessage);
 		trElem.appendChild(tdNoRowElem);
 		tdBodyElem.appendChild(trElem);
 		tableElem.appendChild(tdBodyElem);
