@@ -137,13 +137,30 @@ Cubee.StdTableFilter = function(options){
 		this.spanAddFilter = spanAddFilter;
 		
 		/////	<select> for filter field	/////
-		var selectField = $('<select disabled="disabled" class="filter-field-id cubee-filter-select"><option>** choix **</option></select>');
+		var selectField = $('<select disabled="disabled" class="filter-field-id cubee-filter-select"><option>** colonne **</option></select>');
 		for(var i=0; i<options.columnList.length; i++){
 			var column = options.columnList[i];
 			if(null == column.actionable || column.actionable){
 				selectField.append($('<option value="'+ column.fieldId +'">'+ column.label +'</option>'));
 			}
 		}
+		selectField.on('change', function(){
+			var selectValue = this.value;
+			var selectedColumn;
+			for(var i=0; i<options.columnList.length; i++){
+				var column = options.columnList[i];
+				if(column.fieldId == selectValue){
+					selectedColumn = column;
+					break;
+				}
+			}
+			if(null != selectedColumn){
+				if(Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_DATE == selectedColumn.type){
+					var inputText = $(this).siblings('input.cubee-filter-input');
+					console.log('##selectedColumn', selectedColumn, inputText);
+				}
+			}
+		});
 		
 		/////	bouton post filter	/////
 		var boutonSendFilter = $('<input type="submit" class="cubee-filter-submit" />');

@@ -60,7 +60,7 @@ Cubee.Http = {
 	
 	copyModel: function(elemToCopy, elemTarget, callbackFunction){
 		
-		var copiedElem = elemToCopy.clone();
+		var copiedElem = elemToCopy.clone(true);
 		copiedElem.removeClass('cubee-model');
 		copiedElem.find('input, select', 'textarea').prop('disabled', false);
 		elemTarget.append(copiedElem);
