@@ -121,12 +121,12 @@ Cubee.StdDatePicker = function(inputElem, options){
 		  // Make the calendar
 		  var selected = parseMyDate(textbox.value); // Try parsing the date
 		  var today = new Date();
-		  date = new Date(month.getFullYear(),month.getMonth(),1,0,0,0,0); // Starting at the 1st of the month
+		  var date = new Date(month.getFullYear(),month.getMonth(),1,0,0,0,0); // Starting at the 1st of the month
 		  var extras = (date.getDay() + 6) % 7; // How many days of the last month do we need to include?
 		  date.setDate(date.getDate()-extras); // Skip back to the previous monday
 		  while (1) { // Loop for each week
 			var tr = tbl.insertRow(-1);
-			for (i=0;i<7;i++) { // Loop each day of this week
+			for (var i=0;i<7;i++) { // Loop each day of this week
 			  var td = tr.insertCell(-1);
 			  var inp = document.createElement('input');
 			  inp.type = 'button';
@@ -164,28 +164,7 @@ Cubee.StdDatePicker = function(inputElem, options){
 
 		// This is called when they click the icon next to the date inputbox
 		function showDatePicker(idOfTextbox) {
-		  var textbox = document.getElementById(idOfTextbox);
 		  
-		  // See if the date picker is already there, if so, remove it
-		  x = textbox.parentNode.getElementsByTagName('div');
-		  for (i=0;i<x.length;i++) {
-			if (x[i].getAttribute('class')=='datepickerdropdown') {
-			  textbox.parentNode.removeChild(x[i]);
-			  return false;
-			}
-		  }
-
-		  // Grab the date, or use the current date if not valid
-		  var date = parseMyDate(textbox.value);
-		  if (isNaN(date)) date = new Date();
-
-		  // Create the box
-		  var div = document.createElement('div');
-		  div.className='datepickerdropdown';
-		  div.setAttribute('datepickertextbox', idOfTextbox); // Remember the textbox id in the div
-		  createCalendar(div, date); // Create the calendar
-		  insertAfter(div, textbox); // Add the box to screen just after the textbox
-		  return false;
 		}
 
 		// Adds an item after an existing one
@@ -227,8 +206,28 @@ Cubee.StdDatePicker = function(inputElem, options){
 		
 		var a = document.createElement('a');
 		  a.href='#';
-		  a.className="datepickershow";
-		  a.on('click', function(){
+		  a.className = "datepickershow";
+		  a.addEventListener('click', function(){
+				// See if the date picker is already there, if so, remove it
+				var x = inputElem.parentNode.getElementsByTagName('div');
+				for (var i=0;i<x.length;i++) {
+					if (x[i].getAttribute('class') == 'datepickerdropdown') {
+						inputElem.parentNode.removeChild(x[i]);
+						return false;
+					}
+				}
+
+				// Grab the date, or use the current date if not valid
+				var date = parseMyDate(inputElem.value);
+				if (isNaN(date)) date = new Date();
+
+				// Create the box
+				var div = document.createElement('div');
+				div.className='datepickerdropdown';
+				div.setAttribute('datepickertextbox', inputElem.id); // Remember the textbox id in the div
+				createCalendar(div, date); // Create the calendar
+				insertAfter(div, inputElem); // Add the box to screen just after the textbox
+				return false;
 		  });
 		  //a.setAttribute('onclick','return showDatePicker("' + allElements[i].id + '")');
 		  var img = document.createElement('img');
