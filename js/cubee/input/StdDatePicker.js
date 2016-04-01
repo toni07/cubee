@@ -13,16 +13,13 @@ Cubee.StdDatePicker = function(inputElem, options){
 	
 		// Converts a date into '12-Oct-1984' format
 		function getDateString(dt) {
-		  return dt.getDate() + '-' + 
-			['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()] + 
-			'-' + dt.getFullYear();
+		  return dt.getDate() + '/' +  dt.getMonth() + '/' + dt.getFullYear();
 		}
 
 		// Converts a date into 'July 2010' format
 		function getMonthYearString(dt) {
-		  return ['January','February','March','April','May','June','July',
-				  'August','September','October','November','December'][dt.getMonth()] +
-				 ' ' + dt.getFullYear();
+		  return ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet',
+				  'Août','Septembre','Octobre','Novembre','Décembre'][dt.getMonth()] + ' ' + dt.getFullYear();
 		}
 
 		// This is the function called when the user clicks any button
@@ -205,36 +202,38 @@ Cubee.StdDatePicker = function(inputElem, options){
 		});*/
 		
 		var a = document.createElement('a');
-		  a.href='#';
-		  a.className = "datepickershow";
-		  a.addEventListener('click', function(){
-				// See if the date picker is already there, if so, remove it
-				var x = inputElem.parentNode.getElementsByTagName('div');
-				for (var i=0;i<x.length;i++) {
-					if (x[i].getAttribute('class') == 'datepickerdropdown') {
-						inputElem.parentNode.removeChild(x[i]);
-						return false;
-					}
+		a.href='#';
+		a.className = "datepickershow";
+		var onclick = function(){
+			// See if the date picker is already there, if so, remove it
+			var x = inputElem.parentNode.getElementsByTagName('div');
+			for (var i=0;i<x.length;i++) {
+				if (x[i].getAttribute('class') == 'datepickerdropdown') {
+					inputElem.parentNode.removeChild(x[i]);
+					return false;
 				}
+			}
 
-				// Grab the date, or use the current date if not valid
-				var date = parseMyDate(inputElem.value);
-				if (isNaN(date)) date = new Date();
+			// Grab the date, or use the current date if not valid
+			var date = parseMyDate(inputElem.value);
+			if (isNaN(date)) date = new Date();
 
-				// Create the box
-				var div = document.createElement('div');
-				div.className='datepickerdropdown';
-				div.setAttribute('datepickertextbox', inputElem.id); // Remember the textbox id in the div
-				createCalendar(div, date); // Create the calendar
-				insertAfter(div, inputElem); // Add the box to screen just after the textbox
-				return false;
-		  });
-		  //a.setAttribute('onclick','return showDatePicker("' + allElements[i].id + '")');
-		  var img = document.createElement('img');
-		  img.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAABGdBTUEAAK/INwWK6QAAABh0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjM2qefiJQAAAdtJREFUOE+Vj+9PUnEUxvPvar3xja96Q1hGEKG0ubZqbfHCNqIVA4eYLAwFp0LYD4iIJEdeRGGZwDAEcUOn9oNIvPcGgjBQfHE69/YFihe1zs59du7d83nOuR0AcOq/CgEqWbaHDqaD+clF1rLAmija6MsZ5vb0s9nB1xm168s9x67y6Y7q2TaXjo8tVKjUTv7Zt61pAkwt/UA3zFwFuxysV2BKAuYeMAnBcBaGukDdCaozaLg5sUGAiQDLA3IIDIBfAfO34N118PaDRwYvRfBcCMrTaLg2liTAOEW3NjzpBZsMpqUwKQaLCMYvwGMhjArQIDfGCTDqy3EAX47lfVTnCo3qCnOzJ8IpW6pJR2IEGHn7/bBaR5MLO8y8CtPuKO2J0nMfGdKr+5uZ4kVdhAD6N99K1bo7ynB5vHpj3AZ0NxWBbs0KAbTur8VKfTbGeFcbkc1sfnBHuA1CzTIB7js/H5SPffFW3q9sau2PDdLhxkl3X+wiQCVYf4Jt3h1Itmb8iBvEusZJd2a2CuXjxXUWU5dSnAZ5/b0QkOobgMKWzh8eMcXaXr6aYSqfcuXtbAkdbS3RfSD/MGDfvGFO9ZuSfY/ilx/GLumi57Vhgfp9W597ECJA2/a/v/4ENLpYKsDo3kgAAAAASUVORK5CYII=';
-		  img.title='Show calendar';
-		  a.appendChild(img);
-			insertAfter(a, inputElem);
+			// Create the box
+			var div = document.createElement('div');
+			div.className='datepickerdropdown';
+			div.setAttribute('datepickertextbox', inputElem.id); // Remember the textbox id in the div
+			createCalendar(div, date); // Create the calendar
+			insertAfter(div, inputElem); // Add the box to screen just after the textbox
+			return false;
+		};
+		a.addEventListener('click', onclick);
+		inputElem.addEventListener('click', onclick);
+		//a.setAttribute('onclick','return showDatePicker("' + allElements[i].id + '")');
+		var img = document.createElement('img');
+		img.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAABGdBTUEAAK/INwWK6QAAABh0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjM2qefiJQAAAdtJREFUOE+Vj+9PUnEUxvPvar3xja96Q1hGEKG0ubZqbfHCNqIVA4eYLAwFp0LYD4iIJEdeRGGZwDAEcUOn9oNIvPcGgjBQfHE69/YFihe1zs59du7d83nOuR0AcOq/CgEqWbaHDqaD+clF1rLAmija6MsZ5vb0s9nB1xm168s9x67y6Y7q2TaXjo8tVKjUTv7Zt61pAkwt/UA3zFwFuxysV2BKAuYeMAnBcBaGukDdCaozaLg5sUGAiQDLA3IIDIBfAfO34N118PaDRwYvRfBcCMrTaLg2liTAOEW3NjzpBZsMpqUwKQaLCMYvwGMhjArQIDfGCTDqy3EAX47lfVTnCo3qCnOzJ8IpW6pJR2IEGHn7/bBaR5MLO8y8CtPuKO2J0nMfGdKr+5uZ4kVdhAD6N99K1bo7ynB5vHpj3AZ0NxWBbs0KAbTur8VKfTbGeFcbkc1sfnBHuA1CzTIB7js/H5SPffFW3q9sau2PDdLhxkl3X+wiQCVYf4Jt3h1Itmb8iBvEusZJd2a2CuXjxXUWU5dSnAZ5/b0QkOobgMKWzh8eMcXaXr6aYSqfcuXtbAkdbS3RfSD/MGDfvGFO9ZuSfY/ilx/GLumi57Vhgfp9W597ECJA2/a/v/4ENLpYKsDo3kgAAAAASUVORK5CYII=';
+		img.title='Show calendar';
+		a.appendChild(img);
+		insertAfter(a, inputElem);
 	}
 	
 	this.constructor();
