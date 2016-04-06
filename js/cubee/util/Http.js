@@ -39,7 +39,7 @@ Cubee.Http = {
 			callbackFunction(data);
 		}).
 		fail(function(){
-			alert('fail');
+			console.warn('fail');
 		}).
 		always(function(){
 		});

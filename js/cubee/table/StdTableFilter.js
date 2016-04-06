@@ -155,9 +155,18 @@ Cubee.StdTableFilter = function(options){
 				}
 			}
 			if(null != selectedColumn){
+				var inputText = $(this).siblings('input.cubee-filter-input');
+				var datePicker;
+				if(inputText.hasClass('cubee-datepicker')){
+					datePicker = new Cubee.StdDatePicker(inputText[0]);
+					datePicker.remove();
+				}
 				if(Cubee.Constants.CUBEE_TABLE_FIELD_TYPE_DATE == selectedColumn.type){
-					var inputText = $(this).siblings('input.cubee-filter-input');
-					console.log('##selectedColumn', selectedColumn, inputText);
+					if(null == datePicker){
+						datePicker = new Cubee.StdDatePicker(inputText[0]);
+					}
+					datePicker.add();
+					console.log('##selectedColumn', selectedColumn, inputText, inputText.datePicker);
 				}
 			}
 		});
